@@ -1,6 +1,6 @@
 #app_controller.py
 from flask import Flask, render_template, request, jsonify, session
-# from models.db import db, instance
+from models.db import db, instance
 import json
 from flask_mqtt import Mqtt
 import paho.mqtt.client as mqtt
@@ -20,6 +20,12 @@ def create_app():
                 static_folder="./static/",
                 root_path="./")
     app.secret_key = "lucaspucas"
+    
+    
+    app.config['TESTING'] = False
+    app.config['SECRET_KEY'] = 'TLS_AES_256_GCM_SHA384'
+    app.config['SQLALCHEMY_DATABASE_URI'] = instance
+    db.init_app(app)
     
     app.config['MQTT_BROKER_URL'] = 'mqtt-dashboard.com'
     app.config['MQTT_BROKER_PORT'] = 1883
