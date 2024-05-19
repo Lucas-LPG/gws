@@ -1,9 +1,14 @@
 from models.db import db
+from models.iot.kits import Kit
 
 class Device(db.Model):
-    __tablename__ = 'devices'
-    id= db.Column('id', db.Integer, primary_key=True)
-    name= db.Column(db.String(50))
-    brand= db.Column(db.String(50))
-    model= db.Column(db.String(50))
-    is_active= db.Column(db.Boolean, nullable= False, default= False)
+    __tablename__ = "devices"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    value = db.Column(db.Float)
+    kit_id = db.Column(db.Integer, db.ForeignKey(Kit.id))
+    
+    def __init__(self, name, value, kit_id):
+        self.name = name
+        self.value = value
+        self.kit_id = kit_id

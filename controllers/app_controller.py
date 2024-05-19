@@ -23,7 +23,7 @@ def create_app():
     
     
     app.config['TESTING'] = False
-    app.config['SECRET_KEY'] = 'TLS_AES_256_GCM_SHA384'
+    app.config['SECRET_KEY'] = 'senha_forte-Lucas-puCas12'
     app.config['SQLALCHEMY_DATABASE_URI'] = instance
     db.init_app(app)
     

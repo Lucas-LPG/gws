@@ -1,8 +1,9 @@
 from models.db import db
 from models.iot.devices import Device
 
-class Sensor(db.Model):
-    __tablename__ = 'sensors'
+#FIXME: Não cria essa classe
+class Actuator(db.Model):
+    __tablename__ = 'actuators'
     id = db.Column('id', db.Integer, primary_key=True)
     devices_id = db.Column( db.Integer, db.ForeignKey(Device.id))
     unit = db.Column(db.String(50))
