@@ -7,7 +7,7 @@ from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
 
 
-login = Blueprint("login", __name__, template_folder="templates")
+login = Blueprint("login", __name__, template_folder="views")
 
 users = {
     "degar": "1234",
