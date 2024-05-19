@@ -1,0 +1,213 @@
+:root {
+  --border-light: #d9d9d9;
+  --real-time--bg: #f1f1f1;
+  --real-time--info-container-bg: #fdfdfd;
+  --real-time--info-container--header-bg: #f7f7f7;
+}
+
+.real-time--container {
+  height: 90vh;
+  width: 100vw;
+  background-color: var(--real-time--bg);
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-direction: column;
+  border-top: var(--border-light) solid 2px;
+}
+
+.real-time--title {
+  width: 100vw;
+  height: 15vh;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding-left: 5vw;
+  font-size: 26px;
+  margin-top: 3vh;
+}
+
+.real-time--info-container {
+  width: 90vw;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2vw;
+}
+
+.capacity--outer,
+.temperature--outer {
+  height: 60vh;
+  width: 44vw;
+  border: var(--border-light) solid 2px;
+  background-color: var(--real-time--info-container-bg);
+}
+
+.capacity--header,
+.temperature--header {
+  height: 8vh;
+  width: 100%;
+  border-bottom: var(--border-light) 2px solid;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding-left: 20px;
+  gap: 15px;
+  background-color: var(--real-time--info-container--header-bg);
+}
+
+.capacity--header > i,
+.temperature--header > i {
+  font-size: 35px;
+}
+
+.capacity--header > span,
+.temperature--header > span {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.capacity--body {
+  height: 52vh;
+  width: 100%;
+  display: flex;
+}
+
+.capacity--body--left {
+  width: 55%;
+  height: 100%;
+}
+
+.capacity--body--left--info-container {
+  position: relative;
+  height: 10vh;
+  padding-left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
+}
+
+.capacity--body--left--info-container::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 5%;
+  width: 90%;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.capacity--last-updated {
+  height: 10vh;
+  padding-left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
+}
+
+.capacity--body--right {
+  width: 45%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.capacity--body--right--inner {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  gap: 15px;
+}
+
+.capacity--body--right--text-container {
+  font-size: 20px;
+  line-height: 20px;
+  height: 280px;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+}
+
+.capacity--body--right--graph-bg {
+  height: 250px;
+  width: 50px;
+  background-color: var(--real-time--bg);
+  position: relative;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  border: var(--border-light) 1px solid;
+}
+
+.capacity--body--right--active-graph {
+  position: absolute;
+  width: 100%;
+}
+
+.yellow-graph {
+  background-color: yellow;
+}
+
+.green-graph {
+  background-color: green;
+}
+
+.red-graph {
+  background-color: red;
+}
+
+.temperature--body {
+  height: 47vh;
+  width: 100%;
+}
+
+.temperature--info-container {
+  height: 10vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding-left: 20px;
+}
+
+.current-temperature,
+.air-conditioner-condition {
+  position: relative;
+}
+
+.current-temperature::after,
+.air-conditioner-condition::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 2.5%;
+  width: 95%;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.var-title {
+  font-size: 16px;
+}
+
+.var-value {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.temperature--footer {
+  height: 5vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: var(--border-light) 1px solid;
+}
+
+.hidden {
+  display: none;
+}

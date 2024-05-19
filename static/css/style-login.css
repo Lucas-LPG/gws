@@ -1,0 +1,86 @@
+
+html, body {
+  margin:0;
+  height:100%;
+  overflow:auto;
+
+  
+  
+}
+
+.body-login{
+  background-color: rgb(230, 227, 227);
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  padding: 30px;
+  border-radius: 10px;
+  color: black !important;
+}
+
+
+.body-login p{
+  margin: 0 !important;
+
+  color: black !important;
+}
+
+.body-login input{
+  margin-bottom: 20px !important;
+  border-radius: 10px;
+  border: solid 1px rgb(178, 178, 178) !important;
+  padding: 5px;
+  color: black !important;
+}
+
+.body-login button{
+  border: solid 1px rgb(178, 178, 178) !important;
+  width: 100%;
+  border-radius: 10px;
+  color: black !important;
+}
+
+a{
+  color: black !important;
+}
+.navbar{
+  display: flex ;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.navbar-nav text{
+  color: black;
+}
+
+.container .forms{
+  margin-top: 50px;
+  padding-top: 50px;
+  border-color: black;
+}
+
+.container .view{
+  margin-top: 50px;
+  padding-top: 50px;
+}
+
+.view tr { height: 20px; }
+
+.vertical-center {
+  min-height: 90%;  /* Fallback for browsers do NOT support vh unit */
+  
+  /* min-height: 100vh; These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vertical-center img {
+  position: relative;
+  max-width: 100%;
+} 
+.form-check,
+.form-label{
+  padding-top: 10px;
+}

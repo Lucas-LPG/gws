@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "author": "Uri Shaked",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": -37.58, "left": -96.37, "attrs": {} },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht1",
+      "top": -28.5,
+      "left": 42.6,
+      "attrs": { "temperature": "59", "humidity": "37.5" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn1",
+      "top": 44.6,
+      "left": -316.8,
+      "attrs": { "color": "green" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn2",
+      "top": 131,
+      "left": -278.4,
+      "attrs": { "color": "red" }
+    },
+    { "type": "wokwi-pir-motion-sensor", "id": "pir1", "top": -140, "left": -218.58, "attrs": {} },
+    { "type": "wokwi-servo", "id": "servo1", "top": -69.2, "left": -441.6, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "dht1:VCC", "esp:3V3", "red", [ "v109.3", "h-170.36", "v-200.78" ] ],
+    [ "dht1:SDA", "esp:15", "green", [ "v0" ] ],
+    [ "dht1:GND", "esp:GND.1", "black", [ "v99.7", "h-189.56", "v-66.38" ] ],
+    [ "btn1:1.r", "esp:25", "green", [ "h29", "v67.2", "h61.84" ] ],
+    [ "btn2:1.r", "esp:26", "green", [ "v0" ] ],
+    [ "btn1:2.r", "esp:GND.1", "black", [ "v144.2", "h57.8", "v-47.18" ] ],
+    [ "btn2:2.r", "esp:GND.1", "black", [ "h48.2", "v-47.8", "h71.44" ] ],
+    [ "pir1:GND", "esp:GND.1", "black", [ "v0" ] ],
+    [ "pir1:OUT", "esp:33", "blue", [ "v0" ] ],
+    [ "pir1:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "servo1:GND", "esp:GND.1", "black", [ "h-57.6", "v134.4", "h407.44" ] ],
+    [ "servo1:V+", "esp:5V", "green", [ "h-38.4", "v220.9", "h388.24" ] ],
+    [ "servo1:PWM", "esp:22", "green", [ "v-163", "h460.8", "v173.62" ] ]
+  ],
+  "dependencies": {}
+}

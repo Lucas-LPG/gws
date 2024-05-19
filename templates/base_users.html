@@ -1,0 +1,36 @@
+
+
+{% block users %}
+<div class="vertical-center">
+    <div class="container view">
+        <div class="justify-content-center">
+            {% if devices|length > 0 %}
+            <table id="view_users" class="table table-striped table-bordered" style="width:100%">
+                <caption>Usuários:</caption>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Senha</th>
+                        <th>Deletar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, value in users.items() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                        <td><a href="/del_user?user={{ key }}">Deletar</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <form action="/register_user">
+                <p><input type="submit" value="Adicionar Usuário" /></p>
+            </form>
+            {% else %}
+            <p>Ainda não há usuários registrados!</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
