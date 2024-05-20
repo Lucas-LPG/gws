@@ -10,9 +10,10 @@ import flask_login
 
 
 topic_subscribe = "cz/enviar"
-people = 100
 temperature = 0
 max_capacity = 100
+people = 85
+people = people if people <= max_capacity else max_capacity
 
 def create_app():
     app = Flask(__name__, 
