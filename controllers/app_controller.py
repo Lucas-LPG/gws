@@ -1,6 +1,6 @@
 #app_controller.py
 from flask import Flask, render_template, request, jsonify, session
-from models.db import db, instance
+from models import db, instance
 import json
 from flask_mqtt import Mqtt
 import paho.mqtt.client as mqtt

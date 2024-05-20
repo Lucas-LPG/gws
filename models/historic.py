@@ -1,6 +1,6 @@
-from models.db import db
+from models import db
 from sqlalchemy.dialects.mysql import INTEGER, FLOAT, DATETIME
-from models.iot.devices import Device
+from models.devices import Device
 from sqlalchemy.sql import func
 
 class Historic(db.Model):

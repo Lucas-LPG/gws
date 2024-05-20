@@ -1,4 +1,4 @@
-from models.db import db
+from models import db
 from sqlalchemy.dialects.mysql import INTEGER, VARCHAR
 
 class User(db.Model):

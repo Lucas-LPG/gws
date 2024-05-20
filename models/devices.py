@@ -1,5 +1,5 @@
-from models.db import db
-from models.iot.kits import Kit
+from models import db
+from models.kits import Kit
 from sqlalchemy.dialects.mysql import INTEGER, VARCHAR, FLOAT
 
 class Device(db.Model):

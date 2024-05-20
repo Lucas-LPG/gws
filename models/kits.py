@@ -1,5 +1,5 @@
-from models.db import db
-from models.iot.users import User
+from models import db
+from models.users import User
 from sqlalchemy.dialects.mysql import INTEGER, VARCHAR
 
 class Kit(db.Model):

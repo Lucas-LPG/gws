@@ -1,5 +1,5 @@
-from models.db import db
-from models.iot.devices import Device
+from models import db
+from models.devices import Device
 from sqlalchemy.dialects.mysql import INTEGER, VARCHAR
 
 class Actuator(db.Model):

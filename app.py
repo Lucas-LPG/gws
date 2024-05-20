@@ -10,8 +10,8 @@ from flask_socketio import SocketIO
 import flask_login
 from controllers.app_controller import create_app
 import json
-from utils.create_db import create_db
-from models.db import db, instance
+from services.db import create_db
+from models import db, instance
 
 
 if __name__ == "__main__":
