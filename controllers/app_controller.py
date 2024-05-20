@@ -10,7 +10,7 @@ import flask_login
 
 
 topic_subscribe = "cz/enviar"
-people = 90
+people = 100
 temperature = 0
 max_capacity = 100
 

@@ -1,6 +1,8 @@
 from models.db import db
 from models.iot.devices import Device
 
+sensors = db.relationship('sensors', backref='devices', lazy=True)
+
 class Sensor(db.Model):
     __tablename__ = 'sensors'
     id = db.Column('id', db.Integer, primary_key=True)

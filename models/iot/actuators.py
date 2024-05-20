@@ -1,7 +1,6 @@
 from models.db import db
 from models.iot.devices import Device
 
-#FIXME: Não cria essa classe
 class Actuator(db.Model):
     __tablename__ = 'actuators'
     id = db.Column('id', db.Integer, primary_key=True)
