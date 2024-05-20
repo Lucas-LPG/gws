@@ -163,7 +163,7 @@ header {
   z-index: 1000;
   top: 0px;
   height: 0px;
-  transition: all ease-in-out 0.5s;
+  transition: height ease-in-out 0.5s;
   display: flex;
   align-items: end;
   justify-content: start;
@@ -191,6 +191,24 @@ header {
   height: 2px;
   width: 100px;
   background-color: var(--custom-blue);
+}
+
+.menu-text--container > a {
+  position: relative;
+}
+
+.menu-text--container > a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  border-bottom: 1.5px solid var(--custom-blue);
+  transition: 0.3s ease-in-out all;
+}
+
+.menu-text--container > a:hover::after {
+  width: 100%;
 }
 
 .header--login {

@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, url_for, session, redirect
 
 
-actuator = Blueprint("actuator", __name__, template_folder="templates")
+actuator = Blueprint("actuator", __name__, template_folder="views")
 sensores = {'Umidade': 55, 'temperatura': 70, 'luminosidade': 20}
 
 
