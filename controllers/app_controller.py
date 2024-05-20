@@ -22,11 +22,6 @@ def create_app():
     app.secret_key = "lucaspucas"
     
     
-    app.config['TESTING'] = False
-    app.config['SECRET_KEY'] = 'senha_forte-Lucas-puCas12'
-    app.config['SQLALCHEMY_DATABASE_URI'] = instance
-    db.init_app(app)
-    
     app.config['MQTT_BROKER_URL'] = 'mqtt-dashboard.com'
     app.config['MQTT_BROKER_PORT'] = 1883
     app.config['MQTT_USERNAME'] = ''
