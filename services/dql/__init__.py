@@ -24,18 +24,5 @@ def select_db(app:Flask, column, condition):
     
     return result
 
-def insert_db(app: Flask, obj):
-    with app.app_context():
-        # Garantir que nome de usuário não exista ainda
-        if isinstance(obj, User):
-            if select_db(app, User, (User.name == obj.name)) == []:
-                db.session.add(obj)
-                db.session.commit()
-                print(f'O usuário {obj.name} foi adicionado com sucesso!')
-            else:
-                print(f'O nome de usuário {obj.name} já existe! Tente novamente com um novo.')
-        else:
-            db.session.add(obj)
-            db.session.commit()
 
             

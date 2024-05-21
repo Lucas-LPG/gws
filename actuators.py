@@ -1,14 +1,14 @@
 from flask import Blueprint, request, render_template, redirect, url_for, session, redirect
+from services.dql import select_db
+from models.actuators import Actuator
 
 
 actuator = Blueprint("actuator", __name__, template_folder="views")
 sensores = {'Umidade': 55, 'temperatura': 70, 'luminosidade': 20}
 
 
-atuadores = {'Servo': 122, 'Interruptor': 1, 'Lampada Inteligente': 1}
-
-
-# ATUADORES
+# actuators = select_db(Actuator, '')
+# actuators
 @actuator.route('/register_actuator')
 def register_actuators():
     if not session.get('user'):
@@ -21,26 +21,26 @@ def register_actuators():
 def add_actuators():
     if not session.get('user'):
         return redirect('/')
-    global atuadores
+    global actuators
     if request.method == 'POST':
         atuador = request.form['name']
         condition = request.form['condition']
-        atuadores[atuador] = condition
-        return render_template("actuators.html", atuadores=atuadores, user=session.get('user'))
+        actuators[atuador] = condition
+        return render_template("actuators.html", actuators=actuators, user=session.get('user'))
     else:
         atuador = request.args.get('name', None)
         condition = request.args.get('condition', None)
-        atuadores[atuador] = condition
-        return render_template("actuators.html", atuadores=atuadores, user=session.get('user'))
+        actuators[atuador] = condition
+        return render_template("actuators.html", actuators=actuators, user=session.get('user'))
 
 
 @actuator.route('/actuators')
 def list_actuators():
     if not session.get('user'):
         return redirect('/')
-    global atuadores
-    atuadores = {key: int(value) for key, value in atuadores.items()}
-    return render_template("actuators.html", atuadores=atuadores, user=session.get('user'))
+    global actuators
+    actuators = {key: int(value) for key, value in actuators.items()}
+    return render_template("actuators.html", actuators=actuators, user=session.get('user'))
 
 
 @actuator.route('/remove_actuator')
@@ -48,17 +48,17 @@ def remove_actuator():
     if not session.get('user'):
         return redirect('/')
     global is_admin
-    return render_template("remove_actuator.html", atuadores=atuadores, user=session.get('user'))
+    return render_template("remove_actuator.html", actuators=actuators, user=session.get('user'))
 
 
 @actuator.route('/del_actuator', methods=['GET', 'POST'])
 def del_actuator():
     if not session.get('user'):
         return redirect('/')
-    global atuadores
+    global actuators
     if request.method == 'POST':
         actuator = request.form['actuator']
     else:
         actuator = request.args.get('actuator', None)
-    atuadores.pop(actuator)
+    actuators.pop(actuator)
     return redirect("/actuators")

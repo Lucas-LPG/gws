@@ -8,8 +8,7 @@ class Kit(db.Model):
     name = db.Column(VARCHAR(100), nullable=False)
     user_id = db.Column(INTEGER(unsigned=True), db.ForeignKey(User.id))
     
-    def __init__(self, name, users, user_id):
+    def __init__(self, name, user_id):
         self.name = name
-        self.users = users
         self.user_id = user_id
         

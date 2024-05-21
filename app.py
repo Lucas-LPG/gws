@@ -3,17 +3,17 @@ import time
 from flask import Flask, render_template, request, jsonify, session
 from login import login
 from sensors import sensor, sensores
-from actuators import actuator, atuadores
+from actuators import actuator
 import paho.mqtt.client as mqtt
 from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
 import flask_login
 from controllers.app_controller import create_app
-import json
 from services.db import create_db
 from models import db, instance
-from services.dql import select_db, insert_db
+from services.dql import select_db
 from services.dml import populate_db
+from services.dml.interact import insert_db
 from models import User
 
 
