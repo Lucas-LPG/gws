@@ -20,7 +20,3 @@ from models.actuators import Actuator
 from models.historic import Historic
 from models.users import User
 from models.kits import Kit
-
-# sensors = db.relationship('Sensor', backref='devices', lazy=True)
-# actuators = db.relationship('Actuator', backref='devices', lazy=True)
-# historic = db.relationship('Historic', backref='devices', lazy=True)
