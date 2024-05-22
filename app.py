@@ -8,8 +8,8 @@ import flask_login
 from routes import create_app
 from db import create_db
 from db.connection import db, instance
-from db.operations import select_db, insert_db
-from models.users import User
+from db.operations import select_db, insert_db, delete_db
+from models import User, Sensor
 from routes.login import login
 from routes.sensors import sensor, sensores
 from routes.actuators import actuator
@@ -28,5 +28,5 @@ if __name__ == "__main__":
     app.register_blueprint(login, url_prefix='/')
     app.register_blueprint(sensor, url_prefix='/')
     app.register_blueprint(actuator, url_prefix='/')
-    
+    delete_db(app, Sensor, (Sensor.id == 1))
     app.run(host='0.0.0.0', port=8080, debug=True),
