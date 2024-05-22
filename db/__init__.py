@@ -3,6 +3,7 @@ from models import *
 from .clean_db import clean_db
 from .events import create_historic_trigger
 from .initial_insert import initial_populate_db
+from .connection import db
 
 def create_db(app: Flask):
     with app.app_context():

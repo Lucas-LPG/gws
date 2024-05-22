@@ -1,5 +1,5 @@
 from flask import Flask
-from db import db
+from db.connection import db
 from sqlalchemy import select, update, insert
 from models.actuators import Actuator
 from models.devices import Device

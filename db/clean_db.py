@@ -1,6 +1,6 @@
 from flask import Flask
 from sqlalchemy import text
-from db import db
+from db.connection import db
 
 session = db.session
 

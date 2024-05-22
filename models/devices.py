@@ -1,4 +1,4 @@
-from models import db
+from db.connection import db
 from models.kits import Kit
 from sqlalchemy.dialects.mysql import INTEGER, VARCHAR, FLOAT
 

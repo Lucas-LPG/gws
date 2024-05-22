@@ -1,6 +1,6 @@
 from flask import Flask
 from sqlalchemy import DDL
-from db import db
+from db.connection import db
 from models.devices import Device
 
 session = db.session

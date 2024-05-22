@@ -1,5 +1,5 @@
 from flask import Flask
-from models import db
+from db.connection import db
 from sqlalchemy import event
 from models.users import User
 from models.kits import Kit

@@ -1,4 +1,4 @@
-from models import db
+from db.connection import db
 from sqlalchemy.dialects.mysql import INTEGER, FLOAT, DATETIME
 from models.devices import Device
 from sqlalchemy.sql import func

@@ -7,9 +7,9 @@ from flask_socketio import SocketIO
 import flask_login
 from routes import create_app
 from db import create_db
-from models import db, instance
+from db.connection import db, instance
 from db.operations import select_db, insert_db
-from models import User
+from models.users import User
 from routes.login import login
 from routes.sensors import sensor, sensores
 from routes.actuators import actuator
