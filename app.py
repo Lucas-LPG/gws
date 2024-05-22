@@ -25,7 +25,6 @@ if __name__ == "__main__":
     print(select_db(app, User, (User.name == 'lucas')))
     insert_db(app, User('pucas', 'puhl', 'chefe'))
     insert_db(app, User('pucas', 'afsd', 'asdf'))
-    
     app.register_blueprint(login, url_prefix='/')
     app.register_blueprint(sensor, url_prefix='/')
     app.register_blueprint(actuator, url_prefix='/')

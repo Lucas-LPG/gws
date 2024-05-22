@@ -1,0 +1,4 @@
+flask==3.0.3
+paho-mqtt==1.6.1
+SQLAlchemy==2.0.30
+SQLAlchemy-Utils==0.41.2

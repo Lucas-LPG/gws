@@ -1,5 +1,5 @@
 from flask import Flask
-from db.connection import db
+from db import db
 from sqlalchemy import select, update, insert
 from models.actuators import Actuator
 from models.devices import Device
@@ -10,7 +10,7 @@ from models.users import User
 
 session = db.session
 
-def insert_db(app: Flask, obj):
+def insert_db(app:Flask, obj):
     with app.app_context():
         # Garantir que nome de usuário não exista ainda
         if isinstance(obj, User):

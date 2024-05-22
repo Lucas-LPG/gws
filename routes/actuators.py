@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template, redirect, url_for, session, redirect
-from db.operations import select_db
+# from db.operations import select_db
 from models.actuators import Actuator
 
 
@@ -13,7 +13,6 @@ actuators = {'Servo': 122, 'Interruptor': 1, 'Lampada Inteligente': 1}
 def register_actuators():
     if not session.get('user'):
         return redirect('/')
-    global is_admin
     return render_template("actuators/register_actuator.html", user=session.get('user'))
 
 
@@ -47,7 +46,6 @@ def list_actuators():
 def remove_actuator():
     if not session.get('user'):
         return redirect('/')
-    global is_admin
     return render_template("remove_actuator.html", actuators=actuators, user=session.get('user'))
 
 
