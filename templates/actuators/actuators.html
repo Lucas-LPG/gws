@@ -16,7 +16,7 @@
         <div class="container view">
             <div class="justify-content-center">
                 <caption>Sensores:</caption>
-                {% if atuadores|length > 0 %}
+                {% if actuators|length > 0 %}
                 <table id="view_users" class="table table-striped table-bordered" style="width:100%">
 
                     <thead>
@@ -30,7 +30,7 @@
                     </thead>
 
                     <tbody>
-                        {% for key, value in atuadores.items() %}
+                        {% for key, value in actuators.items() %}
                         <tr>
                             <td>{{ key }}</td>
                             <td>{{ value }}</td>
@@ -48,7 +48,7 @@
                 </form>
                 {% endif %}
                 {% else %}
-                <p>Ainda não há sensores registrados!</p>
+                <p>Ainda não há atuadores registrados!</p>
                 {% endif %}
             </div>
         </div>

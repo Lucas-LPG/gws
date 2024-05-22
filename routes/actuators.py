@@ -6,7 +6,7 @@ from models.actuators import Actuator
 actuator = Blueprint("actuator", __name__, template_folder="templates")
 sensores = {'Umidade': 55, 'temperatura': 70, 'luminosidade': 20}
 
-atuadores = {'Servo': 122, 'Interruptor': 1, 'Lampada Inteligente': 1}
+actuators = {'Servo': 122, 'Interruptor': 1, 'Lampada Inteligente': 1}
 # actuators = select_db(Actuator, '')
 
 @actuator.route('/register_actuator')
