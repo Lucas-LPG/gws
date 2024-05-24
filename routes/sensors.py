@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template, redirect, url_for, session
-from models import User
+from models.sensors import Sensor
 
 sensor = Blueprint("sensor", __name__, template_folder="templates")
 sensores = {'Umidade': 55, 'temperatura': 70, 'luminosidade': 20}
@@ -18,9 +18,12 @@ def add_sensors():
         return redirect('/')
     global sensores
     if request.method == 'POST':
-        sensor = request.form['name']
-        condition = request.form['condition']
-        sensores[sensor] = condition
+        kit_name = request.form['kit_name']
+        user_id = request.form['user_id']
+        name = request.form['name']
+        value = request.form['value']
+        topic = request.form['topic']
+        Sensor.insert_sensor(kit_name, user_id, name, value, topic)
         return render_template("sensors/sensors.html", sensores=sensores, user=session.get('user'))
     else:
         sensor = request.args.get('name', None)
@@ -31,11 +34,9 @@ def add_sensors():
 
 @sensor.route('/sensors')
 def list_sensors():
-    if not session.get('user'):
-        return redirect('/')
-    global sensores
-    sensores = {key: int(value) for key, value in sensores.items()}
-    return render_template("sensors/sensors.html", sensores=sensores, user=session.get('user'))
+    sensors = Sensor.select_all_from_sensor()
+    print(sensors)
+    return render_template("sensors/sensors.html", sensors=sensors, user=session.get('user'))
 
 
 @sensor.route('/remove_sensor')
