@@ -4,5 +4,5 @@
 
 ```bash
     pip install -r requirements.txt
-    /usr/local/bin/python3 app.py
+    python3 app.py
 ```
