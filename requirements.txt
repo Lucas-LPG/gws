@@ -5,5 +5,4 @@ sqlalchemy-utils==0.41.2
 flask-mqtt==1.2.1
 flask-login==0.6.3
 flask-socketio==5.3.6
-pymysql==1.1.0
 flask-sqlalchemy==3.1.1
