@@ -5,14 +5,14 @@ import paho.mqtt.client as mqtt
 from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
 import flask_login
-from routes import create_app
+from controllers import create_app
 from db import create_db
 from db.connection import db, instance
 from db.operations import select_db, insert_db, delete_db
 from models import User, Sensor
-from routes.login import login
-from routes.sensors import sensor, sensores
-from routes.actuators import actuator
+from controllers.login import login
+from controllers.sensors import sensor, sensores
+from controllers.actuators import actuator
 
 
 if __name__ == "__main__":
