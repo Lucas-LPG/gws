@@ -16,11 +16,22 @@
         <div class="card">
           <div class="card-header">
             <div class="card-body">
-              <form action="/add_actuator" method="POST">
-                <p>Nome:</p>
+              <form action="/add_sensors" method="POST">
+                <p>Kit Name:</p>
+                <p><input type="text" name="kit_name" placeholder="Kit Name" required /></p>
+                
+                <p>User ID:</p>
+                <p><input type="text" name="user_id" placeholder="User ID" required /></p>
+                
+                <p>Name:</p>
                 <p><input type="text" name="name" placeholder="Name" required /></p>
-                <p>Condição:</p>
-                <p><input type="text" name="condition" placeholder="Condition" required /></p>
+                
+                <p>Value:</p>
+                <p><input type="text" name="value" placeholder="Value" required /></p>
+                
+                <p>Topic:</p>
+                <p><input type="text" name="topic" placeholder="Topic" required /></p>
+                
                 <p><input type="submit" value="Cadastrar" /></p>
               </form>
             </div>

@@ -11,12 +11,12 @@ from db.connection import db, instance
 from db.operations import select_db, insert_db, delete_db
 from models import User, Sensor
 from controllers.login import login
-from controllers.sensors import sensor, sensores
+from controllers.sensors import sensor
 from controllers.actuators import actuator
 
 
 if __name__ == "__main__":
-    app = create_app();
+    app = create_app()
     app.config['TESTING'] = False
     app.config['SECRET_KEY'] = 'senha_forte-Lucas-puCas12'
     app.config['SQLALCHEMY_DATABASE_URI'] = instance

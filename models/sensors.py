@@ -4,8 +4,6 @@ from models.kits import Kit
 from models.users import User
 from sqlalchemy.dialects.mysql import INTEGER, VARCHAR
 
-sensors = db.relationship('sensors', backref='devices', lazy=True)
-
 
 class Sensor(db.Model):
     __tablename__ = 'sensors'
@@ -25,7 +23,7 @@ class Sensor(db.Model):
         db.session.commit()
 
         sensor = Sensor(topic, device_id=device.id)
-        db.session.add(sensors)
+        db.session.add(sensor)
         db.session.commit()
 
     def select_all_from_sensor():
