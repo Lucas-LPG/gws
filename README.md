@@ -1,4 +1,4 @@
-# Puhl Gasperin Web Services
+# ∞ Gasperin Web Services
 
 ## Começando
 
@@ -62,3 +62,13 @@ Estrutura do Projeto
 ## Execução
 
 Certifique-se de que o _mysql_ esteja rodando no seu dispositivo e execute o arquivo **app.py**, que deve executar todas as operações necessárias para a aplicação automáticamente.
+
+## Nomenclatura
+
+**Nota**: esse bloco é somente uma informação extra, ou uma curiosidade sobre nosso nome e logo.
+
+O nome _Gasperin_ é derivado de _Gaspar_ ou _Caspar_, um dos Três Reis Magos na tradição cristã. Este nome está geralmente associado à palavra persa "Gizbar" (גִּזְבָר), que significa "portador de tesouros" ou "guardião". Em hebraico, a palavra também possui o mesmo significado, reforçando a ideia de proteção e cuidado.
+
+Assim, o nome _Gasperin_, por sua conexão com um dos Reis Magos, evoca sabedoria e generosidade. Estes valores são centrais para nossa empresa, que busca constantemente inovar para beneficiar a todos. O símbolo do infinito (∞), que escolhemos para nos representar, também está associado à sabedoria e ao espiritualismo, complementando perfeitamente nossa missão e visão.
+
+Portanto, _Gasperin_ é um nome que reflete nosso compromisso com a inovação, sabedoria e generosidade, valores que estão no coração de tudo o que fazemos.
