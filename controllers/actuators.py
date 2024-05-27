@@ -21,7 +21,6 @@ def register_actuators():
 def add_actuators():
     if not session.get('user'):
         return redirect('/')
-    global actuators
     if request.method == 'POST':
         kit_name = request.form['kit_name']
         user_id = request.form['user_id']
@@ -29,11 +28,7 @@ def add_actuators():
         value = request.form['value']
         topic = request.form['topic']
         Actuator.insert_actuator(kit_name, user_id, name, value, topic)
-        return render_template("actuators/actuators.html", actuators=actuators, user=session.get('user'))
-    else:
-        atuador = request.args.get('name', None)
-        condition = request.args.get('condition', None)
-        actuators[atuador] = condition
+        actuators = Actuator.select_all_from_actuator()
         return render_template("actuators/actuators.html", actuators=actuators, user=session.get('user'))
 
 
@@ -41,8 +36,7 @@ def add_actuators():
 def list_actuators():
     if not session.get('user'):
         return redirect('/')
-    global actuators
-    actuators = {key: int(value) for key, value in actuators.items()}
+    actuators = Actuator.select_all_from_actuator()
     return render_template("actuators/actuators.html", actuators=actuators, user=session.get('user'))
 
 
@@ -57,10 +51,9 @@ def remove_actuator():
 def del_actuator():
     if not session.get('user'):
         return redirect('/')
-    global actuators
     if request.method == 'POST':
         actuator = request.form['actuator']
     else:
         actuator = request.args.get('actuator', None)
-    actuators.pop(actuator)
+    Actuator.delete_actuator_by_id(actuator)
     return redirect("/actuators")

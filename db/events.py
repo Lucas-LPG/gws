@@ -20,18 +20,28 @@ def create_historic_trigger(app: Flask):
     session.execute(trigger)
 
 
-def handle_device_deletion(app:Flask):
+def handle_device_deletion(app: Flask):
     """
     TODO: Devemos pensar em como lidar com entidades com foreign keys deletadas
     Por exemplo, se device 1 for apagado, o histórico dele deve ser apagado também?
     Se user 1 for apagado, o kit relacionado a ele deve ter o que de user_id?
+
+    Boa pergunta gasp!
+
+    Ideia do tiago: 
+    se for deletar user
+        tudo, absolutamente tudo relacionado a ele é deletado
+    se for deletar um device
+        tira do kit e historico
     """
     trigger = DDL("""
        CREATE TRIGGER delete_sensors_before_devices
        BEFORE DELETE ON devices
        FOR EACH ROW
        BEGIN
-       DELETE FROM sensors WHERE id == OLD.id
-       DELETE FROM actuators WHERE id == OLD.id
-       END
+        DELETE FROM sensors WHERE device_id = OLD.id;
+        DELETE FROM actuators WHERE device_id = OLD.id;
+        DELETE FROM historic WHERE device_id = OLD.id;
+       END;
     """)
+    session.execute(trigger)

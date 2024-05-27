@@ -13,18 +13,22 @@ class Actuator(db.Model):
     device_id = db.Column(INTEGER(unsigned=True), db.ForeignKey(Device.id))
 
     def insert_actuator(kit_name, user_id, device_name, value, topic):
-        kit = Kit(name=kit_name, user_id=user_id)
+        id_verification = db.session.query(User).filter_by(id=user_id).first()
+        if not id_verification:
+            print(f"O id {user_id} nao existe, por favor insira outro")
+        else:
+            kit = Kit(name=kit_name, user_id=user_id)
 
-        db.session.add(kit)
-        db.session.commit()
+            db.session.add(kit)
+            db.session.commit()
 
-        device = Device(name=device_name, value=value, kit_id=kit.id)
-        db.session.add(device)
-        db.session.commit()
+            device = Device(name=device_name, value=value, kit_id=kit.id)
+            db.session.add(device)
+            db.session.commit()
 
-        actuator = Actuator(topic, device_id=device.id)
-        db.session.add(actuator)
-        db.session.commit()
+            actuator = Actuator(topic, device_id=device.id)
+            db.session.add(actuator)
+            db.session.commit()
 
     def select_all_from_actuator():
         actuator = Actuator.query.join(Device, Device.id == Actuator.device_id).join(Kit, Kit.id == Device.kit_id).join(User, User.id == Kit.user_id)\
@@ -33,8 +37,14 @@ class Actuator(db.Model):
                          Device.name.label('device_name'),
                          Device.value.label('device_value'),
                          Actuator.id.label('id'),
-                         Actuator.topic.label('topic')).all()
+                         Actuator.topic.label('topic'),
+                         Device.id.label('device_id')).all()
         return actuator
+
+    def delete_actuator_by_id(actuator_id):
+        device = db.session.query(Device).filter_by(id=actuator_id).first()
+        db.session.delete(device)
+        db.session.commit()
 
     def __init__(self, topic, device_id):
         self.topic = topic
