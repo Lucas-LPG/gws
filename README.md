@@ -11,7 +11,7 @@ Esse repositório se refere ao trabalho semestral da matéria **experiência cri
   - Renan Czervinski
 - Tema: Controle remoto de portas e dispositivos de ventilação e regulação de temperatura no SUS.
 
-### Requerimentos
+### Requirements
 
 Para instalar as depêndencias desse projeto basta executar:
 
