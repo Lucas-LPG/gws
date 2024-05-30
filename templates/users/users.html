@@ -1,55 +1,51 @@
-<!DOCTYPE html>
 {% block title %}
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link href="../../static/css/users.css">
-{% endblock %}
-    
-    {% extends "layouts/layout.html" %} {% block content%}
-    <div class="vertical-center">
-      <div class="container view">
-        <div class="justify-content-center">
-          <caption>
-            Usuários:
-          </caption>
-          {% if users|length > 0 %}
-          <table
-            id="view_users"
-            class="table table-striped table-bordered"
-            style="width: 100%"
-          >
-            <thead>
-              <tr>
-                <th>Nome do Usuário</th>
-                <th>Cargo</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for u in users %}
-              <tr>
-                <td>{{ u.user_name }}</td>
-                <td>{{ u.kit_name if u.kit_name else 'Nao possui kit'}}</td>
-                <td>{{ u.role }}</td>
-
-                {% if u.role == 'admin' %}
-                <td>
-                  <a href="/del_user?user={{ u.user_id }}">Deletar</a>
-                </td>
-                {% endif %}
-              </tr>
-
-              {% endfor %}
-            </tbody>
-          </table>
-          {% if current_user.role == 'admin' %}
-          <form action="/register_user">
-            <p><input type="submit" value="Adicionar Usuário" /></p>
-          </form>
-          {% endif %} {% else %}
-          <p>Ainda não há usuários registrados!</p>
-          {% endif %}
-        </div>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Document</title>
+<link rel="stylesheet" href="../../static/css/users.css" />
+<script src="../../static/js/users.js" defer></script>
+{% endblock %} {% extends "layouts/layout.html" %} {% block content%}
+<div class="users--container">
+  <div class="users--table">
+    <div class="user--table--head">
+      <span>Lista de usuários</span>
+    </div>
+    <div class="user--table--description">
+      <div>
+        <span>Nome</span>
+      </div>
+      <div>
+        <span>Role</span>
+      </div>
+      <div>
+        <span>Ações</span>
       </div>
     </div>
-    {% endblock%}
+    {% for user in users %}
+    <div class="user--card">
+      <div class="user-name">
+        <span>{{ user.name }}</span>
+      </div>
+      <div class="user-role">
+        <span>{{user.role}} </span>
+      </div>
+      <div class="user-actions">
+        <span class="user-edit">Editar</span>
+        <span class="user-delete" onclick="deleteUser({{ user.id }})"
+          >Deletar</span
+        >
+      </div>
+    </div>
+    {% endfor %}
+    <div class="add-user-div">
+      <a
+        href="/register_user"
+        class="add-user-btn"
+        onmouseover="activateCursor()"
+        onmouseleave="deactivateCursor()"
+        >Adicionar novo usuário</a
+      >
+    </div>
+  </div>
+</div>
+{% endblock%}

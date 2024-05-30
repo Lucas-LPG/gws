@@ -12,9 +12,16 @@
   padding: 0px;
   margin: 0px;
   font-family: "Montserrat", sans-serif;
-  /* overflow: hidden; */
   cursor: none;
   transition: background-color ease 0.2s;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 header {
