@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+{% block title %}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-  </head>
-
-  <body>
+    <link href="../../static/css/users.css">
+{% endblock %}
+    
     {% extends "layouts/layout.html" %} {% block content%}
     <div class="vertical-center">
       <div class="container view">
@@ -23,7 +22,6 @@
             <thead>
               <tr>
                 <th>Nome do Usuário</th>
-                <th>Nome do Kit</th>
                 <th>Cargo</th>
               </tr>
             </thead>
@@ -34,7 +32,7 @@
                 <td>{{ u.kit_name if u.kit_name else 'Nao possui kit'}}</td>
                 <td>{{ u.role }}</td>
 
-                {% if user.role == 'admin' %}
+                {% if u.role == 'admin' %}
                 <td>
                   <a href="/del_user?user={{ u.user_id }}">Deletar</a>
                 </td>
@@ -44,7 +42,7 @@
               {% endfor %}
             </tbody>
           </table>
-          {% if user.role == 'admin' %}
+          {% if current_user.role == 'admin' %}
           <form action="/register_user">
             <p><input type="submit" value="Adicionar Usuário" /></p>
           </form>
@@ -55,5 +53,3 @@
       </div>
     </div>
     {% endblock%}
-  </body>
-</html>

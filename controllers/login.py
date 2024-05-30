@@ -1,15 +1,17 @@
 import paho.mqtt.client as mqtt
-from flask import Blueprint, request, render_template, redirect, url_for, session
-from flask_mqtt import Mqtt
-from flask_socketio import SocketIO
+from flask import Blueprint, redirect, render_template, request, session, url_for
 from flask_login import (
     LoginManager,
-    login_user,
-    login_required,
     current_user,
+    login_required,
+    login_user,
     logout_user,
 )
-from models import User, Kit
+from flask_mqtt import Mqtt
+from flask_socketio import SocketIO
+
+from db.connection import db
+from models import Kit, User
 
 login = Blueprint("login", __name__, template_folder="templates")
 
@@ -61,24 +63,37 @@ def register_user():
 @login.route("/add_user", methods=["GET", "POST"])
 @login_required
 def add_users():
-    global users
     if request.method == "POST":
         user = request.form["user"]
         password = request.form["password"]
-        if user in users or user == "lucas":
+        role = request.form["role"]
+        existing_users = User.select_all_from_users()
+        print(existing_users)
+        existing_users_names = [user.name for user in existing_users]
+        if user in existing_users_names:
             return render_template(
-                "errors/error.html", error_message="Esse nome de usuário já existe!"
+                "users/register_user.html",
+                error_message="Erro! Esse nome de usuário já existe",
+            )
+        elif role != "admin" and role != "operador" and role != "estatistico":
+            return render_template(
+                "users/register_user.html",
+                error_message="Erro! O role deve ser: admin, operador ou estatistico",
             )
         else:
-            users[user] = password
-            return render_template("users/users.html", users=users)
+            new_user = User(user, password, role)
+            db.session.add(new_user)
+            db.session.commit()
+            return render_template(
+                "users/users.html", users=User.select_all_from_users()
+            )
 
 
 @login.route("/users")
 @login_required
 def list_users():
-    users = User.select_all_information_from_users()
-    return render_template("users/users.html", users=users, user=User.select_user_by_id(session.get('user')))
+    users = User.select_all_from_users()
+    return render_template("users/users.html", users=users)
 
 
 @login.route("/remove_user")

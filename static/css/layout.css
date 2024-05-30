@@ -12,7 +12,7 @@
   padding: 0px;
   margin: 0px;
   font-family: "Montserrat", sans-serif;
-  overflow: hidden;
+  /* overflow: hidden; */
   cursor: none;
   transition: background-color ease 0.2s;
 }
@@ -35,6 +35,7 @@ header {
   align-items: center;
   gap: 20px;
   padding-right: 20px;
+  overflow: hidden;
 }
 
 .header--left {
@@ -200,6 +201,7 @@ i {
 
 .header--login {
   display: flex;
+  overflow: hidden;
   align-items: center;
   justify-content: center;
   padding: 5px 20px;

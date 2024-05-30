@@ -43,6 +43,10 @@ class User(UserMixin, db.Model):
 
         return users
 
+    def select_all_from_users():
+        users = db.session.query(User).all()
+        return users
+
     def select_from_users(condition):
         users = db.session.query(User).filter(condition).all()
         return users

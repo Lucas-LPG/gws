@@ -1,37 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-
-<body>
-
-  {% extends"layouts/layout.html" %}
-  {% block content%}
-  <div class="vertical-center">
-    <div class="container">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-body">
-            <form action="/add_user" method="POST">
-              <p>Usuário:</p>
-              <p><input type="text" name="user" placeholder="User" required /></p>
-              <p>Senha:</p>
-              <p><input type="text" name="password" placeholder="Password" required /></p>
-              <p><input type="submit" value="Cadastrar" /></p>
-            </form>
-          </div>
-        </div>
-      </div>
+{% block title %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../static/css/register_user.css" />
+<title>Document</title>
+{% endblock %} {% extends"layouts/layout.html" %} {% block content%}
+<div class="register-user--container">
+  <div class="register-user--card">
+    <div class="register-user--card-head">
+      <span>Registrar novo usuário</span>
+    </div>
+    <div class="register-user--card-body">
+      <form action="/add_user" method="POST" class="register-user--form">
+        <input
+          type="text"
+          name="user"
+          placeholder="Nome de usuário"
+          required
+          class="register-user--form-input"
+        />
+        <input
+          type="text"
+          name="password"
+          placeholder="senha"
+          required
+          class="register-user--form-input"
+        />
+        <input
+          type="text"
+          name="role"
+          placeholder="role"
+          required
+          class="register-user--form-input"
+        />
+        <input
+          type="submit"
+          value="Cadastrar"
+          class="register-user--submit"
+          onmouseover="activateCursor()"
+          onmouseleave="deactivateCursor()"
+        />
+      </form>
     </div>
   </div>
-  {% endblock%}
+  {% if error_message %}
+  <div class="error">{{ error_message }}</div>
+  {% endif %}
+</div>
+{% endblock%}
 
-</body>
-
-
-
-</html>
