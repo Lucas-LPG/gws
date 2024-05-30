@@ -3,7 +3,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Document</title>
 <link rel="stylesheet" href="../../static/css/users.css" />
-<script src="../../static/js/users.js" defer></script>
 {% endblock %} {% extends "layouts/layout.html" %} {% block content%}
 <div class="users--container">
   <div class="users--table">
@@ -30,9 +29,9 @@
         <span>{{user.role}} </span>
       </div>
       <div class="user-actions">
-        <span class="user-edit">Editar</span>
-        <span class="user-delete" onclick="deleteUser({{ user.id }})"
-          >Deletar</span
+        <a class="user-edit">Editar</a>
+        <a class="user-delete" href="/delete_user?user_id={{ user.id }}"
+          >Deletar</a
         >
       </div>
     </div>

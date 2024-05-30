@@ -14,6 +14,7 @@
   font-family: "Montserrat", sans-serif;
   cursor: none;
   transition: background-color ease 0.2s;
+  overscroll-behavior: none;
 }
 
 ::-webkit-scrollbar {

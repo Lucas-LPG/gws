@@ -96,15 +96,14 @@ def list_users():
     return render_template("users/users.html", users=users)
 
 
-@login.route("/delete_user", methods=["POST"])
+@login.route("/delete_user")
 @login_required
 def remove_user():
-    data = request.get_json()
-    user_id = data.get("userId")
+    user_id = request.args.get("user_id", None)
     print("USERID:")
     print(user_id)
     User.delete_user_by_id(user_id)
-    return render_template("users/users.html", users=User.select_all_from_users())
+    return redirect("/users")
 
 
 @login.route("/del_user", methods=["GET", "POST"])
