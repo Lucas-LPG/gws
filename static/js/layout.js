@@ -128,7 +128,7 @@ let isDarkModeEnabled =
 const themeToggleIcon = document.getElementById("themeToggleIcon");
 
 themeButton.addEventListener("click", () => {
-  const body = document.body;
+  const landingImage = document.getElementById("landingImage");
 
   if (!isDarkModeEnabled) {
     document.documentElement.style.setProperty("--custom-dark", "#f7f7f7");
@@ -136,6 +136,10 @@ themeButton.addEventListener("click", () => {
     document.documentElement.style.setProperty("--custom-blue", "#EB5939");
     document.documentElement.style.setProperty("--card-head", "#121212");
     document.documentElement.style.setProperty("--card-surface", "#212121");
+    if (landingImage) {
+      landingImage.classList.remove("landing-img-light");
+      landingImage.classList.add("landing-img-dark");
+    }
     themeToggleIcon.classList.remove("fa-moon");
     themeToggleIcon.classList.add("fa-sun");
     localStorage.setItem("theme", "dark");
@@ -145,6 +149,11 @@ themeButton.addEventListener("click", () => {
     document.documentElement.style.setProperty("--custom-blue", "#005acd");
     document.documentElement.style.setProperty("--card-head", "#ececec");
     document.documentElement.style.setProperty("--card-surface", "#fff");
+    if (landingImage) {
+      landingImage.classList.remove("landing-img-dark");
+      landingImage.classList.add("Landing-img-light");
+    }
+
     themeToggleIcon.classList.remove("fa-sun");
     themeToggleIcon.classList.add("fa-moon");
     localStorage.setItem("theme", "light");
@@ -161,6 +170,11 @@ document.addEventListener("DOMContentLoaded", function () {
     document.documentElement.style.setProperty("--custom-blue", "#EB5939");
     document.documentElement.style.setProperty("--card-head", "#121212");
     document.documentElement.style.setProperty("--card-surface", "#212121");
+    if (landingImage) {
+      landingImage.classList.remove("landing-img-light");
+      landingImage.classList.add("landing-img-dark");
+    }
+
     themeToggleIcon.classList.remove("fa-moon");
     themeToggleIcon.classList.add("fa-sun");
     isDarkModeEnabled = true;
@@ -170,6 +184,11 @@ document.addEventListener("DOMContentLoaded", function () {
     document.documentElement.style.setProperty("--custom-blue", "#005acd");
     document.documentElement.style.setProperty("--card-head", "#ececec");
     document.documentElement.style.setProperty("--card-surface", "#fff");
+    if (landingImage) {
+      landingImage.classList.remove("landing-img-dark");
+      landingImage.classList.add("Landing-img-light");
+    }
+
     themeToggleIcon.classList.remove("fa-sun");
     themeToggleIcon.classList.add("fa-moon");
     isDarkModeEnabled = false;

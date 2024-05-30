@@ -48,3 +48,17 @@
   font-size: 20px;
   letter-spacing: 1px;
 }
+
+.landing--body--right {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.landing-img-light {
+  background-image: url(../img/landing-img-light.PNG);
+}
+
+.landing-img-dark {
+  background-image: url(../img/landing-img-dark.PNG);
+}
