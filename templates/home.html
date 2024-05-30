@@ -1,0 +1,145 @@
+{% block title %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../static/css/home.css" />
+<title>Gasperin Web Services</title>
+{% endblock %} {% extends "layouts/layout.html" %} {% block content %}
+<div class="home--box">
+  <div class="main-container">
+    <p class="hello">Olá, <span class="name">{{current_user.name}}</span></p>
+    <div class="grid-container">
+      <div class="custom-card">
+        <div class="card--header">
+          <span class="card--title">Capacidade</span>
+          <a
+            class="card--link"
+            onmouseover="activateCursor()"
+            onmouseleave="deactivateCursor()"
+            href="real_time"
+            >mais informações <i class="fa-solid fa-arrow-right"></i
+          ></a>
+        </div>
+        <div class="card--content">
+          <div class="capacity-content">
+            <p class="capacity-title">
+              <span class="capacity-count">85</span> / 100 pessoas
+            </p>
+            <div class="capacity-level-container">
+              <div class="capacity-level"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="custom-card">
+        <div class="card--header">
+          <span class="card--title">Temperatura</span>
+          <a
+            class="card--link"
+            onmouseover="activateCursor()"
+            onmouseleave="deactivateCursor()"
+            href="/real_time"
+            >mais informações <i class="fa-solid fa-arrow-right"></i
+          ></a>
+        </div>
+        <div class="card--content">
+          <div class="temperature-content">
+            <div class="temperature-info">
+              <span class="temperature-count">20°C</span>
+              <div class="temperature-air">
+                <span class="temperature-air-text">Ar condicionado</span>
+                <span class="temperature-air-turn">Ligado</span>
+              </div>
+            </div>
+            <div class="temperature-level-container">
+              <div class="temperature-level"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="custom-card {% if current_user.role == 'admin' %} col-span-8 {% else %} col-span-full {% endif %}"
+      >
+        <div class="card--header">
+          <span class="card--title">Kits</span>
+          <a
+            class="card--link"
+            onmouseover="activateCursor()"
+            onmouseleave="deactivateCursor()"
+            >gerenciar <i class="fa-solid fa-arrow-right"></i
+          ></a>
+        </div>
+        <div class="card--content">
+          <div class="kits-content">
+            <table>
+              <thead>
+                {% if current_user.role == 'admin' %}
+                <tr>
+                  <th>ID</th>
+                  <th>Usuário</th>
+                  <th>Sensores</th>
+                  <th>Atuadores</th>
+                </tr>
+                {% else %}
+                <tr>
+                  <th>ID</th>
+                  <th>Nome do Kit</th>
+                  <th>Sensores</th>
+                  <th>Atuadores</th>
+                </tr>
+                {% endif %}
+              </thead>
+              <tbody>
+                {% for kit in kits %} {% if current_user.role == 'admin' %}
+                <tr>
+                  <td>{{ kit.kit_id }}</td>
+                  <td>{{ kit.user_name }}</td>
+                  <td>{{ kit.total_sensors }}</td>
+                  <td>{{ kit.total_actuators }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                  <td>{{ kit.kit_id }}</td>
+                  <td>{{ kit.kit_name }}</td>
+                  <td>{{ kit.total_sensors }}</td>
+                  <td>{{ kit.total_actuators }}</td>
+                </tr>
+                {% endif %} {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      {% if current_user.role == 'admin' %}
+      <div class="custom-card">
+        <div class="card--header">
+          <span class="card--title">Usuários</span>
+          <a
+            class="card--link"
+            onmouseover="activateCursor()"
+            onmouseleave="deactivateCursor()"
+            >gerenciar <i class="fa-solid fa-arrow-right"></i
+          ></a>
+        </div>
+        <div class="card--content">
+          <div class="users-content">
+            <p class="users-text">
+              <span class="users-count">{{ admin_users }}</span> administrador
+            </p>
+            <div class="custom-separator"></div>
+            <p class="users-text">
+              <span class="users-count">{{ operator_users }}</span> operadores
+            </p>
+            <div class="custom-separator"></div>
+            <p class="users-text">
+              <span class="users-count">{{ statistic_users }}</span>
+              estatísticos
+            </p>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  background-color: #0d0d0d;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  background-image: url(../img/infinity-stars-night-sky-dark-background-illuminated-3840x2160-2938.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+body > div {
+  height: 50%;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 25px;
+}
+
+body > div > h1 {
+  color: #f7f7f7;
+  font-size: 38px;
+}
+
+body > div > h3 {
+  color: #b45dbb;
+}
+
+body > div > a {
+  background-color: #b45dbb;
+  padding: 10px 15px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #f7f7f7;
+  cursor: pointer;
+}
+
+body > div > a:hover {
+  scale: 1.1;
+  cursor: pointer;
+}

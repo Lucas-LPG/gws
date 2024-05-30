@@ -1,0 +1,9 @@
+flask==3.0.3
+paho-mqtt==1.6.1
+sqlalchemy==2.0.30
+sqlalchemy-utils==0.41.2
+flask-mqtt==1.2.1
+flask-login==0.6.3
+flask-socketio==5.3.6
+flask-sqlalchemy==3.1.1
+pymysql==1.1.0

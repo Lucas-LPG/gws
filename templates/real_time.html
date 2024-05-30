@@ -1,0 +1,107 @@
+{% block title %}
+<title>Tempo Real</title>
+<link rel="stylesheet" href="../static/css/real-time.css">
+<script src="../static/js/real-time.js" defer></script>
+{% endblock %}
+
+{% extends"layouts/layout.html" %} {% block content%}
+<div class="real-time--container">
+  <div class="real-time--title">
+    <p>Tempo Real</p>
+  </div>
+  <div class="real-time--info-container">
+    <div class="capacity--outer">
+      <div class="capacity--header">
+        <i class="fa-solid fa-person"></i>
+        <span>Capacidade</span>
+      </div>
+      <div class="capacity--body">
+        <div class="capacity--body--left">
+          <div class="maximum-capacity capacity--body--left--info-container">
+            <div class="var-title">Capacidade máxima</div>
+            <div class="var-value">{{max_capacity}}</div>
+          </div>
+          <div class="current-lotation capacity--body--left--info-container">
+            <div class="var-title">Lotação atual</div>
+            <div class="var-value">{{people}}</div>
+          </div>
+          <div class="doors-condition capacity--body--left--info-container">
+            <div class="var-title">Portas</div>
+            <div class="var-value">{% if people >= max_capacity %} Fechadas {% else %} Abertas {% endif %}</div>
+          </div>
+          <div class="capacity--last-updated ">
+            <div class="var-title">Atualizado por último</div>
+            <div class="var-value">2 minutos atrás</div>
+          </div>
+        </div>
+        <div class="capacity--body--right">
+          <div class="capacity--body--right--inner">
+            <div class="capacity--body--right--text-container">
+              <span class="capacity--body--right--text-container--span">{{(people * 100) / max_capacity}}% -</span>
+            </div>
+            <div class="capacity--body--right--graph-bg">
+              <div
+                class="capacity--body--right--active-graph {% if ((people * 100) / max_capacity) <= 60 %} green-graph {% elif ((people * 100) / max_capacity) < 90 %} yellow-graph {% else %} red-graph {% endif %}">
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="temperature--outer">
+      <div class="temperature--header">
+        <i class="fa-solid fa-temperature-half"></i>
+        <span>Temperatura</span>
+      </div>
+      <div class="temperature--body">
+        <div class="current-temperature temperature--info-container">
+          <div class="current-temperature--title var-title">
+            <span>Temperatura atual</span>
+          </div>
+          <div class="current-temperature--value var-value">
+            20
+          </div>
+        </div>
+        <div class="air-conditioner-condition temperature--info-container">
+          <div class="air-conditioner--title var-title">
+            <span>Ar condicionado</span>
+          </div>
+          <div class="air-conditioner--value var-value">
+            Ligado
+          </div>
+        </div>
+        <div class="temperature--last-updated temperature--info-container">
+          <div class="last-updated--title var-title">
+            <span>Atualizado por último</span>
+          </div>
+          <div class="last-updated--value var-value">
+            2 minutos atrás
+          </div>
+        </div>
+      </div>
+      <div class="temperature--footer">
+        <a href="/data-history" onmouseover="activateCursor()" onmouseleave="deactivateCursor()">Ver dados
+          históricos</a>
+      </div>
+    </div>
+  </div>
+  <p class="people hidden">{{people}}</p>
+</div>
+
+
+/* <!-- {% for key,value in values.items() %}
+  {% if key == "Temperatura" and value > 25 %}
+  <li>Arcondicionado: Ligado</li>
+  {% elif key == "Temperatura" and value < 25 %} <li>Arcondicionado: Desligado</li>
+    {% endif %}
+    <li>{{ key }} : {{ value }}</li>
+    {% endfor %}
+
+    <script>
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
+    </script> --> */
+
+{% endblock%}

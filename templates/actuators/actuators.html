@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    {% extends "layouts/layout.html" %} {% block content%}
+
+    <div class="vertical-center">
+      <div class="container view">
+        <div class="justify-content-center">
+          <caption>
+            Actuators:
+          </caption>
+          {% if actuators|length > 0 %}
+          <table
+            id="view_users"
+            class="table table-striped table-bordered"
+            style="width: 100%"
+          >
+            <thead>
+              <tr>
+                <th>User name</th>
+                <th>Kit name</th>
+                <th>Actuator name</th>
+                <th>Value</th>
+                <th>ID</th>
+                <th>Topic</th>
+                {% if user == 'lucas' %}
+                <th>Deletar</th>
+                {% endif %}
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for actuator in actuators %}
+              <tr>
+                <td>{{ actuator.user_name }}</td>
+                <td>{{ actuator.kit_name }}</td>
+                <td>{{ actuator.device_name }}</td>
+                <td>{{ actuator.device_value }}</td>
+                <td>{{ actuator.id }}</td>
+                <td>{{ actuator.topic }}</td>
+                {% if user.role == 'admin' %}
+                <td>
+                  <a href="/del_actuator?actuator={{ actuator.device_id }}"
+                    >Deletar</a
+                  >
+                </td>
+                
+                {% endif %}
+              </tr>
+              {% endfor %}
+              </tr>
+            </tbody>
+          </table>
+          {% if user.role == 'admin' %}
+          <form action="/register_actuator">
+            <p><input type="submit" value="Adicionar Atuador" /></p>
+          </form>
+          {% endif %} {% else %}
+          <p>Ainda não há atuadores registrados!</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endblock%}
+  </body>
+</html>

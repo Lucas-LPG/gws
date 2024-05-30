@@ -1,0 +1,87 @@
+<!-- layouts/base_login.html -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../static/css/login.css" />
+    <script
+      src="https://kit.fontawesome.com/7c8801c017.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../../static/js/layout.js" defer></script>
+    <link rel="stylesheet" href="../static/css/layout.css" />
+    <script src="../static/js/login.js" defer></script>
+    <title>login</title>
+  </head>
+
+  <body>
+    <div class="cursor--outer" id="cursorOuter">
+      <div
+        class="cursor-horizontal cursor-horizontal-left"
+        id="cursorHorizontalLeft"
+      ></div>
+      <div
+        class="cursor-horizontal cursor-horizontal-right"
+        id="cursorHorizontalRight"
+      ></div>
+      <div
+        class="cursor-vertical cursor-vertical-top"
+        id="cursorVerticalTop"
+      ></div>
+      <div
+        class="cursor-vertical cursor-vertical-bottom"
+        id="cursorVerticalBottom"
+      ></div>
+      <div class="cursor-inner" id="cursorInner"></div>
+    </div>
+    <div class="login-container--outer">
+      <div class="login-container">
+        <a
+          class="login-logo"
+          href="/"
+          onmouseover="activateCursor()"
+          onmouseleave="deactivateCursor()"
+        >
+          <i class="fa-solid fa-infinity"></i>
+        </a>
+        <form action="{{ url_for('login.login_func') }}" method="post">
+          <input
+            type="text"
+            name="user"
+            placeholder="Nome"
+            required
+            onmouseover="activateCursor()"
+            onmouseleave="deactivateCursor()"
+          />
+          <input
+            type="text"
+            name="password"
+            placeholder="Senha"
+            required
+            onmouseover="activateCursor()"
+            onmouseleave="deactivateCursor()"
+          />
+          <button
+            type="submit"
+            onmouseover="activateCursor()"
+            onmouseleave="deactivateCursor()"
+          >
+            Entrar
+          </button>
+        </form>
+      </div>
+      {% if login_message %}
+      <div class="login--error-message">{{login_message}}</div>
+      {% endif %}
+    </div>
+  </body>
+</html>
+

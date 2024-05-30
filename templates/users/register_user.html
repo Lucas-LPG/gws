@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  {% extends"layouts/layout.html" %}
+  {% block content%}
+  <div class="vertical-center">
+    <div class="container">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-body">
+            <form action="/add_user" method="POST">
+              <p>Usuário:</p>
+              <p><input type="text" name="user" placeholder="User" required /></p>
+              <p>Senha:</p>
+              <p><input type="text" name="password" placeholder="Password" required /></p>
+              <p><input type="submit" value="Cadastrar" /></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock%}
+
+</body>
+
+
+
+</html>
