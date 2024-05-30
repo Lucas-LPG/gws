@@ -21,14 +21,6 @@ pip install -r requirements.txt
 
 ```
 
-Possívelmente será necessário instalar _pymysql_:
-
-```bash
-
-pip install pymsql
-
-```
-
 **NOTA**: Erros do tipo `modulo x não encontrado` normalmente significam que o _pyhton interpreter_ sendo utilizado não possui acesso ao modulo em questão. Para resolver, tente alterar o _interpreter_ para uma versão mais antiga.
 
 ### Estrutura do Projeto
