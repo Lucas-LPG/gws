@@ -78,6 +78,10 @@
   margin-left: 5vw;
 }
 
+.user--card > div > span {
+  margin-left: 5vw;
+}
+
 .user--card::after {
   content: "";
   position: absolute;
