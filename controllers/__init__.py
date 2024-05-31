@@ -223,7 +223,10 @@ def create_app():
 
         existing_device = Device.select_device_by_name(device_name)
         existing_kit = Kit.select_kit_by_name(kit_name)
-        device_id = Device.select_device_by_name(device_name).id
+        if existing_device:
+            device_id = Device.select_device_by_name(device_name).id
+        else:
+            device_id = request.args.get("device_id")
 
         # Caso nome não seja alterado
         if not existing_device:
