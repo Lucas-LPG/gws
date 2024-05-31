@@ -103,10 +103,19 @@ def create_app():
     def edit_kit():
         kit_id = request.args.get("kit_id", None)
         kit = Kit.select_kit_by_id(kit_id)
+        attributes = dir(kit)
+        user_name = User.select_user_by_id(kit.user_id).name
+
+        # Print each attribute along with its value
+        for attribute in attributes:
+            # Filter out private and special methods/attributes
+            if not attribute.startswith("__"):
+                value = getattr(kit, attribute)
+                print(f"{attribute}: {value}")
         if kit == None:
             return redirect("/kits")
         else:
-            return render_template("kits/edit_kits.html", kit=kit)
+            return render_template("kits/edit_kits.html", kit=kit, user_name=user_name)
 
     @app.route("/edit_given_kit")
     @login_required

@@ -2,7 +2,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>editar usuarios</title>
-<link rel="stylesheet" href="../../static/css/edit_user.css" />
+<link rel="stylesheet" href="../../static/css/edit_kit.css" />
 {% endblock %} {% extends "layouts/layout.html" %} {% block content %}
 
 <div class="edit-kit--container">
@@ -18,23 +18,15 @@
         value="{{ kit.name }}"
         class="edit-kit--card-body--input"
       />
-      <p>Senha:</p>
-      <input
-        type="text"
-        name="password"
-        value="{{ kit.password }}"
-        placeholder="{{ kit.password }}"
-        class="edit-kit--card-body--input"
-      />
-      <p>Role:</p>
+      <p>Usuário:</p>
       <input
         type="text"
         name="role"
-        value="{{ kit.user_name }}"
-        placeholder="{{ kit.user_name }}"
+        value="{{ user_name }}"
+        placeholder="{{ user_name }}"
         class="edit-kit--card-body--input"
       />
-      <input type="submit" value="Submit" class="edit-kit--card-body--btn" />
+      <input type="submit" value="Editar" class="edit-kit--card-body--btn" />
     </form>
   </div>
 </div>
