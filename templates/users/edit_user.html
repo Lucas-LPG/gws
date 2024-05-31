@@ -7,7 +7,7 @@
 
 <div class="edit-user--container">
   <div class="edit-user--card">
-    <div class="edit-user--card-head">head</div>
+    <div class="edit-user--card-head">Editar usuário</div>
     <form
       class="edit-user--card-body"
       action="{{ url_for('login.edit_given_user') }}"
@@ -19,6 +19,7 @@
         name="name"
         placeholder="{{ user.name }}"
         value="{{ user.name }}"
+        class="edit-user--card-body--input"
       />
       <p>Senha:</p>
       <input
@@ -26,6 +27,7 @@
         name="password"
         value="{{ user.password }}"
         placeholder="{{ user.password }}"
+        class="edit-user--card-body--input"
       />
       <p>Role:</p>
       <input
@@ -33,8 +35,9 @@
         name="role"
         value="{{ user.role }}"
         placeholder="{{ user.role }}"
+        class="edit-user--card-body--input"
       />
-      <input type="submit" value="Submit" />
+      <input type="submit" value="Submit" class="edit-user--card-body--btn" />
     </form>
   </div>
 </div>

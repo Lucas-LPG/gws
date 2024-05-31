@@ -119,8 +119,6 @@ def edit_user():
 @login_required
 def edit_given_user():
     user_id = request.args.get("user_id", None)
-    print("USER ID")
-    print(user_id)
     user_name = request.args.get("name", None)
     user_password = request.args.get("password", None)
     user_role = request.args.get("role", None)
