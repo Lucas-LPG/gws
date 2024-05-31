@@ -94,7 +94,6 @@ def create_app():
     @app.route("/kits")
     @login_required
     def kits():
-
         kits = Kit.select_all_from_kits()
         return render_template("kits/kits.html", kits=kits)
 
@@ -152,6 +151,36 @@ def create_app():
         kit_id = request.args.get("kit_id", None)
         Kit.delete_kit_by_id(kit_id)
         return redirect("/kits")
+
+    @app.route("/register_kit")
+    @login_required
+    def register_kit():
+        error_message = request.args.get("error_message", None)
+        return render_template("kits/register_kit.html", error_message=error_message)
+
+    @app.route("/add_kit", methods=["GET", "POST"])
+    @login_required
+    def add_kit():
+        if request.method == "POST":
+            kit_name = request.form["kit"]
+            user_name = request.form["user_name"]
+            existing_kit = Kit.select_kit_by_name(kit_name)
+            existing_user = User.select_user_by_name(user_name)
+            if existing_kit:
+                return redirect(
+                    url_for(
+                        ".register_kit", error_message="Esse nome de Kit já existe!"
+                    )
+                )
+            elif not existing_user:
+                return redirect(
+                    url_for(".register_kit", error_message="Esse usuário não existe!")
+                )
+            else:
+                new_kit = Kit(kit_name, existing_user.id)
+                db.session.add(new_kit)
+                db.session.commit()
+                return redirect("/kits")
 
     @mqtt_client.on_connect()
     def handle_connect(client, userdata, flags, rc):

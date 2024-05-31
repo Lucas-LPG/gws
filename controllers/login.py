@@ -65,7 +65,7 @@ def home():
 @login.route("/register_user")
 @login_required
 def register_user():
-    return render_template("users/register_user.html", user=session.get("user"))
+    return render_template("users/register_user.html")
 
 
 @login.route("/add_user", methods=["GET", "POST"])
@@ -76,7 +76,6 @@ def add_users():
         password = request.form["password"]
         role = request.form["role"]
         existing_users = User.select_all_from_users()
-        print(existing_users)
         existing_users_names = [user.name for user in existing_users]
         if user in existing_users_names:
             return render_template(
@@ -95,6 +94,8 @@ def add_users():
             return render_template(
                 "users/users.html", users=User.select_all_from_users()
             )
+    else:
+        return redirect("/users")
 
 
 @login.route("/users")

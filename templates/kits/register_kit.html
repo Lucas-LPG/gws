@@ -1,0 +1,42 @@
+{% block title %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../static/css/register-kit.css" />
+<title>Registrar Kit</title>
+{% endblock %} {% extends"layouts/layout.html" %} {% block content%}
+<div class="register-kit--container">
+  <div class="register-kit--card">
+    <div class="register-kit--card-head">
+      <span>Registrar Novo Kit</span>
+    </div>
+    <div class="register-kit--card-body">
+      <form action="/add_kit" method="POST" class="register-kit--form">
+        <input
+          type="text"
+          name="kit"
+          placeholder="Nome do Kit"
+          required
+          class="register-kit--form-input"
+        />
+        <input
+          type="text"
+          name="user_name"
+          placeholder="Nome do Usuário"
+          required
+          class="register-kit--form-input"
+        />
+        <input
+          type="submit"
+          value="Cadastrar"
+          class="register-kit--submit"
+          onmouseover="activateCursor()"
+          onmouseleave="deactivateCursor()"
+        />
+      </form>
+    </div>
+  </div>
+  {% if error_message %}
+  <div class="error">{{ error_message }}</div>
+  {% endif %}
+</div>
+{% endblock%}
