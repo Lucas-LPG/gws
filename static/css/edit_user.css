@@ -1,0 +1,46 @@
+.edit-user--container {
+  height: 90vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-user--card {
+  height: 65vh;
+  width: 35vw;
+  border: 1px solid var(--card-border);
+}
+
+.edit-user--card-head {
+  height: 7vh;
+  width: 35vw;
+  background-color: var(--card-head);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-user--card-body {
+  height: 58vh;
+  width: 35vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.edit-user--card-body > input {
+  width: 70%;
+  padding: 10px 20px;
+}
+
+.edit-user--card-body > p {
+  width: 100%;
+  margin: 0px;
+  padding: 20px 10% 10px 10%;
+}
+
+.user-id {
+  display: none;
+}

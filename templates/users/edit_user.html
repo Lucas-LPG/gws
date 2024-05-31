@@ -1,0 +1,42 @@
+{% block title %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>editar usuarios</title>
+<link rel="stylesheet" href="../../static/css/edit_user.css" />
+{% endblock %} {% extends "layouts/layout.html" %} {% block content %}
+
+<div class="edit-user--container">
+  <div class="edit-user--card">
+    <div class="edit-user--card-head">head</div>
+    <form
+      class="edit-user--card-body"
+      action="{{ url_for('login.edit_given_user') }}"
+    >
+      <input type="text" name="user_id" value="{{ user.id }}" class="user-id" />
+      <p>Nome:</p>
+      <input
+        type="text"
+        name="name"
+        placeholder="{{ user.name }}"
+        value="{{ user.name }}"
+      />
+      <p>Senha:</p>
+      <input
+        type="text"
+        name="password"
+        value="{{ user.password }}"
+        placeholder="{{ user.password }}"
+      />
+      <p>Role:</p>
+      <input
+        type="text"
+        name="role"
+        value="{{ user.role }}"
+        placeholder="{{ user.role }}"
+      />
+      <input type="submit" value="Submit" />
+    </form>
+  </div>
+</div>
+
+{% endblock %}

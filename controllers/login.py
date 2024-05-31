@@ -100,23 +100,37 @@ def list_users():
 @login_required
 def remove_user():
     user_id = request.args.get("user_id", None)
-    print("USERID:")
-    print(user_id)
     User.delete_user_by_id(user_id)
     return redirect("/users")
 
 
-@login.route("/del_user", methods=["GET", "POST"])
+@login.route("/edit_user")
 @login_required
-def del_user():
-    if request.method == "POST":
-        user = request.form["user"]
+def edit_user():
+    user_id = request.args.get("user_id", None)
+    user = User.select_user_by_id(user_id)
+    if user == None:
+        return redirect("/users")
     else:
-        user = request.args.get("user", None)
-    User.delete_user_by_id(user)
+        return render_template("users/edit_user.html", user=user)
+
+
+@login.route("/edit_given_user", methods=["GET"])
+@login_required
+def edit_given_user():
+    user_id = request.args.get("user_id", None)
+    print("USER ID")
+    print(user_id)
+    user_name = request.args.get("name", None)
+    user_password = request.args.get("password", None)
+    user_role = request.args.get("role", None)
+
+    User.update_given_user(user_id, user_name, user_password, user_role)
+
     return redirect("/users")
 
 
+@login.route("/")
 @login.route("/logout")
 @login_required
 def logout():

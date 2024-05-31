@@ -56,6 +56,15 @@ class User(UserMixin, db.Model):
         if user is not None:
             return user
 
+    def update_given_user(user_id, user_name, user_password, user_role):
+        user = db.session.query(User).filter(User.id == user_id).first()
+
+        if user:
+            user.name = user_name
+            user.password = user_password
+            user.role = user_role
+            db.session.commit()
+
     @classmethod
     def delete_user_by_id(cls, user_id):
         user = db.session.query(User).filter_by(id=user_id).first()
@@ -63,11 +72,6 @@ class User(UserMixin, db.Model):
         db.session.commit()
 
     def __init__(self, name, password, role):
-        # if roge not in ("admin", "estatistico", "operador"):
-        #     print(
-        #         f'\nFalha ao adicionar usuário: {
-        #             name} \nO campo role deve ser "admin", "estatistico" ou "operador"\n'
-        #     )
         self.name = name
         self.password = password
         self.role = role
