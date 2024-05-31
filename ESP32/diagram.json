@@ -25,10 +25,9 @@
       "left": -278.4,
       "attrs": { "color": "red" }
     },
-    { "type": "wokwi-pir-motion-sensor", "id": "pir1", "top": -140, "left": -218.58, "attrs": {} },
     { "type": "wokwi-servo", "id": "servo1", "top": -69.2, "left": -441.6, "attrs": {} },
     { "type": "wokwi-servo", "id": "servo2", "top": -395.6, "left": 48, "attrs": {} },
-    { "type": "wokwi-led", "id": "led1", "top": -109.2, "left": 71, "attrs": { "color": "cyan" } }
+    { "type": "wokwi-led", "id": "led1", "top": -157.2, "left": 71, "attrs": { "color": "cyan" } }
   ],
   "connections": [
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
@@ -36,21 +35,18 @@
     [ "dht1:VCC", "esp:3V3", "red", [ "v109.3", "h-170.36", "v-200.78" ] ],
     [ "dht1:SDA", "esp:15", "green", [ "v0" ] ],
     [ "dht1:GND", "esp:GND.1", "black", [ "v99.7", "h-189.56", "v-66.38" ] ],
-    [ "btn1:1.r", "esp:25", "green", [ "h29", "v67.2", "h61.84" ] ],
+    [ "btn1:1.r", "esp:25", "green", [ "h29", "v67.2", "h67.2", "v-56.78" ] ],
     [ "btn2:1.r", "esp:26", "green", [ "v0" ] ],
     [ "btn1:2.r", "esp:GND.1", "black", [ "v144.2", "h57.8", "v-47.18" ] ],
     [ "btn2:2.r", "esp:GND.1", "black", [ "h48.2", "v-47.8", "h71.44" ] ],
-    [ "pir1:GND", "esp:GND.1", "black", [ "v0" ] ],
-    [ "pir1:OUT", "esp:33", "blue", [ "v0" ] ],
-    [ "pir1:VCC", "esp:3V3", "red", [ "v0" ] ],
     [ "servo1:GND", "esp:GND.1", "black", [ "h-57.6", "v134.4", "h407.44" ] ],
     [ "servo1:V+", "esp:5V", "green", [ "h-38.4", "v220.9", "h388.24" ] ],
     [ "servo1:PWM", "esp:22", "green", [ "v-163", "h460.8", "v173.62" ] ],
     [ "led1:C", "esp:GND.2", "black", [ "v0" ] ],
     [ "led1:A", "esp:23", "green", [ "v0" ] ],
-    [ "servo2:PWM", "esp:21", "green", [ "h-48", "v202.62" ] ],
-    [ "servo2:V+", "esp:5V", "green", [ "v-47.9", "h-178.16" ] ],
-    [ "servo2:GND", "esp:GND.2", "black", [ "h0" ] ]
+    [ "servo2:V+", "esp:5V", "green", [ "v-47.9", "h-316.8", "v548.02" ] ],
+    [ "servo2:GND", "esp:GND.2", "black", [ "h0" ] ],
+    [ "servo2:PWM", "esp:27", "green", [ "h-288", "v413.82" ] ]
   ],
   "dependencies": {}
 }
