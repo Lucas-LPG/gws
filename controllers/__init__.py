@@ -1,14 +1,14 @@
 # app_controller.py
-from flask import Flask, render_template, request, jsonify, session
-from db.connection import db, instance
 import json
-from flask_mqtt import Mqtt
+
 import paho.mqtt.client as mqtt
+from flask import Flask, jsonify, render_template, request, session
+from flask_login import LoginManager, login_required, logout_user
 from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
-from flask_login import login_required,  LoginManager, logout_user
-from models import User
 
+from db.connection import db, instance
+from models import Kit, User
 
 topic_subscribe = "cz/enviar"
 temperature = 0
@@ -18,25 +18,27 @@ people = people if people <= max_capacity else max_capacity
 
 
 def create_app():
-    app = Flask(__name__,
-                template_folder="./templates/",
-                static_folder="./static/",
-                root_path="./")
+    app = Flask(
+        __name__,
+        template_folder="./templates/",
+        static_folder="./static/",
+        root_path="./",
+    )
     app.secret_key = "lucaspucas"
 
-    app.config['MQTT_BROKER_URL'] = 'mqtt-dashboard.com'
-    app.config['MQTT_BROKER_PORT'] = 1883
-    app.config['MQTT_USERNAME'] = ''
-    app.config['MQTT_PASSWORD'] = ''
-    app.config['MQTT_KEEPALIVE'] = 5000
-    app.config['MQTT_TLS_ENABLED'] = False
+    app.config["MQTT_BROKER_URL"] = "mqtt-dashboard.com"
+    app.config["MQTT_BROKER_PORT"] = 1883
+    app.config["MQTT_USERNAME"] = ""
+    app.config["MQTT_PASSWORD"] = ""
+    app.config["MQTT_KEEPALIVE"] = 5000
+    app.config["MQTT_TLS_ENABLED"] = False
 
     mqtt_client = Mqtt()
     mqtt_client.init_app(app)
 
     login_manager = LoginManager()
     login_manager.init_app(app)
-    login_manager.login_view = 'login.login_func'
+    login_manager.login_view = "login.login_func"
 
     # app.config['TESTING'] = False
     # app.config['SECRET_KEY'] = 'generated-secrete-key'
@@ -73,9 +75,9 @@ def create_app():
     #         global temperature, huminity
     #         print(message.payload.decode())
 
-    @app.route('/')
+    @app.route("/")
     def index():
-        return render_template("landing.html", user=session.get('user'))
+        return render_template("landing.html", user=session.get("user"))
 
     @mqtt_client.on_message()
     def handle_mqtt_message(client, userdata, message):
@@ -87,27 +89,50 @@ def create_app():
         elif js["enterPeople"] == 0:
             people += 1
 
-    @app.route('/publish_message', methods=['GET', 'POST'])
+    @app.route("/publish_message", methods=["GET", "POST"])
     def publish_message():
         request_data = request.get_json()
         publish_result = mqtt_client.publish(
-            request_data['topic'], request_data['message'])
+            request_data["topic"], request_data["message"]
+        )
         return jsonify(publish_result)
 
-    @app.route('/real_time', methods=['GET', 'POST'])
+    @app.route("/real_time", methods=["GET", "POST"])
     def real_time():
         global temperature, people
-        values = {"Temperatura": temperature,
-                  "Pessoas": people}
-        return render_template("real_time.html", values=values, user=session.get('user'), max_capacity=max_capacity, people=people)
+        values = {"Temperatura": temperature, "Pessoas": people}
+        return render_template(
+            "real_time.html",
+            values=values,
+            user=session.get("user"),
+            max_capacity=max_capacity,
+            people=people,
+        )
+
+    @app.route("/kits")
+    @login_required
+    def kits():
+
+        kits = Kit.select_all_from_kits()
+        return render_template("kits/kits.html", kits=kits)
+
+    @app.route("/edit_kit")
+    @login_required
+    def edit_kit():
+        kit_id = request.args.get("kit_id", None)
+        kit = Kit.select_kit_by_id(kit_id)
+        if kit == None:
+            return redirect("/kits")
+        else:
+            return render_template("kits/edit_kit.html", kit=kit)
 
     @mqtt_client.on_connect()
     def handle_connect(client, userdata, flags, rc):
         if rc == 0:
-            print('Broker Connected successfully')
+            print("Broker Connected successfully")
             mqtt_client.subscribe(topic_subscribe)
         else:
-            print('Bad connection. Code:', rc)
+            print("Bad connection. Code:", rc)
 
     @mqtt_client.on_disconnect()
     def handle_disconnect(client, userdata, rc):
@@ -116,28 +141,38 @@ def create_app():
     @app.errorhandler(404)
     def page_not_found(error):
         logged = False
-        if session.get('user'):
+        if session.get("user"):
             logged = True
-        return render_template("errors/error.html", error_message="Parece que a página não existe! Tente novamente!",  logged=logged), 404
+        return (
+            render_template(
+                "errors/error.html",
+                error_message="Parece que a página não existe! Tente novamente!",
+                logged=logged,
+            ),
+            404,
+        )
 
     @app.errorhandler(405)
     def page_not_found(error):
-        return render_template("errors/error.html", error_message="Você não fez login!"), 405
+        return (
+            render_template("errors/error.html", error_message="Você não fez login!"),
+            405,
+        )
 
     @login_manager.request_loader
     def load_user_from_request(request):
 
         # first, try to login using the api_key url arg
-        api_key = request.args.get('api_key')
+        api_key = request.args.get("api_key")
         if api_key:
             user = User.query.filter_by(api_key=api_key).first()
             if user:
                 return user
 
         # next, try to login using Basic Auth
-        api_key = request.headers.get('Authorization')
+        api_key = request.headers.get("Authorization")
         if api_key:
-            api_key = api_key.replace('Basic ', '', 1)
+            api_key = api_key.replace("Basic ", "", 1)
             try:
                 api_key = base64.b64decode(api_key)
             except TypeError:

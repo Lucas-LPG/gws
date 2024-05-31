@@ -34,6 +34,11 @@ class Kit(db.Model):
         )
         return kits
 
+    def select_kit_by_id(kit_id):
+        kit = db.session.query(Kit).filter_by(id=kit_id).first()
+        if kit is not None:
+            return kit
+
     def __init__(self, name, user_id):
         self.name = name
         self.user_id = user_id
