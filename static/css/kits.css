@@ -1,0 +1,121 @@
+.kits--container {
+  height: 90vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: var(--custom-light);
+  color: var(--custom-dark);
+}
+
+.kits--table {
+  padding: 3vh 0px;
+  width: 85vw;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-direction: column;
+  position: relative;
+  background-color: var(--card-surface);
+  border: 2px solid var(--card-border);
+}
+
+.kit--header {
+  height: 7vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid var(--card-border);
+  padding-bottom: 3vh;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.kit--description {
+  padding: 1.5vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.kit--description > div {
+  flex: 1;
+  padding-left: 3vw;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.kit-card {
+  height: 8vh;
+  width: 100%;
+  display: flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.kit-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 2.5%;
+  width: 95%;
+  height: 1px;
+  background-color: var(--card-border);
+}
+
+.kit-card > div {
+  flex: 1;
+  display: flex;
+  padding-left: 3vw;
+}
+
+.kit-actions {
+  gap: 2vw;
+}
+
+.kit-edit {
+  color: #005acd;
+}
+
+.kit-delete {
+  color: #eb5939;
+}
+
+.kit-edit:hover {
+  color: #005acd;
+  transform: scale(1.1);
+  text-decoration: underline 1px #005acd;
+}
+
+.kit-delete:hover {
+  color: #eb5939;
+  transform: scale(1.1);
+  text-decoration: underline 1px #eb5939;
+}
+
+.add-kit-div {
+  padding: 3vh 0px;
+  width: 100%;
+  margin-top: 3vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-kit-btn {
+  padding: 10px 20px;
+  background-color: var(--custom-blue);
+  color: #f7f7f7;
+}
+
+.add-kit-btn:hover {
+  transform: scale(1.05);
+  filter: brightness(80%);
+  color: #f7f7f7;
+}

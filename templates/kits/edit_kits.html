@@ -1,0 +1,42 @@
+{% block title %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>editar usuarios</title>
+<link rel="stylesheet" href="../../static/css/edit_user.css" />
+{% endblock %} {% extends "layouts/layout.html" %} {% block content %}
+
+<div class="edit-kit--container">
+  <div class="edit-kit--card">
+    <div class="edit-kit--card-head">Editar Kit</div>
+    <form class="edit-kit--card-body" action="{{ url_for('edit_given_kit') }}">
+      <input type="text" name="kit_id" value="{{ kit.id }}" class="kit-id" />
+      <p>Nome:</p>
+      <input
+        type="text"
+        name="name"
+        placeholder="{{ kit.name }}"
+        value="{{ kit.name }}"
+        class="edit-kit--card-body--input"
+      />
+      <p>Senha:</p>
+      <input
+        type="text"
+        name="password"
+        value="{{ kit.password }}"
+        placeholder="{{ kit.password }}"
+        class="edit-kit--card-body--input"
+      />
+      <p>Role:</p>
+      <input
+        type="text"
+        name="role"
+        value="{{ kit.user_name }}"
+        placeholder="{{ kit.user_name }}"
+        class="edit-kit--card-body--input"
+      />
+      <input type="submit" value="Submit" class="edit-kit--card-body--btn" />
+    </form>
+  </div>
+</div>
+
+{% endblock %}

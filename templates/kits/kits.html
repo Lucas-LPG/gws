@@ -1,0 +1,43 @@
+{% block title %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kits</title>
+<link rel="stylesheet" href="../../static/css/kits.css" />
+
+{% endblock %} {% extends "layouts/layout.html" %} {% block content %}
+<div class="kits--container">
+  <div class="kits--table">
+    <div class="kit--header">Kits</div>
+    <div class="kit--description">
+      <div>Nome do Kit</div>
+      <div>Usuário</div>
+      <div>Total Sensores</div>
+      <div>Total Atuadores</div>
+      <div>Ações</div>
+    </div>
+    {% for kit in kits %}
+    <div class="kit-card">
+      <div class="kit-name">{{ kit.kit_name }}</div>
+      <div class="user-name">{{ kit.user_name }}</div>
+      <div class="sensor-count">{{ kit.total_sensors }}</div>
+      <div class="actuator-count">{{ kit.total_actuators }}</div>
+      <div class="kit-actions">
+        <a href="/edit_kit?kit_id={{ kit.kit_id }}" class="kit-edit">Editar</a>
+        <a href="/delete_kit?kit_id={{ kit.kit_id }}" class="kit-delete"
+          >Deletar</a
+        >
+      </div>
+    </div>
+    {% endfor %}
+    <div class="add-kit-div">
+      <a
+        href=""
+        class="add-kit-btn"
+        onmouseover="activateCursor()"
+        onmouseleave="deactivateCursor()"
+        >Adicionar Kit</a
+      >
+    </div>
+  </div>
+</div>
+{% endblock %}
