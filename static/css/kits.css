@@ -1,5 +1,5 @@
 .kits--container {
-  height: 90vh;
+  min-height: 90vh;
   width: 100vw;
   display: flex;
   justify-content: center;
@@ -19,6 +19,7 @@
   position: relative;
   background-color: var(--card-surface);
   border: 2px solid var(--card-border);
+  margin-top: 10vh;
 }
 
 .kit--header {

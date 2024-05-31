@@ -1,10 +1,10 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy_utils import database_exists, create_database
+from sqlalchemy_utils import create_database, database_exists
 
 db = SQLAlchemy()
 
-user = "root"
-password = ""
+user = "lucas"
+password = "lucas"
 server = "localhost"
 port = 3306
 database = "puhl_gasperin_health"
