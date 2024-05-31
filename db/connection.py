@@ -3,8 +3,8 @@ from sqlalchemy_utils import database_exists, create_database
 
 db = SQLAlchemy()
 
-user = "lucas"
-password = "lucas"
+user = "root"
+password = ""
 server = "localhost"
 port = 3306
 database = "puhl_gasperin_health"

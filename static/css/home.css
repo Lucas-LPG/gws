@@ -214,6 +214,8 @@
   align-items: start;
   justify-content: center;
   padding-top: 30px;
+  padding-bottom: 100px;
+  overflow-y: scroll;
 }
 
 table {
@@ -222,6 +224,7 @@ table {
   border-spacing: 10px;
   width: 100%;
   height: 90%;
+  overflow: scroll;
 }
 
 thead {
@@ -230,6 +233,7 @@ thead {
 
 tr {
   border-bottom: 1px solid var(--custom-dark);
+  height: 50px;
 }
 
 .people-info {

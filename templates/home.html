@@ -16,19 +16,19 @@
             class="card--link"
             onmouseover="activateCursor()"
             onmouseleave="deactivateCursor()"
-            href="real_time"
+            href="{% if current_user.role != 'operador' %} /real_time {% else %} /data-history {% endif %}"
             >mais informações <i class="fa-solid fa-arrow-right"></i
           ></a>
         </div>
         <div class="card--content">
           <div class="capacity-content">
             <p class="capacity-title">
-              <span class="capacity-count">{{ people }}</span> / {{ max_capacity
-              }} pessoas
+              <span class="capacity-count">{{ people }}</span> / {{
+              max_people_capacity }} pessoas
             </p>
             <div class="capacity-level-container">
               <div
-                class="capacity-level {% if (((people * 100) / max_capacity) | int) <= 50 %} green {% elif (((people * 100) / max_capacity) | int) < 90 %} yellow {% else %} red {% endif %}"
+                class="capacity-level {% if (((people * 100) / max_people_capacity) | int) <= 50 %} green {% elif (((people * 100) / max_people_capacity) | int) < 90 %} yellow {% else %} red {% endif %}"
               ></div>
             </div>
           </div>
@@ -42,7 +42,7 @@
             class="card--link"
             onmouseover="activateCursor()"
             onmouseleave="deactivateCursor()"
-            href="/real_time"
+            href="{% if current_user.role != 'operador' %} /real_time {% else %} /data-history {% endif %}"
             >mais informações <i class="fa-solid fa-arrow-right"></i
           ></a>
         </div>
@@ -57,7 +57,7 @@
             </div>
             <div class="temperature-level-container">
               <div
-                class="temperature-level {% if temperature <= 50 %} green {% elif temperature < 90 %} yellow {% else %} red {% endif %}"
+                class="temperature-level {% if ((temperature * 100) / max_temperature_capacity) <= 24 %} green {% elif ((temperature * 100) / max_temperature_capacity) < 32 %} yellow {% else %} red {% endif %}"
               ></div>
             </div>
           </div>
@@ -68,6 +68,7 @@
       >
         <div class="card--header">
           <span class="card--title">Kits</span>
+          {% if current_user.role == 'admin' %}
           <a
             class="card--link"
             onmouseover="activateCursor()"
@@ -75,6 +76,7 @@
             href="/kits"
             >gerenciar <i class="fa-solid fa-arrow-right"></i
           ></a>
+          {% endif %}
         </div>
         <div class="card--content">
           <div class="kits-content">
@@ -151,6 +153,10 @@
   </div>
 </div>
 <div class="people-info" id="peopleInfo">
-  {{ ((people * 100) / max_capacity) | int }}
+  {{ ((people * 100) / max_people_capacity) | int }}
+</div>
+
+<div class="people-info" id="temperatureInfo">
+  {{ ((temperature * 100) / max_temperature_capacity) | int }}
 </div>
 {% endblock %}
