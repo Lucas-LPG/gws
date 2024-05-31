@@ -8,13 +8,12 @@ from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
 
 from db.connection import db, instance
-from models import Actuator, Device, Kit, Sensor, User
+from models import Kit, User
 
-topic_recive = "cz/enviar"
-topic_send = "cz/receba"
+topic_subscribe = "cz/enviar"
 temperature = 0
 max_capacity = 100
-people = 0
+people = 60
 people = people if people <= max_capacity else max_capacity
 
 
@@ -41,33 +40,54 @@ def create_app():
     login_manager.init_app(app)
     login_manager.login_view = "login.login_func"
 
+    # app.config['TESTING'] = False
+    # app.config['SECRET_KEY'] = 'generated-secrete-key'
+    # app.config['SQLALCHEMY_DATABASE_URI'] = instance
+    # db.init_app(app)
+
+    # app.config['MQTT_BROKER_URL'] = 'mqtt-dashboard.com'
+    # app.config['MQTT_BROKER_PORT'] = 1883
+    # app.config['MQTT_USERNAME'] = ''  # Set this item when you need to verify username and password
+    # app.config['MQTT_PASSWORD'] = ''  # Set this item when you need to verify username and password
+    # app.config['MQTT_KEEPALIVE'] = 5000  # Set KeepAlive time in seconds
+    # app.config['MQTT_TLS_ENABLED'] = False  # If your broker supports TLS, set it True
+
+    # mqtt_client= Mqtt()
+    # mqtt_client.init_app(app)
+
+    topic_subscribe = "/aula_flask/"
+
+    # @mqtt_client.on_connect()
+    # def handle_connect(client, userdata, flags, rc):
+    #     if rc == 0:
+    #         print('Broker Connected successfully')
+    #         mqtt_client.subscribe(topic_subscribe) # subscribe topic
+    #     else:
+    #         print('Bad connection. Code:', rc)
+
+    # @mqtt_client.on_disconnect()
+    # def handle_disconnect(client, userdata, rc):
+    #     print("Disconnected from broker")
+
+    # @mqtt_client.on_message()
+    # def handle_mqtt_message(client, userdata, message):
+    #     if(message.topic==topic_subscribe):
+    #         global temperature, huminity
+    #         print(message.payload.decode())
+
     @app.route("/")
     def index():
         return render_template("landing.html", user=session.get("user"))
 
     @mqtt_client.on_message()
     def handle_mqtt_message(client, userdata, message):
+        global temperature, people
         js = json.loads(message.payload.decode())
-        global people, temperature
-        with app.app_context():
-            dht = Sensor.select_device_by_sensor_id(1)
-            Sensor.update_sensor_value(dht.id, js["temperature"])
-            temperature = dht.value
-            print(dht.value)
-
-        if js["exitPeople"] == 0:
-            with app.app_context():
-                actuator = Actuator.select_actuators_by_id(2)
-                Actuator.update_actuator_button_value(actuator.device_id, 1)
+        temperature = js["temperature"]
+        if js["exitPeople"] == 0 and people > 0:
+            people -= 1
         elif js["enterPeople"] == 0:
-            with app.app_context():
-                actuator = Actuator.select_actuators_by_id(1)
-                Actuator.update_actuator_button_value(actuator.device_id, 1)
-        with app.app_context():
-            people = (
-                Actuator.select_device_by_actuator_id(1).value
-                - Actuator.select_device_by_actuator_id(2).value
-            )
+            people += 1
 
     @app.route("/publish_message", methods=["GET", "POST"])
     def publish_message():
@@ -101,6 +121,8 @@ def create_app():
     def edit_kit():
         kit_id = request.args.get("kit_id", None)
         kit = Kit.select_kit_by_id(kit_id)
+        print(kit_id)
+        print(kit)
         if kit == None:
             return redirect("/kits")
         else:
@@ -114,14 +136,14 @@ def create_app():
         user_password = request.args.get("user_name", None)
         user_role = request.args.get("total_sensors", None)
         total_actuators = request.args.get("total_actuators", None)
+
+        # User.update_given_user(user_id, user_name, user_password, user_role)
+
         return redirect("/kits")
 
     @mqtt_client.on_connect()
     def handle_connect(client, userdata, flags, rc):
         if rc == 0:
-            print("Broker Connected successfully")
-            mqtt_client.subscribe(topic_recive)
-            mqtt_client.subscribe(topic_send)
             print("Broker Connected successfully")
             mqtt_client.subscribe(topic_subscribe)
         else:
