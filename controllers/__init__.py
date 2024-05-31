@@ -8,7 +8,7 @@ from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
 
 from db.connection import db, instance
-from models import Actuator, Device, Kit, Sensor, User, Historic
+from models import Actuator, Device, Historic, Kit, Sensor, User
 
 topic_recive = "cz/enviar"
 topic_send = "cz/receba"
@@ -65,13 +65,15 @@ def create_app():
                 actuator = Actuator.select_actuators_by_id(2)
                 Actuator.update_actuator_button_value(actuator.device_id, 1)
                 last_update_people = Historic.select_datetime_by_device_id(
-                    actuator.device_id)
+                    actuator.device_id
+                )
         elif js["enterPeople"] == 0:
             with app.app_context():
                 actuator = Actuator.select_actuators_by_id(1)
                 Actuator.update_actuator_button_value(actuator.device_id, 1)
                 last_update_people = Historic.select_datetime_by_device_id(
-                    actuator.device_id)
+                    actuator.device_id
+                )
         with app.app_context():
             people = (
                 Actuator.select_device_by_actuator_id(1).value
@@ -102,7 +104,7 @@ def create_app():
             people=people,
             temperature=temperature,
             last_update_people=last_update_people,
-            last_update_dht=last_update_dht
+            last_update_dht=last_update_dht,
         )
 
     @app.route("/kits")
@@ -138,6 +140,195 @@ def create_app():
         total_actuators = request.args.get("total_actuators", None)
         return redirect("/kits")
 
+    @app.route("/register_kit")
+    @login_required
+    def register_kit():
+        error_message = request.args.get("error_message", None)
+        return render_template("kits/register_kit.html", error_message=error_message)
+
+    @app.route("/add_kit", methods=["GET", "POST"])
+    @login_required
+    def add_kit():
+        if request.method == "POST":
+            kit_name = request.form["kit"]
+            user_name = request.form["user_name"]
+            existing_kit = Kit.select_kit_by_name(kit_name)
+            existing_user = User.select_user_by_name(user_name)
+            if existing_kit:
+                return redirect(
+                    url_for(
+                        ".register_kit", error_message="Esse nome de Kit já existe!"
+                    )
+                )
+            elif not existing_user:
+                return redirect(
+                    url_for(".register_kit", error_message="Esse usuário não existe!")
+                )
+            else:
+                new_kit = Kit(kit_name, existing_user.id)
+                db.session.add(new_kit)
+                db.session.commit()
+                return redirect("/kits")
+
+    @app.route("/devices")
+    @login_required
+    def devices():
+        sensors = Sensor.select_all_from_sensors()
+        actuators = Actuator.select_all_from_actuators()
+        return render_template(
+            "devices/devices.html", sensors=sensors, actuators=actuators
+        )
+
+    @app.route("/edit_device")
+    @login_required
+    def edit_device():
+        device_type = request.args.get("device_type")
+        device_id = request.args.get("device_id")
+        error_message = request.args.get("error_message")
+
+        print(device_type)
+        if device_type == "actuator":
+            actuator = Actuator.select_actuators_by_id(device_id)
+            return render_template(
+                "devices/edit_device.html",
+                device=actuator,
+                device_type=device_type,
+                error_message=error_message,
+            )
+        elif device_type == "sensor":
+            sensor = Sensor.select_sensors_by_id(device_id)
+            return render_template(
+                "devices/edit_device.html",
+                device=sensor,
+                device_type=device_type,
+                error_message=error_message,
+            )
+        else:
+            return render_template("devices/edit_device.html")
+
+    @app.route("/edit_given_device")
+    @login_required
+    def edit_given_device():
+        given_device_id = request.args.get("given_device_id", None)
+        device_name = request.args.get("device_name", None)
+        device_value = request.args.get("device_value", None)
+        device_topic = request.args.get("device_topic", None)
+        kit_name = request.args.get("kit_name", None)
+        device_type = request.args.get("device_type", None)
+
+        existing_device = Device.select_device_by_name(device_name)
+        existing_kit = Kit.select_kit_by_name(kit_name)
+        if existing_device:
+            device_id = Device.select_device_by_name(device_name).id
+        else:
+            device_id = request.args.get("device_id")
+
+        # Caso nome não seja alterado
+        if not existing_device:
+            return redirect(
+                url_for(
+                    ".edit_device",
+                    error_message="Esse nome de dispositivo não existe!",
+                    device_type=device_type,
+                    device_id=device_id,
+                )
+            )
+        elif not existing_kit:
+            return redirect(
+                url_for(
+                    ".edit_device",
+                    error_message="Esse kit não existe!",
+                    device_type=device_type,
+                    device_id=device_id,
+                )
+            )
+        else:
+            print(device_type)
+            if device_type == "actuator":
+                Actuator.update_given_actuator(
+                    given_device_id,
+                    device_id,
+                    device_name,
+                    device_value,
+                    device_topic,
+                    kit_name,
+                )
+            elif device_type == "sensor":
+                Sensor.update_given_sensor(
+                    given_device_id,
+                    device_id,
+                    device_name,
+                    device_value,
+                    device_topic,
+                    kit_name,
+                )
+            print(device_type)
+            return redirect("/devices")
+
+    @app.route("/delete_device")
+    @login_required
+    def delete_device():
+        device_type = request.args.get("device_type")
+        device_id = request.args.get("device_id")
+        print(device_id)
+
+        if device_type == "sensor":
+            sensor = Sensor.select_single_sensor_by_id(device_id)
+            db.session.delete(sensor)
+            db.session.commit()
+        elif device_type == "actuator":
+            actuator = Actuator.select_single_actuator_by_id(device_id)
+            print(actuator)
+            db.session.delete(actuator)
+            db.session.commit()
+        return redirect("/devices")
+
+    @app.route("/register_device")
+    @login_required
+    def register_device():
+        device_type = request.args.get("device_type", None)
+        error_message = request.args.get("error_message", None)
+        return render_template(
+            "devices/register_device.html",
+            error_message=error_message,
+            device_type=device_type,
+        )
+
+    @app.route("/add_device", methods=["GET", "POST"])
+    @login_required
+    def add_device():
+        if request.method == "POST":
+            device_type = request.form["device_type"]
+            device_name = request.form["device_name"]
+            device_value = request.form["device_value"]
+            kit_name = request.form["kit_name"]
+            kit = Kit.select_kit_by_name(kit_name)
+            device_topic = request.form["device_topic"]
+            existing_device = Device.select_device_by_name(device_name)
+
+            if not kit:
+                return redirect(
+                    url_for(".register_device", error_message="Esse kit não existe!")
+                )
+            elif existing_device:
+                return redirect(
+                    url_for(
+                        ".register_device",
+                        error_message="Esse dispositivo já existe",
+                    )
+                )
+            else:
+                kit_id = Kit.select_kit_by_name(kit_name).id
+                if device_type == "actuator":
+                    Actuator.insert_actuator(
+                        kit_name, kit_id, device_name, device_value, device_topic
+                    )
+                elif device_type == "sensor":
+                    Sensor.insert_sensor(
+                        kit_name, kit_id, device_name, device_value, device_topic
+                    )
+                return redirect("/devices")
+
     @mqtt_client.on_connect()
     def handle_connect(client, userdata, flags, rc):
         if rc == 0:
@@ -152,27 +343,27 @@ def create_app():
     def handle_disconnect(client, userdata, rc):
         print("Disconnected from broker")
 
-    @app.errorhandler(404)
-    def page_not_found(error):
-        logged = False
-        if session.get("user"):
-            logged = True
-        return (
-            render_template(
-                "errors/error.html",
-                error_message="Parece que a página não existe! Tente novamente!",
-                logged=logged,
-            ),
-            404,
-        )
-
-    @app.errorhandler(405)
-    def page_not_found(error):
-        return (
-            render_template("errors/error.html",
-                            error_message="Você não fez login!"),
-            405,
-        )
+    # @app.errorhandler(404)
+    # def page_not_found(error):
+    #     logged = False
+    #     if session.get("user"):
+    #         logged = True
+    #     return (
+    #         render_template(
+    #             "errors/error.html",
+    #             error_message="Parece que a página não existe! Tente novamente!",
+    #             logged=logged,
+    #         ),
+    #         404,
+    #     )
+    #
+    # @app.errorhandler(405)
+    # def page_not_found(error):
+    #     return (
+    #         render_template("errors/error.html",
+    #                         error_message="Você não fez login!"),
+    #         405,
+    #     )
 
     @login_manager.request_loader
     def load_user_from_request(request):
