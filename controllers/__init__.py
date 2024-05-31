@@ -2,7 +2,7 @@
 import json
 
 import paho.mqtt.client as mqtt
-from flask import Flask, jsonify, render_template, request, session
+from flask import Flask, jsonify, redirect, render_template, request, session
 from flask_login import LoginManager, login_required, logout_user
 from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
@@ -121,10 +121,25 @@ def create_app():
     def edit_kit():
         kit_id = request.args.get("kit_id", None)
         kit = Kit.select_kit_by_id(kit_id)
+        print(kit_id)
+        print(kit)
         if kit == None:
             return redirect("/kits")
         else:
-            return render_template("kits/edit_kit.html", kit=kit)
+            return render_template("kits/edit_kits.html", kit=kit)
+
+    @app.route("/edit_given_kit")
+    @login_required
+    def edit_given_kit():
+        kit_id = request.args.get("kit_id", None)
+        kit_name = request.args.get("kit_name", None)
+        user_password = request.args.get("user_name", None)
+        user_role = request.args.get("total_sensors", None)
+        total_actuators = request.args.get("total_actuators", None)
+
+        # User.update_given_user(user_id, user_name, user_password, user_role)
+
+        return redirect("/kits")
 
     @mqtt_client.on_connect()
     def handle_connect(client, userdata, flags, rc):

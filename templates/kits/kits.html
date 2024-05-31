@@ -22,8 +22,10 @@
       <div class="sensor-count">{{ kit.total_sensors }}</div>
       <div class="actuator-count">{{ kit.total_actuators }}</div>
       <div class="kit-actions">
-        <a href="/edit_kit?kit.kit_id" class="kit-edit">Editar</a>
-        <a href="/delete_kit?kit.kit_id" class="kit-delete">Deletar</a>
+        <a href="/edit_kit?kit_id={{ kit.kit_id }}" class="kit-edit">Editar</a>
+        <a href="/delete_kit?kit_id={{ kit.kit_id }}" class="kit-delete"
+          >Deletar</a
+        >
       </div>
     </div>
     {% endfor %}
