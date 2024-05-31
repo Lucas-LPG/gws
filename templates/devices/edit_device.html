@@ -7,8 +7,26 @@
 
 <div class="edit-device--container">
   <div class="edit-device--card">
-    <div class="edit-device--card-head">Editar Dispositivo</div>
-    <form class="edit-device--card-body" action="">
+    <div class="edit-device--card-head">
+      Editar {% if device_type == 'actuator' %} Atuador {% elif device_type ==
+      'sensor' %} Sensor {% else %} Dispositivo {% endif %}
+    </div>
+    <form
+      class="edit-device--card-body"
+      action="{{ url_for('edit_given_device') }}"
+    >
+      <input
+        type="text"
+        name="device_type"
+        value="{{ device_type }}"
+        class="device-id"
+      />
+      <input
+        type="text"
+        name="given_device_id"
+        value=" {% if device_type == 'actuator' %} {{ device.actuator_id }} {% else %} {{ device.sensor_id }} {% endif %}"
+        class="device-id"
+      />
       <input
         type="text"
         name="device_id"

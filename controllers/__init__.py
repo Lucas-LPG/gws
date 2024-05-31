@@ -200,12 +200,72 @@ def create_app():
         print(device_type)
         if device_type == "actuator":
             actuator = Actuator.select_actuators_by_id(device_id)
-            return render_template("devices/edit_device.html", device=actuator)
+            return render_template(
+                "devices/edit_device.html", device=actuator, device_type=device_type
+            )
         elif device_type == "sensor":
             sensor = Sensor.select_sensors_by_id(device_id)
-            return render_template("devices/edit_device.html", device=sensor)
+            return render_template(
+                "devices/edit_device.html", device=sensor, device_type=device_type
+            )
         else:
             return render_template("devices/edit_device.html")
+
+    @app.route("/edit_given_device")
+    @login_required
+    def edit_given_device():
+        given_device_id = request.args.get("given_device_id", None)
+        device_name = request.args.get("device_name", None)
+        device_value = request.args.get("device_value", None)
+        device_topic = request.args.get("device_topic", None)
+        kit_name = request.args.get("kit_name", None)
+        device_type = request.args.get("device_type", None)
+
+        existing_device = Device.select_device_by_name(device_name)
+        existing_kit = Kit.select_kit_by_name(kit_name)
+        device_id = Device.select_device_by_name(device_name).id
+
+        # Caso nome não seja alterado
+        if not existing_device:
+            return redirect(
+                url_for(
+                    ".edit_device",
+                    error_message="Esse nome de dispositivo não existe!",
+                    device_type=device_type,
+                    device_id=device_id,
+                )
+            )
+        elif not existing_kit:
+            return redirect(
+                url_for(
+                    ".edit_device",
+                    error_message="Esse kit não existe!",
+                    device_type=device_type,
+                    device_id=device_id,
+                )
+            )
+        else:
+            print(device_type)
+            if device_type == "actuator":
+                Actuator.update_given_actuator(
+                    given_device_id,
+                    device_id,
+                    device_name,
+                    device_value,
+                    device_topic,
+                    kit_name,
+                )
+            elif device_type == "sensor":
+                Sensor.update_given_sensor(
+                    given_device_id,
+                    device_id,
+                    device_name,
+                    device_value,
+                    device_topic,
+                    kit_name,
+                )
+            print(device_type)
+            return redirect("/devices")
 
     @mqtt_client.on_connect()
     def handle_connect(client, userdata, flags, rc):

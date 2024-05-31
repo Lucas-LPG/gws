@@ -47,6 +47,7 @@ class Actuator(db.Model):
         actuators = (
             db.session.query(
                 Actuator.topic.label("actuator_topic"),
+                Actuator.id.label("actuator_id"),
                 Device.id.label("device_id"),
                 Device.name.label("device_name"),
                 Device.value.label("device_value"),
@@ -54,10 +55,28 @@ class Actuator(db.Model):
             )
             .join(Device, Actuator.device_id == Device.id)
             .outerjoin(Kit, Device.kit_id == Kit.id)
-            .group_by(Device.id, Actuator.topic, Device.name, Kit.name)
+            .group_by(Device.id, Actuator.topic, Actuator.id, Device.name, Kit.name)
             .all()
         )
         return actuators
+
+    def update_given_actuator(
+        given_device_id, device_id, device_name, device_value, device_topic, kit_name
+    ):
+        device = db.session.query(Device).filter_by(id=device_id).first()
+        actuator = db.session.query(Actuator).filter_by(id=given_device_id).first()
+        kit = db.session.query(Kit).filter_by(name=kit_name).first().id
+
+        if device is not None:
+            device.name = device_name
+            device.value = device_value
+            device.kit_id = kit
+
+        if actuator is not None:
+            actuator.topic = device_topic
+            actuator.device_id = device_id
+
+        db.session.commit()
 
     def update_actuator_by_id(actuator_id, name, value, topic):
         actuator = db.session.query(Actuator).filter_by(id=actuator_id).first()
@@ -88,6 +107,7 @@ class Actuator(db.Model):
         actuators = (
             db.session.query(
                 Actuator.topic.label("device_topic"),
+                Actuator.id.label("actuator_id"),
                 Device.id.label("device_id"),
                 Device.name.label("device_name"),
                 Device.value.label("device_value"),
@@ -96,7 +116,7 @@ class Actuator(db.Model):
             .filter(Actuator.device_id == device_id)
             .join(Device, Actuator.device_id == Device.id)
             .outerjoin(Kit, Device.kit_id == Kit.id)
-            .group_by(Device.id, Actuator.topic, Device.name, Kit.name)
+            .group_by(Device.id, Actuator.topic, Actuator.id, Device.name, Kit.name)
             .first()
         )
         return actuators

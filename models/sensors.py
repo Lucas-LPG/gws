@@ -46,6 +46,7 @@ class Sensor(db.Model):
         sensors = (
             db.session.query(
                 Sensor.topic.label("sensor_topic"),
+                Sensor.id.label("sensor_id"),
                 Device.id.label("device_id"),
                 Device.name.label("device_name"),
                 Device.value.label("device_value"),
@@ -53,10 +54,28 @@ class Sensor(db.Model):
             )
             .join(Device, Sensor.device_id == Device.id)
             .outerjoin(Kit, Device.kit_id == Kit.id)
-            .group_by(Device.id, Sensor.topic, Device.name, Kit.name)
+            .group_by(Device.id, Sensor.topic, Sensor.id, Device.name, Kit.name)
             .all()
         )
         return sensors
+
+    def update_given_sensor(
+        given_device_id, device_id, device_name, device_value, device_topic, kit_name
+    ):
+        device = db.session.query(Device).filter_by(id=device_id).first()
+        sensor = db.session.query(Sensor).filter_by(id=given_device_id).first()
+        kit = db.session.query(Kit).filter_by(name=kit_name).first().id
+
+        if device is not None:
+            device.name = device_name
+            device.value = device_value
+            device.kit_id = kit
+
+        if sensor is not None:
+            sensor.topic = device_topic
+            sensor.device_id = device_id
+
+        db.session.commit()
 
     def select_from_sensors(condition):
         sensors = db.session.query(Sensor).filter(condition).all()
@@ -81,15 +100,16 @@ class Sensor(db.Model):
         sensors = (
             db.session.query(
                 Sensor.topic.label("device_topic"),
+                Sensor.id.label("sensor_id"),
                 Device.id.label("device_id"),
                 Device.name.label("device_name"),
                 Device.value.label("device_value"),
                 Kit.name.label("kit_name"),
             )
-            .filter(Sensor.device_id == device_id)
+            .filter(Sensor.id == device_id)
             .join(Device, Sensor.device_id == Device.id)
             .outerjoin(Kit, Device.kit_id == Kit.id)
-            .group_by(Device.id, Sensor.topic, Device.name, Kit.name)
+            .group_by(Device.id, Sensor.topic, Sensor.id, Device.name, Kit.name)
             .first()
         )
         return sensors
