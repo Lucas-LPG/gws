@@ -1,0 +1,61 @@
+{% block title %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Usuários</title>
+<link rel="stylesheet" href="../../static/css/users.css" />
+{% endblock %} {% extends "layouts/layout.html" %} {% block content%}
+<div class="users--container">
+  <div class="users--table">
+    <div class="user--table--head">
+      <span>Lista de usuários</span>
+    </div>
+    <div class="user--table--description">
+      <div>
+        <span>Nome do Dispositivo</span>
+      </div>
+      <div>
+        <span>Nome do Kit</span>
+      </div>
+      <div>
+        <span>Valor</span>
+      </div>
+      <div>
+        <span>Data-hora</span>
+      </div>
+    </div>
+    <form action="/submit" method="post">
+      <label for="datetime">Data e Hora:</label>
+      <input type="datetime-local" id="datetime" name="datetime" />
+      <br /><br />
+      <input type="submit" value="Enviar" />
+    </form>
+    {% for historic in historics %}
+    <div class="user--card">
+      <div class="user-name">
+        <span>{{ historic.device_name }}</span>
+      </div>
+      <div class="user-role">
+        <span>{{historic.kit_name}} </span>
+      </div>
+
+      <div class="user-role">
+        <span>{{historic.device_value}} </span>
+      </div>
+
+      <div class="user-role">
+        <span>{{historic.device_datetime}} </span>
+      </div>
+    </div>
+    {% endfor %}
+    <div class="add-user-div">
+      <a
+        href="/register_user"
+        class="add-user-btn"
+        onmouseover="activateCursor()"
+        onmouseleave="deactivateCursor()"
+        >Adicionar novo usuário</a
+      >
+    </div>
+  </div>
+</div>
+{% endblock%}

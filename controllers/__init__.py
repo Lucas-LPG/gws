@@ -2,19 +2,25 @@
 import json
 
 import paho.mqtt.client as mqtt
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask import Flask, jsonify, redirect, render_template, request, session
 from flask_login import LoginManager, login_required, logout_user
 from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
 
 from db.connection import db, instance
-from models import Actuator, Device, Kit, Sensor, User
+from models import Actuator, Device, Kit, Sensor, User, Historic
 
 topic_recive = "cz/enviar"
 topic_send = "cz/receba"
 temperature = 0
 max_capacity = 100
 people = 0
+last_update_dht = 0
+last_update_people = 0
+print("people")
+print(people)
+print("people 0")
+print("people")
 
 
 def create_app():
@@ -47,26 +53,32 @@ def create_app():
     @mqtt_client.on_message()
     def handle_mqtt_message(client, userdata, message):
         js = json.loads(message.payload.decode())
-        global people, temperature
+        global people, temperature, last_update_people, last_update_dht
         with app.app_context():
             dht = Sensor.select_device_by_sensor_id(1)
             Sensor.update_sensor_value(dht.id, js["temperature"])
             temperature = dht.value
-            print(dht.value)
 
+            last_update_dht = Historic.select_datetime_by_device_id(dht.id)
         if js["exitPeople"] == 0:
             with app.app_context():
                 actuator = Actuator.select_actuators_by_id(2)
                 Actuator.update_actuator_button_value(actuator.device_id, 1)
+                last_update_people = Historic.select_datetime_by_device_id(
+                    actuator.device_id)
         elif js["enterPeople"] == 0:
             with app.app_context():
                 actuator = Actuator.select_actuators_by_id(1)
                 Actuator.update_actuator_button_value(actuator.device_id, 1)
+                last_update_people = Historic.select_datetime_by_device_id(
+                    actuator.device_id)
         with app.app_context():
             people = (
                 Actuator.select_device_by_actuator_id(1).value
                 - Actuator.select_device_by_actuator_id(2).value
             )
+            print(last_update_dht)
+            print(last_update_people)
 
     @app.route("/publish_message", methods=["GET", "POST"])
     def publish_message():
@@ -78,22 +90,25 @@ def create_app():
 
     @app.route("/real_time", methods=["GET", "POST"])
     def real_time():
-        global temperature, people
+        global temperature, people, last_update_dht, last_update_people
         people = people if people <= max_capacity else max_capacity
         people = people if people >= 0 else 0
         values = {"Temperatura": temperature, "Pessoas": people}
-        print(temperature)
+
         return render_template(
             "real_time.html",
             values=values,
             max_capacity=max_capacity,
             people=people,
             temperature=temperature,
+            last_update_people=last_update_people,
+            last_update_dht=last_update_dht
         )
 
     @app.route("/kits")
     @login_required
     def kits():
+
         kits = Kit.select_all_from_kits()
         return render_template("kits/kits.html", kits=kits)
 
@@ -102,85 +117,26 @@ def create_app():
     def edit_kit():
         kit_id = request.args.get("kit_id", None)
         kit = Kit.select_kit_by_id(kit_id)
-        attributes = dir(kit)
-        user_name = User.select_user_by_id(kit.user_id).name
-        error_message = request.args.get("error_message", None)
         if kit == None:
             return redirect("/kits")
         else:
-            return render_template(
-                "kits/edit_kits.html",
-                kit=kit,
-                user_name=user_name,
-                error_message=error_message,
-            )
+            return render_template("kits/edit_kits.html", kit=kit)
+
+    @app.route("/data-history")
+    @login_required
+    def historic():
+        historics = Historic.select_all_from_historic()
+        return render_template("historic/data-history.html", historics=historics)
 
     @app.route("/edit_given_kit")
     @login_required
     def edit_given_kit():
         kit_id = request.args.get("kit_id", None)
         kit_name = request.args.get("kit_name", None)
-        user_name = request.args.get("user_name", None)
-        existing_kit = Kit.select_kit_by_name(kit_name)
-        kit = Kit.select_kit_by_id(kit_id).name
-        existing_user = User.select_user_by_name(user_name)
-        if existing_kit and kit_name != kit:
-            return redirect(
-                url_for(
-                    ".edit_kit",
-                    error_message="Esse nome de kit já existe!",
-                    kit_id=kit_id,
-                )
-            )
-        elif not existing_user:
-            return redirect(
-                url_for(
-                    ".edit_kit",
-                    error_message="Esse nome de usuário não existe!",
-                    kit_id=kit_id,
-                )
-            )
-        else:
-            user_id = User.select_user_by_name(user_name).id
-            Kit.update_given_kit(kit_id, kit_name, user_id)
-            return redirect("/kits")
-
-    @app.route("/delete_kit")
-    @login_required
-    def remove_kit():
-        kit_id = request.args.get("kit_id", None)
-        Kit.delete_kit_by_id(kit_id)
+        user_password = request.args.get("user_name", None)
+        user_role = request.args.get("total_sensors", None)
+        total_actuators = request.args.get("total_actuators", None)
         return redirect("/kits")
-
-    @app.route("/register_kit")
-    @login_required
-    def register_kit():
-        error_message = request.args.get("error_message", None)
-        return render_template("kits/register_kit.html", error_message=error_message)
-
-    @app.route("/add_kit", methods=["GET", "POST"])
-    @login_required
-    def add_kit():
-        if request.method == "POST":
-            kit_name = request.form["kit"]
-            user_name = request.form["user_name"]
-            existing_kit = Kit.select_kit_by_name(kit_name)
-            existing_user = User.select_user_by_name(user_name)
-            if existing_kit:
-                return redirect(
-                    url_for(
-                        ".register_kit", error_message="Esse nome de Kit já existe!"
-                    )
-                )
-            elif not existing_user:
-                return redirect(
-                    url_for(".register_kit", error_message="Esse usuário não existe!")
-                )
-            else:
-                new_kit = Kit(kit_name, existing_user.id)
-                db.session.add(new_kit)
-                db.session.commit()
-                return redirect("/kits")
 
     @mqtt_client.on_connect()
     def handle_connect(client, userdata, flags, rc):
@@ -213,7 +169,8 @@ def create_app():
     @app.errorhandler(405)
     def page_not_found(error):
         return (
-            render_template("errors/error.html", error_message="Você não fez login!"),
+            render_template("errors/error.html",
+                            error_message="Você não fez login!"),
             405,
         )
 
