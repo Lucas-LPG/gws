@@ -146,6 +146,13 @@ def create_app():
             Kit.update_given_kit(kit_id, kit_name, user_id)
             return redirect("/kits")
 
+    @app.route("/delete_kit")
+    @login_required
+    def remove_kit():
+        kit_id = request.args.get("kit_id", None)
+        Kit.delete_kit_by_id(kit_id)
+        return redirect("/kits")
+
     @mqtt_client.on_connect()
     def handle_connect(client, userdata, flags, rc):
         if rc == 0:

@@ -52,6 +52,11 @@ class Kit(db.Model):
             kit.user_id = user_id
             db.session.commit()
 
+    def delete_kit_by_id(kit_id):
+        kit = db.session.query(Kit).filter_by(id=kit_id).first()
+        db.session.delete(kit)
+        db.session.commit()
+
     def __init__(self, name, user_id):
         self.name = name
         self.user_id = user_id
