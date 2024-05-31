@@ -87,6 +87,7 @@ def create_app():
             user=session.get("user"),
             max_capacity=max_capacity,
             people=people,
+            temperature=temperature,
         )
 
     @app.route("/kits")
@@ -123,7 +124,6 @@ def create_app():
             mqtt_client.subscribe(topic_recive)
             mqtt_client.subscribe(topic_send)
             print("Broker Connected successfully")
-            mqtt_client.subscribe(topic_subscribe)
         else:
             print("Bad connection. Code:", rc)
 
