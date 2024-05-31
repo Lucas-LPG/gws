@@ -59,6 +59,15 @@
         </div>
       </div>
       {% endfor %}
+      <div class="add-device-div">
+        <a
+          class="add-device-btn"
+          onmouseover="activateCursor()"
+          onmouseleave="deactivateCursor()"
+          href="/register_device?device_type=actuator"
+          >Adicionar Atuador</a
+        >
+      </div>
     </div>
   </div>
   <div class="sensors--table">
@@ -115,6 +124,16 @@
         </div>
       </div>
       {% endfor %}
+      <div class="add-device-div">
+        <a
+          class="add-device-btn"
+          onmouseover="activateCursor()"
+          onmouseleave="deactivateCursor()"
+          href="/register_device?device_type=sensor"
+        >
+          Adicionar Sensor
+        </a>
+      </div>
     </div>
   </div>
 </div>

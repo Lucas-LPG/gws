@@ -1,0 +1,61 @@
+{% block title %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../static/css/register-device.css" />
+<title>Registrar device</title>
+{% endblock %} {% extends"layouts/layout.html" %} {% block content%}
+<div class="register-device--container">
+  <div class="register-device--card">
+    <div class="register-device--card-head">
+      <span>Registrar Dispositivo</span>
+    </div>
+    <div class="register-device--card-body">
+      <form action="/add_device" method="POST" class="register-device--form">
+        <input
+          type="text"
+          name="device_type"
+          value="{{ device_type }}"
+          class="hidden"
+        />
+        <input
+          type="text"
+          name="device_name"
+          placeholder="Nome do Dispositivo"
+          required
+          class="register-device--form-input"
+        />
+        <input
+          type="text"
+          name="device_value"
+          placeholder="Valor"
+          required
+          class="register-device--form-input"
+        />
+
+        <input
+          type="text"
+          name="device_topic"
+          placeholder="Tópico"
+          class="register-device--form-input"
+        />
+        <input
+          type="text"
+          name="kit_name"
+          placeholder="kit_name"
+          class="register-device--form-input"
+        />
+        <input
+          type="submit"
+          value="Cadastrar"
+          class="register-device--submit"
+          onmouseover="activateCursor()"
+          onmouseleave="deactivateCursor()"
+        />
+      </form>
+    </div>
+  </div>
+  {% if error_message %}
+  <div class="error">{{ error_message }}</div>
+  {% endif %}
+</div>
+{% endblock%}

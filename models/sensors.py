@@ -12,35 +12,20 @@ class Sensor(db.Model):
     topic = db.Column(VARCHAR(50), nullable=False)
     device_id = db.Column(INTEGER(unsigned=True), db.ForeignKey(Device.id))
 
-    @classmethod  # define que é um metodo da classe, permitindo acessar e manipular atributos e metodos da classe
-    def insert_sensor(cls, kit_name, kit_id, user_id, device_name, value, topic):
+    def insert_sensor(kit_name, kit_id, device_name, value, topic):
 
-        id_verification = db.session.query(User).filter_by(id=user_id).first()
-        kit_verification = db.session.query(Kit).filter_by(id=kit_id).first()
-        if not id_verification:
-            print(f"O id {user_id} nao existe, por favor insira outro")
+        existing_device = Device.select_device_by_name(device_name)
+
+        if existing_device:
+            sensor = Sensor(topic, device_id=existing_device.id)
         else:
-            if not kit_verification:
-                kit = Kit(name=kit_name, user_id=user_id)
-                db.session.add(kit)
-                db.session.commit()
+            device = Device(name=device_name, value=value, kit_id=kit_id)
+            db.session.add(device)
+            db.session.commit()
 
-                device = Device(name=device_name, value=value, kit_id=kit.id)
-                db.session.add(device)
-                db.session.commit()
-
-                sensor = Sensor(topic, device_id=device.id)
-                db.session.add(sensor)
-                db.session.commit()
-
-            else:
-                device = Device(name=device_name, value=value, kit_id=kit.id)
-                db.session.add(device)
-                db.session.commit()
-
-                sensor = Sensor(topic, device_id=device.id)
-                db.session.add(sensor)
-                db.session.commit()
+            sensor = Sensor(topic, device_id=device.id)
+            db.session.add(sensor)
+            db.session.commit()
 
     def select_all_from_sensors():
         sensors = (

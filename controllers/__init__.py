@@ -295,6 +295,52 @@ def create_app():
             db.session.commit()
         return redirect("/devices")
 
+    @app.route("/register_device")
+    @login_required
+    def register_device():
+        device_type = request.args.get("device_type", None)
+        error_message = request.args.get("error_message", None)
+        return render_template(
+            "devices/register_device.html",
+            error_message=error_message,
+            device_type=device_type,
+        )
+
+    @app.route("/add_device", methods=["GET", "POST"])
+    @login_required
+    def add_device():
+        if request.method == "POST":
+            device_type = request.form["device_type"]
+            device_name = request.form["device_name"]
+            device_value = request.form["device_value"]
+            kit_name = request.form["kit_name"]
+            kit = Kit.select_kit_by_name(kit_name)
+            device_topic = request.form["device_topic"]
+            existing_device = Device.select_device_by_name(device_name)
+
+            if not kit:
+                return redirect(
+                    url_for(".register_device", error_message="Esse kit não existe!")
+                )
+            elif existing_device:
+                return redirect(
+                    url_for(
+                        ".register_device",
+                        error_message="Esse dispositivo já existe",
+                    )
+                )
+            else:
+                kit_id = Kit.select_kit_by_name(kit_name).id
+                if device_type == "actuator":
+                    Actuator.insert_actuator(
+                        kit_name, kit_id, device_name, device_value, device_topic
+                    )
+                elif device_type == "sensor":
+                    Sensor.insert_sensor(
+                        kit_name, kit_id, device_name, device_value, device_topic
+                    )
+                return redirect("/devices")
+
     @mqtt_client.on_connect()
     def handle_connect(client, userdata, flags, rc):
         if rc == 0:
@@ -309,26 +355,26 @@ def create_app():
     def handle_disconnect(client, userdata, rc):
         print("Disconnected from broker")
 
-    @app.errorhandler(404)
-    def page_not_found(error):
-        logged = False
-        if session.get("user"):
-            logged = True
-        return (
-            render_template(
-                "errors/error.html",
-                error_message="Parece que a página não existe! Tente novamente!",
-                logged=logged,
-            ),
-            404,
-        )
-
-    @app.errorhandler(405)
-    def page_not_found(error):
-        return (
-            render_template("errors/error.html", error_message="Você não fez login!"),
-            405,
-        )
+    # @app.errorhandler(404)
+    # def page_not_found(error):
+    #     logged = False
+    #     if session.get("user"):
+    #         logged = True
+    #     return (
+    #         render_template(
+    #             "errors/error.html",
+    #             error_message="Parece que a página não existe! Tente novamente!",
+    #             logged=logged,
+    #         ),
+    #         404,
+    #     )
+    #
+    # @app.errorhandler(405)
+    # def page_not_found(error):
+    #     return (
+    #         render_template("errors/error.html", error_message="Você não fez login!"),
+    #         405,
+    #     )
 
     @login_manager.request_loader
     def load_user_from_request(request):

@@ -132,3 +132,24 @@
   transform: scale(1.1);
   text-decoration: underline 1px #eb5939;
 }
+
+.add-device-div {
+  padding: 2vh 3vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3vh;
+}
+
+.add-device-btn {
+  background-color: var(--custom-blue);
+  color: #f7f7f7;
+  padding: 15px 20px;
+  border-radius: 10px;
+}
+
+.add-device-btn:hover {
+  transform: scale(1.02);
+  filter: brightness(90%);
+  color: #fff;
+}
