@@ -8,13 +8,15 @@ from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
 
 from db.connection import db, instance
-from models import Actuator, Device, Kit, Sensor, User
+from models import Actuator, Device, Historic, Kit, Sensor, User
 
 topic_recive = "cz/enviar"
 topic_send = "cz/receba"
 temperature = 0
 max_capacity = 100
 people = 0
+last_update_dht = 0
+last_update_people = 0
 
 
 def create_app():
@@ -47,21 +49,27 @@ def create_app():
     @mqtt_client.on_message()
     def handle_mqtt_message(client, userdata, message):
         js = json.loads(message.payload.decode())
-        global people, temperature
+        global people, temperature, last_update_people, last_update_dht
         with app.app_context():
             dht = Sensor.select_device_by_sensor_id(1)
             Sensor.update_sensor_value(dht.id, js["temperature"])
             temperature = dht.value
-            print(dht.value)
 
+            last_update_dht = Historic.select_datetime_by_device_id(dht.id)
         if js["exitPeople"] == 0:
             with app.app_context():
                 actuator = Actuator.select_actuators_by_id(2)
                 Actuator.update_actuator_button_value(actuator.device_id, 1)
+                last_update_people = Historic.select_datetime_by_device_id(
+                    actuator.device_id
+                )
         elif js["enterPeople"] == 0:
             with app.app_context():
                 actuator = Actuator.select_actuators_by_id(1)
                 Actuator.update_actuator_button_value(actuator.device_id, 1)
+                last_update_people = Historic.select_datetime_by_device_id(
+                    actuator.device_id
+                )
         with app.app_context():
             people = (
                 Actuator.select_device_by_actuator_id(1).value
@@ -78,17 +86,18 @@ def create_app():
 
     @app.route("/real_time", methods=["GET", "POST"])
     def real_time():
-        global temperature, people
+        global temperature, people, last_update_dht, last_update_people
         people = people if people <= max_capacity else max_capacity
         people = people if people >= 0 else 0
         values = {"Temperatura": temperature, "Pessoas": people}
-        print(temperature)
         return render_template(
             "real_time.html",
             values=values,
             max_capacity=max_capacity,
             people=people,
             temperature=temperature,
+            last_update_people=last_update_people,
+            last_update_dht=last_update_dht,
         )
 
     @app.route("/kits")
@@ -102,7 +111,6 @@ def create_app():
     def edit_kit():
         kit_id = request.args.get("kit_id", None)
         kit = Kit.select_kit_by_id(kit_id)
-        attributes = dir(kit)
         user_name = User.select_user_by_id(kit.user_id).name
         error_message = request.args.get("error_message", None)
         if kit == None:
@@ -114,6 +122,12 @@ def create_app():
                 user_name=user_name,
                 error_message=error_message,
             )
+
+    @app.route("/data-history")
+    @login_required
+    def historic():
+        historics = Historic.select_all_from_historic()
+        return render_template("historic/data-history.html", historics=historics)
 
     @app.route("/edit_given_kit")
     @login_required

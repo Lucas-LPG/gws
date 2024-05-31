@@ -32,7 +32,10 @@
           </div>
           <div class="capacity--last-updated">
             <div class="var-title">Atualizado por último</div>
-            <div class="var-value">2 minutos atrás</div>
+            <div class="var-value">
+              {% if last_update_people == 0 %} Sem atualizações {% else %} {{
+              last_update_people }} {% endif %}
+            </div>
           </div>
         </div>
         <div class="capacity--body--right">
@@ -75,7 +78,10 @@
           <div class="last-updated--title var-title">
             <span>Atualizado por último</span>
           </div>
-          <div class="last-updated--value var-value">2 minutos atrás</div>
+          <div class="last-updated--value var-value">
+            {% if last_update_dht == 0 %} Sem atualizações {% else %} {{
+            last_update_dht }} {% endif %}
+          </div>
         </div>
       </div>
       <div class="temperature--footer">
