@@ -15,7 +15,10 @@ topic_send = "cz/receba"
 temperature = 0
 max_capacity = 100
 people = 0
-people = people if people <= max_capacity else max_capacity
+print("people")
+print(people)
+print("people 0")
+print("people")
 
 
 def create_app():
@@ -80,11 +83,12 @@ def create_app():
     @app.route("/real_time", methods=["GET", "POST"])
     def real_time():
         global temperature, people
+        people = people if people <= max_capacity else max_capacity
+        people = people if people >= 0 else 0
         values = {"Temperatura": temperature, "Pessoas": people}
         return render_template(
             "real_time.html",
             values=values,
-            user=session.get("user"),
             max_capacity=max_capacity,
             people=people,
             temperature=temperature,
