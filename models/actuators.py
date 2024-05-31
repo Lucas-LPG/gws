@@ -121,6 +121,11 @@ class Actuator(db.Model):
         )
         return actuators
 
+    def select_single_actuator_by_id(id):
+        actuator = db.session.query(Actuator).filter_by(id=id).first()
+        if actuator is not None:
+            return actuator
+
     def select_device_by_actuator_id(actuator_id):
         actuator = db.session.query(Actuator).filter_by(id=actuator_id).first()
         device = db.session.query(Device).filter_by(id=actuator.device_id).first()

@@ -9,7 +9,7 @@
 }
 
 .edit-device--card {
-  height: 75vh;
+  height: 70vh;
   width: 35vw;
   border: 1px solid var(--card-border);
   overflow: hidden;
@@ -27,7 +27,7 @@
 }
 
 .edit-device--card-body {
-  height: 63vh;
+  height: 58vh;
   width: 35vw;
   display: flex;
   align-items: center;
@@ -67,6 +67,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 8vh;
+  bottom: 2vh;
   color: #f7f7f7;
 }

@@ -196,17 +196,24 @@ def create_app():
     def edit_device():
         device_type = request.args.get("device_type")
         device_id = request.args.get("device_id")
+        error_message = request.args.get("error_message")
 
         print(device_type)
         if device_type == "actuator":
             actuator = Actuator.select_actuators_by_id(device_id)
             return render_template(
-                "devices/edit_device.html", device=actuator, device_type=device_type
+                "devices/edit_device.html",
+                device=actuator,
+                device_type=device_type,
+                error_message=error_message,
             )
         elif device_type == "sensor":
             sensor = Sensor.select_sensors_by_id(device_id)
             return render_template(
-                "devices/edit_device.html", device=sensor, device_type=device_type
+                "devices/edit_device.html",
+                device=sensor,
+                device_type=device_type,
+                error_message=error_message,
             )
         else:
             return render_template("devices/edit_device.html")
@@ -269,6 +276,24 @@ def create_app():
                 )
             print(device_type)
             return redirect("/devices")
+
+    @app.route("/delete_device")
+    @login_required
+    def delete_device():
+        device_type = request.args.get("device_type")
+        device_id = request.args.get("device_id")
+        print(device_id)
+
+        if device_type == "sensor":
+            sensor = Sensor.select_single_sensor_by_id(device_id)
+            db.session.delete(sensor)
+            db.session.commit()
+        elif device_type == "actuator":
+            actuator = Actuator.select_single_actuator_by_id(device_id)
+            print(actuator)
+            db.session.delete(actuator)
+            db.session.commit()
+        return redirect("/devices")
 
     @mqtt_client.on_connect()
     def handle_connect(client, userdata, flags, rc):

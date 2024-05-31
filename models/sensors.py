@@ -81,6 +81,11 @@ class Sensor(db.Model):
         sensors = db.session.query(Sensor).filter(condition).all()
         return sensors
 
+    def select_single_sensor_by_id(id):
+        sensor = db.session.query(Sensor).filter_by(id=id).first()
+        if sensor is not None:
+            return sensor
+
     @classmethod
     def update_sensor_by_id(cls, sensor_id, name, value, topic):
         sensor = db.session.query(Sensor).filter_by(id=sensor_id).first()
