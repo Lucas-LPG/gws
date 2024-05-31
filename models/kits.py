@@ -8,7 +8,7 @@ from models.users import User
 class Kit(db.Model):
     __tablename__ = "kits"
     id = db.Column("id", INTEGER(unsigned=True), primary_key=True, autoincrement=True)
-    name = db.Column(VARCHAR(100), nullable=False)
+    name = db.Column(VARCHAR(100), nullable=False, unique=True)
     user_id = db.Column(INTEGER(unsigned=True), db.ForeignKey(User.id))
 
     def select_all_from_kits():
@@ -38,6 +38,19 @@ class Kit(db.Model):
         kit = db.session.query(Kit).filter_by(id=kit_id).first()
         if kit is not None:
             return kit
+
+    def select_kit_by_name(kit_name):
+        kit = db.session.query(Kit).filter_by(name=kit_name).first()
+        if kit is not None:
+            return kit
+
+    def update_given_kit(kit_id, kit_name, user_id):
+        kit = db.session.query(Kit).filter(Kit.id == kit_id).first()
+
+        if kit:
+            kit.name = kit_name
+            kit.user_id = user_id
+            db.session.commit()
 
     def __init__(self, name, user_id):
         self.name = name

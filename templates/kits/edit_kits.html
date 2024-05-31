@@ -13,7 +13,7 @@
       <p>Nome:</p>
       <input
         type="text"
-        name="name"
+        name="kit_name"
         placeholder="{{ kit.name }}"
         value="{{ kit.name }}"
         class="edit-kit--card-body--input"
@@ -21,7 +21,7 @@
       <p>Usuário:</p>
       <input
         type="text"
-        name="role"
+        name="user_name"
         value="{{ user_name }}"
         placeholder="{{ user_name }}"
         class="edit-kit--card-body--input"
@@ -29,6 +29,9 @@
       <input type="submit" value="Editar" class="edit-kit--card-body--btn" />
     </form>
   </div>
+  {% if error_message %}
+  <div class="error-message">{{ error_message }}</div>
+  {% endif %}
 </div>
 
 {% endblock %}

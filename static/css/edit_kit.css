@@ -9,7 +9,7 @@
 }
 
 .edit-kit--card {
-  height: 70vh;
+  height: 60vh;
   width: 35vw;
   border: 1px solid var(--card-border);
   overflow: hidden;
@@ -27,7 +27,7 @@
 }
 
 .edit-kit--card-body {
-  height: 58vh;
+  height: 48vh;
   width: 35vw;
   display: flex;
   align-items: center;
@@ -57,4 +57,16 @@
   margin-top: 5vh;
   color: #f7f7f7;
   border: none;
+}
+
+.error-message {
+  background-color: #cc0000;
+  height: 5vh;
+  padding: 0px 3vw;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 8vh;
+  color: #f7f7f7;
 }

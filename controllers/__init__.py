@@ -2,7 +2,7 @@
 import json
 
 import paho.mqtt.client as mqtt
-from flask import Flask, jsonify, redirect, render_template, request, session
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from flask_login import LoginManager, login_required, logout_user
 from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
@@ -105,27 +105,46 @@ def create_app():
         kit = Kit.select_kit_by_id(kit_id)
         attributes = dir(kit)
         user_name = User.select_user_by_id(kit.user_id).name
-
-        # Print each attribute along with its value
-        for attribute in attributes:
-            # Filter out private and special methods/attributes
-            if not attribute.startswith("__"):
-                value = getattr(kit, attribute)
-                print(f"{attribute}: {value}")
+        error_message = request.args.get("error_message", None)
         if kit == None:
             return redirect("/kits")
         else:
-            return render_template("kits/edit_kits.html", kit=kit, user_name=user_name)
+            return render_template(
+                "kits/edit_kits.html",
+                kit=kit,
+                user_name=user_name,
+                error_message=error_message,
+            )
 
     @app.route("/edit_given_kit")
     @login_required
     def edit_given_kit():
         kit_id = request.args.get("kit_id", None)
         kit_name = request.args.get("kit_name", None)
-        user_password = request.args.get("user_name", None)
-        user_role = request.args.get("total_sensors", None)
-        total_actuators = request.args.get("total_actuators", None)
-        return redirect("/kits")
+        user_name = request.args.get("user_name", None)
+        existing_kit = Kit.select_kit_by_name(kit_name)
+        kit = Kit.select_kit_by_id(kit_id).name
+        existing_user = User.select_user_by_name(user_name)
+        if existing_kit and kit_name != kit:
+            return redirect(
+                url_for(
+                    ".edit_kit",
+                    error_message="Esse nome de kit já existe!",
+                    kit_id=kit_id,
+                )
+            )
+        elif not existing_user:
+            return redirect(
+                url_for(
+                    ".edit_kit",
+                    error_message="Esse nome de usuário não existe!",
+                    kit_id=kit_id,
+                )
+            )
+        else:
+            user_id = User.select_user_by_name(user_name).id
+            Kit.update_given_kit(kit_id, kit_name, user_id)
+            return redirect("/kits")
 
     @mqtt_client.on_connect()
     def handle_connect(client, userdata, flags, rc):

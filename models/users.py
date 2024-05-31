@@ -56,6 +56,11 @@ class User(UserMixin, db.Model):
         if user is not None:
             return user
 
+    def select_user_by_name(user_name):
+        user = db.session.query(User).filter_by(name=user_name).first()
+        if user is not None:
+            return user
+
     def update_given_user(user_id, user_name, user_password, user_role):
         user = db.session.query(User).filter(User.id == user_id).first()
 
