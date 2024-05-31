@@ -80,6 +80,25 @@ class Sensor(db.Model):
                 sensor.topic = topic
                 db.session.commit()
 
+    def select_sensor_by_id(sensor_id):
+        sensor = db.session.query(Sensor).filter_by(id=sensor_id).first()
+        if sensor is not None:
+            return sensor
+
+    def select_device_by_sensor_id(sensor_id):
+        sensor = db.session.query(Sensor).filter_by(id=sensor_id).first()
+        device = db.session.query(Device).filter_by(
+            id=sensor.device_id).first()
+        if device is not None:
+            return device
+
+    @classmethod
+    def update_sensor_value(cls, device_id, new_value):
+        sensor = db.session.query(Device).filter_by(
+            id=device_id).first()
+        sensor.value = new_value
+        db.session.commit()
+
     @classmethod  # define que é um metodo da classe, para poder editar variaveis dela
     def delete_sensor_by_id(cls, sensor_id):
         device = db.session.query(Device).filter_by(id=sensor_id).first()

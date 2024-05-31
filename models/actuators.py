@@ -76,6 +76,38 @@ class Actuator(db.Model):
                 actuator.topic = topic
                 db.session.commit()
 
+    # def select_topic_by_user_id(user_id):
+    #     topic = (
+    #         Actuator.query.join(Device, Device.id == Actuator.device_id)
+    #         .join(Kit, Kit.id == Device.kit_id)
+    #         .join(User, User.id == Kit.user_id)
+    #         .join(User, User.id == user_id)
+    #         .add_column(
+    #             Actuator.topic.label("topic")
+    #         )
+    #         .all()
+    #     )
+    #     return topic
+
+    def select_actuators_by_id(actuator_id):
+        actuator = db.session.query(Actuator).filter_by(id=actuator_id).first()
+        if actuator is not None:
+            return actuator
+
+    def select_device_by_actuator_id(actuator_id):
+        actuator = db.session.query(Actuator).filter_by(id=actuator_id).first()
+        device = db.session.query(Device).filter_by(
+            id=actuator.device_id).first()
+        if device is not None:
+            return device
+
+    @classmethod
+    def update_actuator_button_value(cls, device_id, new_value):
+        actuator = db.session.query(Device).filter_by(
+            id=device_id).first()
+        actuator.value += new_value
+        db.session.commit()
+
     def delete_actuator_by_id(actuator_id):
         device = db.session.query(Device).filter_by(id=actuator_id).first()
         db.session.delete(device)

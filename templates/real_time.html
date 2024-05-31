@@ -1,10 +1,8 @@
 {% block title %}
 <title>Tempo Real</title>
-<link rel="stylesheet" href="../static/css/real-time.css">
+<link rel="stylesheet" href="../static/css/real-time.css" />
 <script src="../static/js/real-time.js" defer></script>
-{% endblock %}
-
-{% extends"layouts/layout.html" %} {% block content%}
+{% endblock %} {% extends"layouts/layout.html" %} {% block content%}
 <div class="real-time--container">
   <div class="real-time--title">
     <p>Tempo Real</p>
@@ -27,9 +25,12 @@
           </div>
           <div class="doors-condition capacity--body--left--info-container">
             <div class="var-title">Portas</div>
-            <div class="var-value">{% if people >= max_capacity %} Fechadas {% else %} Abertas {% endif %}</div>
+            <div class="var-value">
+              {% if people >= max_capacity %} Fechadas {% else %} Abertas {%
+              endif %}
+            </div>
           </div>
-          <div class="capacity--last-updated ">
+          <div class="capacity--last-updated">
             <div class="var-title">Atualizado por último</div>
             <div class="var-value">2 minutos atrás</div>
           </div>
@@ -37,15 +38,16 @@
         <div class="capacity--body--right">
           <div class="capacity--body--right--inner">
             <div class="capacity--body--right--text-container">
-              <span class="capacity--body--right--text-container--span">{{(people * 100) / max_capacity}}% -</span>
+              <span class="capacity--body--right--text-container--span"
+                >{{(people * 100) / max_capacity}}% -</span
+              >
             </div>
             <div class="capacity--body--right--graph-bg">
               <div
-                class="capacity--body--right--active-graph {% if ((people * 100) / max_capacity) <= 60 %} green-graph {% elif ((people * 100) / max_capacity) < 90 %} yellow-graph {% else %} red-graph {% endif %}">
-              </div>
+                class="capacity--body--right--active-graph {% if ((people * 100) / max_capacity) <= 60 %} green-graph {% elif ((people * 100) / max_capacity) < 90 %} yellow-graph {% else %} red-graph {% endif %}"
+              ></div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -60,37 +62,37 @@
             <span>Temperatura atual</span>
           </div>
           <div class="current-temperature--value var-value">
-            20
+            {{temperature}}
           </div>
         </div>
         <div class="air-conditioner-condition temperature--info-container">
           <div class="air-conditioner--title var-title">
             <span>Ar condicionado</span>
           </div>
-          <div class="air-conditioner--value var-value">
-            Ligado
-          </div>
+          <div class="air-conditioner--value var-value">Ligado</div>
         </div>
         <div class="temperature--last-updated temperature--info-container">
           <div class="last-updated--title var-title">
             <span>Atualizado por último</span>
           </div>
-          <div class="last-updated--value var-value">
-            2 minutos atrás
-          </div>
+          <div class="last-updated--value var-value">2 minutos atrás</div>
         </div>
       </div>
       <div class="temperature--footer">
-        <a href="/data-history" onmouseover="activateCursor()" onmouseleave="deactivateCursor()">Ver dados
-          históricos</a>
+        <a
+          href="/data-history"
+          onmouseover="activateCursor()"
+          onmouseleave="deactivateCursor()"
+          >Ver dados históricos</a
+        >
       </div>
     </div>
   </div>
   <p class="people hidden">{{people}}</p>
 </div>
 
-
-/* <!-- {% for key,value in values.items() %}
+/*
+<!-- {% for key,value in values.items() %}
   {% if key == "Temperatura" and value > 25 %}
   <li>Arcondicionado: Ligado</li>
   {% elif key == "Temperatura" and value < 25 %} <li>Arcondicionado: Desligado</li>
@@ -102,6 +104,5 @@
       setTimeout(() => {
         window.location.reload();
       }, 5000);
-    </script> --> */
-
-{% endblock%}
+    </script> -->
+*/ {% endblock%}

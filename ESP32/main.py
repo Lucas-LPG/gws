@@ -63,17 +63,19 @@ print("Connected!")
 
 def servo(enter_button, exit_button):
     global num_people
-    if enter_button == 0:
+    if enter_button == 0 and num_people < 100:
         porta.duty(99)
         num_people += 1
         print(num_people)
         time.sleep(1)
         porta.duty(30)
-    elif exit_button == 0:
+    elif exit_button == 0 and num_people < 100:
         porta.duty(99)
         num_people -= 1
         print(num_people)
         time.sleep(1)
+        porta.duty(30)
+    elif num_people >= 100:
         porta.duty(30)
 
 

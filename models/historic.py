@@ -12,6 +12,30 @@ class Historic(db.Model):
     datetime = db.Column(DATETIME, nullable=False, default=func.now())
     device_id = db.Column(INTEGER(unsigned=True), db.ForeignKey(Device.id))
 
+    def select_all_from_historyc():
+        from models.users import User
+        from models.kits import Kit
+        from models.devices import Device
+
+        # user_name, kit_name, device_name, value, datatime
+
+        historic = (
+
+            Historic.query.join(Device, Device.id == Historic.device_id)
+            .join(Kit, Kit.id == Device.kit_id)
+            .join(User, User.id == Kit.user_id)
+            .add_columns(
+                User.name.label('user_name'),
+                Kit.name.label('kit_name'),
+                Device.name.label('device_name'),
+                Historic.value.label('device_value'),
+                Historic.datetime.label('device_datetime')
+            )
+
+        )
+
+        return historic
+
     def __init__(self, value, datetime, device_id):
         self.value = value
         self.datetime = datetime

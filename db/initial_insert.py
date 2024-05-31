@@ -9,11 +9,12 @@ from models.sensors import Sensor
 
 session = db.session
 
-def _populate_users(app:Flask):
+
+def _populate_users(app: Flask):
     with app.app_context():
         users = [
             User('lucas', 'pucas', 'admin'),
-            User('tiago', 'gaspe' , 'operador'),
+            User('tiago', 'gaspe', 'operador'),
             User('Yuji Itadori', 'jujutsu_sorcerer', 'estatistico'),
             User('Megumi Fushiguro', 'divine_dogs', 'estatistico'),
             User('Toji Fushiguro', 'homeless', 'operador'),
@@ -26,9 +27,10 @@ def _populate_users(app:Flask):
             User('Sanji', 'black_leg', 'operador'),
             User('Tony Tony Chopper', 'doctorine', 'estatistico')
         ]
-        
+
         session.add_all(users)
         session.commit()
+
 
 def _populate_kits(app: Flask):
     with app.app_context():
@@ -37,45 +39,53 @@ def _populate_kits(app: Flask):
             Kit('kit_2', 2),
             Kit('kit_3', 3),
         ]
-        
+
         session.add_all(kits)
         session.commit()
-        
+
+
 def _populate_devices(app: Flask):
     with app.app_context():
         devices = [
-            Device('DHT22', 22, 1),
+            Device('Botao de entrada de pessoas', 0, 1),
+            Device('Botao de saida de pessoas', 0, 1),
+            Device('DHT22', 0, 1),
+            Device('Ar condicionado', 0, 1),
             Device('Sensor de Proximidade', 10, 2),
             Device('Botão', 1, 3),
-            Device('Servo', 0, 3)
+            Device('Servo', 0, 3),
+            Device('Buzzer', 0, 3)
         ]
-        
+
         session.add_all(devices)
         session.commit()
-        
+
+
 def _populate_actuators(app: Flask):
     with app.app_context():
         actuators = [
-            Actuator('lucas/enviar', 1),
-            Actuator('lucas/enviar', 2),
-            Actuator('lucas/enviar', 3),
-            Actuator('lucas/enviar', 1),
+            Actuator("cz/enviar", 1),
+            Actuator('cz/enviar', 2),
+            Actuator('lucas/enviar', 7),
+            Actuator('lucas/enviar', 8),
         ]
-    
+
         session.add_all(actuators)
         session.commit()
-    
+
+
 def _populate_sensors(app: Flask):
     with app.app_context():
         sensors = [
-            Sensor('lucas/enviar', 1),
-            Sensor('lucas/enviar', 2),
-            Sensor('lucas/enviar', 3),
-            Sensor('lucas/enviar', 3),
+            Sensor('cz/receba', 3),
+            Sensor('cz/receba', 4),
+            Sensor('lucas/enviar', 5),
+            Sensor('lucas/enviar', 6),
         ]
-        
+
         session.add_all(sensors)
         session.commit()
+
 
 def initial_populate_db(app: Flask):
     _populate_users(app)

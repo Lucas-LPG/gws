@@ -20,6 +20,20 @@ def create_historic_trigger(app: Flask):
     session.execute(trigger)
 
 
+def update_historic_trigger(app: Flask):
+    trigger = DDL("""
+        CREATE TRIGGER update_historic
+        AFTER UPDATE ON devices
+        FOR EACH ROW
+        BEGIN
+        INSERT INTO historic(value, datetime, device_id) VALUES(NEW.value, NOW(), NEW.id);
+        END;
+                  """
+                  )
+
+    session.execute(trigger)
+
+
 def handle_device_deletion(app: Flask):
     """
     TODO: Devemos pensar em como lidar com entidades com foreign keys deletadas

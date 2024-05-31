@@ -7,13 +7,14 @@ import paho.mqtt.client as mqtt
 from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
 from flask_login import login_required,  LoginManager, logout_user
-from models import User
+from models import User, Actuator, Sensor, Device
 
 
-topic_subscribe = "cz/enviar"
+topic_recive = "cz/enviar"
+topic_send = "cz/receba"
 temperature = 0
 max_capacity = 100
-people = 60
+people = 0
 people = people if people <= max_capacity else max_capacity
 
 
@@ -53,8 +54,6 @@ def create_app():
     # mqtt_client= Mqtt()
     # mqtt_client.init_app(app)
 
-    topic_subscribe = "/aula_flask/"
-
     # @mqtt_client.on_connect()
     # def handle_connect(client, userdata, flags, rc):
     #     if rc == 0:
@@ -79,19 +78,32 @@ def create_app():
 
     @mqtt_client.on_message()
     def handle_mqtt_message(client, userdata, message):
-        global temperature, people
         js = json.loads(message.payload.decode())
-        temperature = js["temperature"]
-        if js["exitPeople"] == 0 and people > 0:
-            people -= 1
+        global people, temperature
+        with app.app_context():
+            dht = Sensor.select_device_by_sensor_id(1)
+            Sensor.update_sensor_value(dht.id, js["temperature"])
+            temperature = dht.value
+            print(dht.value)
+
+        if js["exitPeople"] == 0:
+            with app.app_context():
+                actuator = Actuator.select_actuators_by_id(2)
+                Actuator.update_actuator_button_value(actuator.device_id, 1)
         elif js["enterPeople"] == 0:
-            people += 1
+            with app.app_context():
+                actuator = Actuator.select_actuators_by_id(1)
+                Actuator.update_actuator_button_value(actuator.device_id, 1)
+        with app.app_context():
+            people = Actuator.select_device_by_actuator_id(
+                1).value - Actuator.select_device_by_actuator_id(2).value
 
     @app.route('/publish_message', methods=['GET', 'POST'])
     def publish_message():
         request_data = request.get_json()
         publish_result = mqtt_client.publish(
             request_data['topic'], request_data['message'])
+
         return jsonify(publish_result)
 
     @app.route('/real_time', methods=['GET', 'POST'])
@@ -99,13 +111,14 @@ def create_app():
         global temperature, people
         values = {"Temperatura": temperature,
                   "Pessoas": people}
-        return render_template("real_time.html", values=values, user=session.get('user'), max_capacity=max_capacity, people=people)
+        return render_template("real_time.html", values=values, user=session.get('user'), max_capacity=max_capacity, people=people, temperature=temperature)
 
     @mqtt_client.on_connect()
     def handle_connect(client, userdata, flags, rc):
         if rc == 0:
             print('Broker Connected successfully')
-            mqtt_client.subscribe(topic_subscribe)
+            mqtt_client.subscribe(topic_recive)
+            mqtt_client.subscribe(topic_send)
         else:
             print('Bad connection. Code:', rc)
 
