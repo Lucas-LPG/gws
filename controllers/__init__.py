@@ -17,10 +17,6 @@ max_capacity = 100
 people = 0
 last_update_dht = 0
 last_update_people = 0
-print("people")
-print(people)
-print("people 0")
-print("people")
 
 
 def create_app():
@@ -52,33 +48,39 @@ def create_app():
 
     @mqtt_client.on_message()
     def handle_mqtt_message(client, userdata, message):
-        js = json.loads(message.payload.decode())
-        global people, temperature, last_update_people, last_update_dht
-        with app.app_context():
-            dht = Sensor.select_device_by_sensor_id(1)
-            Sensor.update_sensor_value(dht.id, js["temperature"])
-            temperature = dht.value
+        global topic_recive
+        if message.topic == topic_recive:
+            try:
+                js = json.loads(message.payload.decode())
+                global people, temperature, last_update_people, last_update_dht
+                with app.app_context():
+                    dht = Sensor.select_device_by_sensor_id(1)
+                    Sensor.update_sensor_value(dht.id, js["temperature"])
+                    temperature = dht.value
 
-            last_update_dht = Historic.select_datetime_by_device_id(dht.id)
-        if js["exitPeople"] == 0:
-            with app.app_context():
-                actuator = Actuator.select_actuators_by_id(2)
-                Actuator.update_actuator_button_value(actuator.device_id, 1)
-                last_update_people = Historic.select_datetime_by_device_id(
-                    actuator.device_id)
-        elif js["enterPeople"] == 0:
-            with app.app_context():
-                actuator = Actuator.select_actuators_by_id(1)
-                Actuator.update_actuator_button_value(actuator.device_id, 1)
-                last_update_people = Historic.select_datetime_by_device_id(
-                    actuator.device_id)
-        with app.app_context():
-            people = (
-                Actuator.select_device_by_actuator_id(1).value
-                - Actuator.select_device_by_actuator_id(2).value
-            )
-            print(last_update_dht)
-            print(last_update_people)
+                    last_update_dht = Historic.select_datetime_by_device_id(
+                        dht.id)
+                if js["exitPeople"] == 0:
+                    with app.app_context():
+                        actuator = Actuator.select_actuators_by_id(2)
+                        Actuator.update_actuator_button_value(
+                            actuator.device_id, 1)
+                        last_update_people = Historic.select_datetime_by_device_id(
+                            actuator.device_id)
+                elif js["enterPeople"] == 0:
+                    with app.app_context():
+                        actuator = Actuator.select_actuators_by_id(1)
+                        Actuator.update_actuator_button_value(
+                            actuator.device_id, 1)
+                        last_update_people = Historic.select_datetime_by_device_id(
+                            actuator.device_id)
+                with app.app_context():
+                    people = (
+                        Actuator.select_device_by_actuator_id(1).value
+                        - Actuator.select_device_by_actuator_id(2).value
+                    )
+            except:
+                print("erro")
 
     @app.route("/publish_message", methods=["GET", "POST"])
     def publish_message():
@@ -122,11 +124,20 @@ def create_app():
         else:
             return render_template("kits/edit_kits.html", kit=kit)
 
-    @app.route("/data-history")
+    @app.route("/data_history", methods=['GET', 'POST'])
     @login_required
-    def historic():
-        historics = Historic.select_all_from_historic()
-        return render_template("historic/data-history.html", historics=historics)
+    def data_history():
+        if request.method == 'POST':
+            datetime_begin = request.form['datetime_begin']
+            datetime_end = request.form['datetime_end']
+
+            historics = Historic.select_by_datetime_from_historic(
+                datetime_begin, datetime_end)
+            return render_template("historic/data_history.html", historics=historics)
+
+        else:
+            historics = Historic.select_all_from_historic()
+            return render_template("historic/data_history.html", historics=historics)
 
     @app.route("/edit_given_kit")
     @login_required

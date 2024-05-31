@@ -1,7 +1,7 @@
 from db.connection import db
 from sqlalchemy.dialects.mysql import INTEGER, FLOAT, DATETIME
 from models.devices import Device
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, desc
 
 
 class Historic(db.Model):
@@ -23,9 +23,7 @@ class Historic(db.Model):
 
             Historic.query.join(Device, Device.id == Historic.device_id)
             .join(Kit, Kit.id == Device.kit_id)
-            .join(User, User.id == Kit.user_id)
             .add_columns(
-                User.name.label('user_name'),
                 Kit.name.label('kit_name'),
                 Device.name.label('device_name'),
                 Historic.value.label('device_value'),
@@ -36,20 +34,22 @@ class Historic(db.Model):
 
         return historic
 
-    def select_by_datetime_from_historic(datetime_start, datetime_end):
+    def select_by_datetime_from_historic(datetime_begin, datetime_end):
         from models import Kit
         historic = (
             Historic.query.join(Device, Device.id == Historic.device_id)
             .join(Kit, Kit.id == Device.kit_id)
-            .filter(Historic.datetime > datetime_start,
+            .filter(Historic.datetime > datetime_begin,
                     Historic.datetime < datetime_end)
             .add_columns(
-                Historic.value.label("historic_value"),
-                Historic.datetime.label("historic_datetime"),
+                Historic.value.label("device_value"),
+                Historic.datetime.label("device_datetime"),
                 Device.name.label("device_name"),
                 Kit.name.label("kit_name")
             )
+            .order_by(desc(Historic.datetime))
             .all()
+
         )
         return historic
 
@@ -63,13 +63,6 @@ class Historic(db.Model):
             device_id=historic_device_id).first()
         if historic is not None:
             return historic
-
-    def last_update_datetime(datetime_last_update):
-        difference = db.session.query(func.now() - datetime_last_update).all()
-        for result in difference:
-            print(result)
-
-        return difference
 
     def __init__(self, value, datetime, device_id):
         self.value = value

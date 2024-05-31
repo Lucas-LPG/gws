@@ -7,7 +7,7 @@
 <div class="users--container">
   <div class="users--table">
     <div class="user--table--head">
-      <span>Lista de usuários</span>
+      <span>Historico</span>
     </div>
     <div class="user--table--description">
       <div>
@@ -23,12 +23,15 @@
         <span>Data-hora</span>
       </div>
     </div>
-    <form action="/submit" method="post">
-      <label for="datetime">Data e Hora:</label>
-      <input type="datetime-local" id="datetime" name="datetime" />
+    <form action="{{ url_for('data_history') }}" method="post">
+      <label for="datetime">Data e Hora de Inicio da pesquisa:</label>
+      <input type="datetime-local" id="datetime_begin" name="datetime_begin" />
+      <br /><br />
+      <label for="datetime">Data e Hora de Fim da pesquisa:</label>
+      <input type="datetime-local" id="datetime_end" name="datetime_end" />
       <br /><br />
       <input type="submit" value="Enviar" />
-    </form>
+
     {% for historic in historics %}
     <div class="user--card">
       <div class="user-name">
@@ -47,15 +50,6 @@
       </div>
     </div>
     {% endfor %}
-    <div class="add-user-div">
-      <a
-        href="/register_user"
-        class="add-user-btn"
-        onmouseover="activateCursor()"
-        onmouseleave="deactivateCursor()"
-        >Adicionar novo usuário</a
-      >
-    </div>
   </div>
 </div>
 {% endblock%}
