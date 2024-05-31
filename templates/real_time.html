@@ -78,6 +78,7 @@
           <div class="last-updated--value var-value">2 minutos atrás</div>
         </div>
       </div>
+      {% if current_user.role != 'estatistico' %}
       <div class="temperature--footer">
         <a
           href="/data-history"
@@ -86,6 +87,7 @@
           >Ver dados históricos</a
         >
       </div>
+      {% endif %}
     </div>
   </div>
   <p class="people hidden">{{people}}</p>

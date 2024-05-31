@@ -13,7 +13,8 @@ from models import Actuator, Device, Kit, Sensor, User
 topic_recive = "cz/enviar"
 topic_send = "cz/receba"
 temperature = 0
-max_capacity = 100
+max_people_capacity = 100
+max_temperature_capacity = 50
 people = 0
 
 
@@ -79,14 +80,15 @@ def create_app():
     @app.route("/real_time", methods=["GET", "POST"])
     def real_time():
         global temperature, people
-        people = people if people <= max_capacity else max_capacity
+        people = people if people <= max_people_capacity else max_people_capacity
         people = people if people >= 0 else 0
         values = {"Temperatura": temperature, "Pessoas": people}
         print(temperature)
         return render_template(
             "real_time.html",
             values=values,
-            max_capacity=max_capacity,
+            user=session.get("user"),
+            max_capacity=max_people_capacity,
             people=people,
             temperature=temperature,
         )
