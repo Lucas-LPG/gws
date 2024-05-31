@@ -1,0 +1,133 @@
+.devices--container {
+  min-height: 90vh;
+  width: 100vw;
+  background-color: var(--custom-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10vh;
+  padding: 10vh 0px;
+  color: var(--custom-dark);
+}
+
+.actuators--table,
+.sensors--table {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--card-surface);
+  width: 80vw;
+  border: solid 2px var(--card-border);
+  overflow-x: hidden;
+}
+
+.actuators--head,
+.sensors--head {
+  height: 10vh;
+  max-height: 120px;
+  width: 80vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--card-head);
+  color: var(--custom-dark);
+  position: relative;
+  border-bottom: solid 2px var(--card-border);
+}
+
+.actuators--head > span,
+.sensors--head > span {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.actuators--display,
+.sensors--display {
+  height: 5vh;
+  width: 100%;
+  background-color: wheat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: solid 2px var(--card-border);
+  background-color: var(--card-surface);
+}
+
+.actuators--display > i,
+.sensors--display > i {
+  font-size: 20px;
+}
+
+.actuators--description,
+.sensors--description {
+  height: 7vh;
+  max-height: 90px;
+  display: flex;
+  align-items: center;
+  background-color: var(--card-surface);
+  border-bottom: 2px solid var(--card-border);
+  color: var(--custom-dark);
+}
+
+.actuators--description > div,
+.sensors--description > div {
+  flex: 1;
+}
+
+.actuators--description > div > span,
+.sensors--description > div > span {
+  margin-left: 5vw;
+}
+
+.device--card {
+  display: flex;
+  background-color: var(--card-surface);
+  height: 12vh;
+  max-height: 100px;
+  position: relative;
+}
+
+.device--card > div {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.device--card > div > span {
+  margin-left: 5vw;
+}
+
+.device--card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 5%;
+  width: 90%;
+  height: 1px;
+  background-color: var(--card-border);
+}
+
+.device--actions {
+  gap: 50px;
+}
+
+.device-edit {
+  color: #005acd;
+}
+
+.device-delete {
+  color: #eb5939;
+}
+
+.device-edit:hover {
+  color: #005acd;
+  transform: scale(1.1);
+  text-decoration: underline 1px #005acd;
+}
+
+.device-delete:hover {
+  color: #eb5939;
+  transform: scale(1.1);
+  text-decoration: underline 1px #eb5939;
+}

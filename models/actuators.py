@@ -1,14 +1,14 @@
+from sqlalchemy.dialects.mysql import INTEGER, VARCHAR
+
 from db.connection import db
 from models.devices import Device
 from models.kits import Kit
 from models.users import User
-from sqlalchemy.dialects.mysql import INTEGER, VARCHAR
 
 
 class Actuator(db.Model):
     __tablename__ = "actuators"
-    id = db.Column("id", INTEGER(unsigned=True),
-                   primary_key=True, autoincrement=True)
+    id = db.Column("id", INTEGER(unsigned=True), primary_key=True, autoincrement=True)
     topic = db.Column(VARCHAR(50), nullable=False)
     device_id = db.Column(INTEGER(unsigned=True), db.ForeignKey(Device.id))
 
@@ -19,7 +19,6 @@ class Actuator(db.Model):
         kit_verification = db.session.query(Kit).filter_by(id=kit_id).first()
         if not id_verification:
             print(f"O id {user_id} nao existe, por favor insira outro")
-        #    return
         else:
             if not kit_verification:
                 kit = Kit(name=kit_name, user_id=user_id)
@@ -44,31 +43,28 @@ class Actuator(db.Model):
                 db.session.add(actuator)
                 db.session.commit()
 
-    def select_all_from_actuator():
-        actuator = (
-            Actuator.query.join(Device, Device.id == Actuator.device_id)
-            .join(Kit, Kit.id == Device.kit_id)
-            .join(User, User.id == Kit.user_id)
-            .add_columns(
-                User.name.label("user_name"),
-                Kit.name.label("kit_name"),
+    def select_all_from_actuators():
+        actuators = (
+            db.session.query(
+                Actuator.topic.label("actuator_topic"),
+                Device.id.label("device_id"),
                 Device.name.label("device_name"),
                 Device.value.label("device_value"),
-                Actuator.id.label("id"),
-                Actuator.topic.label("topic"),
-                Device.id.label("device_id"),
+                Kit.name.label("kit_name"),
             )
+            .join(Device, Actuator.device_id == Device.id)
+            .outerjoin(Kit, Device.kit_id == Kit.id)
+            .group_by(Device.id, Actuator.topic, Device.name, Kit.name)
             .all()
         )
-        return actuator
+        return actuators
 
     def update_actuator_by_id(actuator_id, name, value, topic):
         actuator = db.session.query(Actuator).filter_by(id=actuator_id).first()
         if not actuator:
             print("O id nao existe, insira outro")
         else:
-            device = db.session.query(Device).filter_by(
-                id=actuator.device_id).first()
+            device = db.session.query(Device).filter_by(id=actuator.device_id).first()
 
             if device is not None:
                 device.name = name
@@ -88,23 +84,32 @@ class Actuator(db.Model):
     #         .all()
     #     )
     #     return topic
-
-    def select_actuators_by_id(actuator_id):
-        actuator = db.session.query(Actuator).filter_by(id=actuator_id).first()
-        if actuator is not None:
-            return actuator
+    def select_actuators_by_id(device_id):
+        actuators = (
+            db.session.query(
+                Actuator.topic.label("device_topic"),
+                Device.id.label("device_id"),
+                Device.name.label("device_name"),
+                Device.value.label("device_value"),
+                Kit.name.label("kit_name"),
+            )
+            .filter(Actuator.device_id == device_id)
+            .join(Device, Actuator.device_id == Device.id)
+            .outerjoin(Kit, Device.kit_id == Kit.id)
+            .group_by(Device.id, Actuator.topic, Device.name, Kit.name)
+            .first()
+        )
+        return actuators
 
     def select_device_by_actuator_id(actuator_id):
         actuator = db.session.query(Actuator).filter_by(id=actuator_id).first()
-        device = db.session.query(Device).filter_by(
-            id=actuator.device_id).first()
+        device = db.session.query(Device).filter_by(id=actuator.device_id).first()
         if device is not None:
             return device
 
     @classmethod
     def update_actuator_button_value(cls, device_id, new_value):
-        actuator = db.session.query(Device).filter_by(
-            id=device_id).first()
+        actuator = db.session.query(Device).filter_by(id=device_id).first()
         actuator.value += new_value
         db.session.commit()
 

@@ -182,6 +182,31 @@ def create_app():
                 db.session.commit()
                 return redirect("/kits")
 
+    @app.route("/devices")
+    @login_required
+    def devices():
+        sensors = Sensor.select_all_from_sensors()
+        actuators = Actuator.select_all_from_actuators()
+        return render_template(
+            "devices/devices.html", sensors=sensors, actuators=actuators
+        )
+
+    @app.route("/edit_device")
+    @login_required
+    def edit_device():
+        device_type = request.args.get("device_type")
+        device_id = request.args.get("device_id")
+
+        print(device_type)
+        if device_type == "actuator":
+            actuator = Actuator.select_actuators_by_id(device_id)
+            return render_template("devices/edit_device.html", device=actuator)
+        elif device_type == "sensor":
+            sensor = Sensor.select_sensors_by_id(device_id)
+            return render_template("devices/edit_device.html", device=sensor)
+        else:
+            return render_template("devices/edit_device.html")
+
     @mqtt_client.on_connect()
     def handle_connect(client, userdata, flags, rc):
         if rc == 0:

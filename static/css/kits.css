@@ -106,12 +106,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 20px;
 }
 
 .add-kit-btn {
-  padding: 10px 20px;
+  height: 6vh;
+  width: 20vw;
   background-color: var(--custom-blue);
   color: #f7f7f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .add-kit-btn:hover {

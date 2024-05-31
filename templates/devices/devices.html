@@ -1,0 +1,121 @@
+{% block title %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dispositivos</title>
+<link rel="stylesheet" href="../../static/css/devices.css" />
+<script src="../../static/js/devices.js" defer></script>
+{% endblock %} {% extends "layouts/layout.html" %} {% block content %}
+<div class="devices--container">
+  <div class="actuators--table">
+    <div class="actuators--head">
+      <span>Atuadores</span>
+    </div>
+    <div class="actuators--display">
+      <i class="fa-solid fa-chevron-down" id="actuatorsBtn"></i>
+    </div>
+    <div class="actuators--body" id="actuatorsBody">
+      <div class="actuators--description">
+        <div>
+          <span>Nome</span>
+        </div>
+        <div>
+          <span>Valor</span>
+        </div>
+        <div>
+          <span>Tópico</span>
+        </div>
+        <div>
+          <span>Kit</span>
+        </div>
+        <div>
+          <span>Ações</span>
+        </div>
+      </div>
+      {% for actuator in actuators %}
+      <div class="device--card">
+        <div class="name">
+          <span>{{ actuator.device_name }}</span>
+        </div>
+        <div class="value">
+          <span>{{ actuator.device_value }}</span>
+        </div>
+        <div class="topic">
+          <span>{{ actuator.actuator_topic }}</span>
+        </div>
+        <div class="kit_name">
+          <span>{{ actuator.kit_name }}</span>
+        </div>
+        <div class="device--actions">
+          <a
+            href="/edit_device?device_type=actuator&device_id={{ actuator.device_id }}"
+            class="device-edit"
+            >Editar</a
+          >
+          <a
+            href="/delete_device?device_type=actuator&device_id={{ actuator.device_id }}"
+            class="device-delete"
+            >Deletar</a
+          >
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="sensors--table">
+    <div class="sensors--head">
+      <span>Sensores</span>
+    </div>
+    <div class="sensors--display">
+      <i class="fa-solid fa-chevron-down" id="sensorsBtn"></i>
+    </div>
+
+    <div class="sensors--body" id="sensorsBody">
+      <div class="sensors--description">
+        <div>
+          <span>Nome</span>
+        </div>
+        <div>
+          <span>Valor</span>
+        </div>
+        <div>
+          <span>Tópico</span>
+        </div>
+        <div>
+          <span>Kit</span>
+        </div>
+        <div>
+          <span>Ações</span>
+        </div>
+      </div>
+      {% for sensor in sensors %}
+      <div class="device--card">
+        <div class="name">
+          <span>{{ sensor.device_name }}</span>
+        </div>
+        <div class="value">
+          <span>{{ sensor.device_value }}</span>
+        </div>
+        <div class="topic">
+          <span>{{ sensor.sensor_topic }}</span>
+        </div>
+        <div class="kit_name">
+          <span>{{ sensor.kit_name }}</span>
+        </div>
+        <div class="device--actions">
+          <a
+            href="/edit_device?device_type=sensor&device_id={{ sensor.device_id }}"
+            class="device-edit"
+            >Editar</a
+          >
+          <a
+            href="/delete_device?device_type=sensor&device_id={{ sensor.device_id }}"
+            class="device-delete"
+            >Deletar</a
+          >
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

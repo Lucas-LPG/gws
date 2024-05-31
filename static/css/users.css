@@ -14,7 +14,7 @@
   display: grid;
   grid-template-rows: repeat(1fr);
   grid-template-columns: repeat(1fr);
-  width: 60vw;
+  width: 70vw;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -59,7 +59,7 @@
 }
 
 .user--card {
-  width: 60vw;
+  width: 70vw;
   display: flex;
   position: relative;
   padding: 20px 30px;
@@ -103,11 +103,13 @@
 .user-edit:hover {
   transform: scale(1.1);
   text-decoration: underline 1px #005acd;
+  color: #005acd;
 }
 
 .user-delete:hover {
   transform: scale(1.1);
   text-decoration: underline 1px #eb5939;
+  color: #eb5939;
 }
 
 .add-user-div {

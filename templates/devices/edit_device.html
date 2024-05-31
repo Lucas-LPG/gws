@@ -1,0 +1,58 @@
+{% block title %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>editar dispositivo</title>
+<link rel="stylesheet" href="../../static/css/edit_device.css" />
+{% endblock %} {% extends "layouts/layout.html" %} {% block content %}
+
+<div class="edit-device--container">
+  <div class="edit-device--card">
+    <div class="edit-device--card-head">Editar Dispositivo</div>
+    <form class="edit-device--card-body" action="">
+      <input
+        type="text"
+        name="device_id"
+        value="{{ device.device_id }}"
+        class="device-id"
+      />
+      <p>Dispositivo:</p>
+      <input
+        type="text"
+        name="device_name"
+        placeholder="{{ device.device_name }}"
+        value="{{ device.device_name }}"
+        class="edit-device--card-body--input"
+      />
+      <p>Valor:</p>
+      <input
+        type="text"
+        name="device_value"
+        value="{{ device.device_value }}"
+        placeholder="{{ device.device_value }}"
+        class="edit-device--card-body--input"
+      />
+      <p>Tópico:</p>
+      <input
+        type="text"
+        name="device_topic"
+        value="{{ device.device_topic }}"
+        placeholder="{{ device.device_topic }}"
+        class="edit-device--card-body--input"
+      />
+      <p>Kit:</p>
+      <input
+        type="text"
+        name="kit_name"
+        value="{{ device.kit_name }}"
+        placeholder="{{ device.kit_name }}"
+        class="edit-device--card-body--input"
+      />
+      <input type="submit" value="Editar" class="edit-device--card-body--btn" />
+    </form>
+  </div>
+  {% if error_message %}
+  <div class="error-message">{{ error_message }}</div>
+  {% endif %}
+</div>
+
+{% endblock %}

@@ -1,14 +1,14 @@
+from sqlalchemy.dialects.mysql import INTEGER, VARCHAR
+
 from db.connection import db
 from models.devices import Device
 from models.kits import Kit
 from models.users import User
-from sqlalchemy.dialects.mysql import INTEGER, VARCHAR
 
 
 class Sensor(db.Model):
-    __tablename__ = 'sensors'
-    id = db.Column('id', INTEGER(unsigned=True),
-                   primary_key=True, autoincrement=True)
+    __tablename__ = "sensors"
+    id = db.Column("id", INTEGER(unsigned=True), primary_key=True, autoincrement=True)
     topic = db.Column(VARCHAR(50), nullable=False)
     device_id = db.Column(INTEGER(unsigned=True), db.ForeignKey(Device.id))
 
@@ -19,7 +19,6 @@ class Sensor(db.Model):
         kit_verification = db.session.query(Kit).filter_by(id=kit_id).first()
         if not id_verification:
             print(f"O id {user_id} nao existe, por favor insira outro")
-        #    return
         else:
             if not kit_verification:
                 kit = Kit(name=kit_name, user_id=user_id)
@@ -43,20 +42,19 @@ class Sensor(db.Model):
                 db.session.add(sensor)
                 db.session.commit()
 
-    @classmethod
-    def select_all_from_sensor(cls):
+    def select_all_from_sensors():
         sensors = (
-            Sensor.query.join(Device, Device.id == Sensor.device_id)
-            .join(Kit, Kit.id == Device.kit_id)
-            .join(User, User.id == Kit.user_id)
-            .add_columns(
-                User.name.label('user_name'),
-                Kit.name.label('kit_name'),
-                Device.name.label('device_name'),
-                Device.value.label('device_value'),
-                Sensor.id.label('id'),
-                Sensor.topic.label('topic'),
-                Device.id.label("device_id")).all()
+            db.session.query(
+                Sensor.topic.label("sensor_topic"),
+                Device.id.label("device_id"),
+                Device.name.label("device_name"),
+                Device.value.label("device_value"),
+                Kit.name.label("kit_name"),
+            )
+            .join(Device, Sensor.device_id == Device.id)
+            .outerjoin(Kit, Device.kit_id == Kit.id)
+            .group_by(Device.id, Sensor.topic, Device.name, Kit.name)
+            .all()
         )
         return sensors
 
@@ -71,8 +69,7 @@ class Sensor(db.Model):
             print("O id nao existe, insira outro")
 
         else:
-            device = db.session.query(Device).filter_by(
-                id=sensor.device_id).first()
+            device = db.session.query(Device).filter_by(id=sensor.device_id).first()
 
             if device is not None:
                 device.name = name
@@ -80,22 +77,32 @@ class Sensor(db.Model):
                 sensor.topic = topic
                 db.session.commit()
 
-    def select_sensor_by_id(sensor_id):
-        sensor = db.session.query(Sensor).filter_by(id=sensor_id).first()
-        if sensor is not None:
-            return sensor
+    def select_sensors_by_id(device_id):
+        sensors = (
+            db.session.query(
+                Sensor.topic.label("device_topic"),
+                Device.id.label("device_id"),
+                Device.name.label("device_name"),
+                Device.value.label("device_value"),
+                Kit.name.label("kit_name"),
+            )
+            .filter(Sensor.device_id == device_id)
+            .join(Device, Sensor.device_id == Device.id)
+            .outerjoin(Kit, Device.kit_id == Kit.id)
+            .group_by(Device.id, Sensor.topic, Device.name, Kit.name)
+            .first()
+        )
+        return sensors
 
     def select_device_by_sensor_id(sensor_id):
         sensor = db.session.query(Sensor).filter_by(id=sensor_id).first()
-        device = db.session.query(Device).filter_by(
-            id=sensor.device_id).first()
+        device = db.session.query(Device).filter_by(id=sensor.device_id).first()
         if device is not None:
             return device
 
     @classmethod
     def update_sensor_value(cls, device_id, new_value):
-        sensor = db.session.query(Device).filter_by(
-            id=device_id).first()
+        sensor = db.session.query(Device).filter_by(id=device_id).first()
         sensor.value = new_value
         db.session.commit()
 

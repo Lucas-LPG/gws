@@ -1,0 +1,72 @@
+.edit-device--container {
+  height: 90vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--custom-dark);
+  background-color: var(--custom-light);
+}
+
+.edit-device--card {
+  height: 75vh;
+  width: 35vw;
+  border: 1px solid var(--card-border);
+  overflow: hidden;
+}
+
+.edit-device--card-head {
+  height: 7vh;
+  width: 35vw;
+  background-color: var(--card-head);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.edit-device--card-body {
+  height: 63vh;
+  width: 35vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.edit-device--card-body--input {
+  width: 70%;
+  padding: 10px 20px;
+}
+
+.device-id {
+  display: none;
+}
+
+.edit-device--card-body > p {
+  width: 100%;
+  margin: 0px;
+  padding: 20px 10% 10px 10%;
+}
+
+.edit-device--card-body--btn {
+  width: 70%;
+  padding: 10px 20px;
+  background-color: var(--custom-blue);
+  margin-top: 5vh;
+  color: #f7f7f7;
+  border: none;
+}
+
+.error-message {
+  background-color: #cc0000;
+  height: 5vh;
+  padding: 0px 3vw;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 8vh;
+  color: #f7f7f7;
+}
