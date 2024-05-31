@@ -6,11 +6,9 @@ from flask import Flask, jsonify, redirect, render_template, request, session
 from flask_login import LoginManager, login_required, logout_user
 from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
-from flask_login import login_required,  LoginManager, logout_user
-from models import User, Actuator, Sensor, Device
 
 from db.connection import db, instance
-from models import Kit, User
+from models import Actuator, Device, Kit, Sensor, User
 
 topic_recive = "cz/enviar"
 topic_send = "cz/receba"
@@ -43,39 +41,6 @@ def create_app():
     login_manager.init_app(app)
     login_manager.login_view = "login.login_func"
 
-    # app.config['TESTING'] = False
-    # app.config['SECRET_KEY'] = 'generated-secrete-key'
-    # app.config['SQLALCHEMY_DATABASE_URI'] = instance
-    # db.init_app(app)
-
-    # app.config['MQTT_BROKER_URL'] = 'mqtt-dashboard.com'
-    # app.config['MQTT_BROKER_PORT'] = 1883
-    # app.config['MQTT_USERNAME'] = ''  # Set this item when you need to verify username and password
-    # app.config['MQTT_PASSWORD'] = ''  # Set this item when you need to verify username and password
-    # app.config['MQTT_KEEPALIVE'] = 5000  # Set KeepAlive time in seconds
-    # app.config['MQTT_TLS_ENABLED'] = False  # If your broker supports TLS, set it True
-
-    # mqtt_client= Mqtt()
-    # mqtt_client.init_app(app)
-
-    # @mqtt_client.on_connect()
-    # def handle_connect(client, userdata, flags, rc):
-    #     if rc == 0:
-    #         print('Broker Connected successfully')
-    #         mqtt_client.subscribe(topic_subscribe) # subscribe topic
-    #     else:
-    #         print('Bad connection. Code:', rc)
-
-    # @mqtt_client.on_disconnect()
-    # def handle_disconnect(client, userdata, rc):
-    #     print("Disconnected from broker")
-
-    # @mqtt_client.on_message()
-    # def handle_mqtt_message(client, userdata, message):
-    #     if(message.topic==topic_subscribe):
-    #         global temperature, huminity
-    #         print(message.payload.decode())
-
     @app.route("/")
     def index():
         return render_template("landing.html", user=session.get("user"))
@@ -99,129 +64,115 @@ def create_app():
                 actuator = Actuator.select_actuators_by_id(1)
                 Actuator.update_actuator_button_value(actuator.device_id, 1)
         with app.app_context():
-            people = Actuator.select_device_by_actuator_id(
-                1).value - Actuator.select_device_by_actuator_id(2).value
+            people = (
+                Actuator.select_device_by_actuator_id(1).value
+                - Actuator.select_device_by_actuator_id(2).value
+            )
 
     @app.route("/publish_message", methods=["GET", "POST"])
     def publish_message():
         request_data = request.get_json()
         publish_result = mqtt_client.publish(
-            request_data['topic'], request_data['message'])
-
-        request_data["topic"], request_data["message"]
+            request_data["topic"], request_data["message"]
         )
         return jsonify(publish_result)
 
-            @ app.route("/real_time", methods=["GET", "POST"])
-            def real_time():
-            global temperature, people
-        values = {"Temperatura": temperature,
-              "Pessoas": people}
-               return render_template("real_time.html", values=values, user=session.get('user'), max_capacity=max_capacity, people=people, temperature=temperature)
-               values = {"Temperatura": temperature, "Pessoas": people}
-               return render_template(
+    @app.route("/real_time", methods=["GET", "POST"])
+    def real_time():
+        global temperature, people
+        values = {"Temperatura": temperature, "Pessoas": people}
+        return render_template(
             "real_time.html",
-            values = values,
-            user = session.get("user"),
-            max_capacity = max_capacity,
-            people = people,
+            values=values,
+            user=session.get("user"),
+            max_capacity=max_capacity,
+            people=people,
         )
 
-            @ app.route("/kits")
-            @ login_required
-            def kits():
+    @app.route("/kits")
+    @login_required
+    def kits():
 
-            kits= Kit.select_all_from_kits()
-            return render_template("kits/kits.html", kits=kits)
+        kits = Kit.select_all_from_kits()
+        return render_template("kits/kits.html", kits=kits)
 
-        @ app.route("/edit_kit")
-            @ login_required
-            def edit_kit():
-            kit_id= request.args.get("kit_id", None)
-            kit= Kit.select_kit_by_id(kit_id)
-            print(kit_id)
-        print(kit)
-            if kit == None:
+    @app.route("/edit_kit")
+    @login_required
+    def edit_kit():
+        kit_id = request.args.get("kit_id", None)
+        kit = Kit.select_kit_by_id(kit_id)
+        if kit == None:
             return redirect("/kits")
-            else:
+        else:
             return render_template("kits/edit_kits.html", kit=kit)
 
-            @ app.route("/edit_given_kit")
-            @ login_required
-            def edit_given_kit():
-            kit_id= request.args.get("kit_id", None)
-            kit_name= request.args.get("kit_name", None)
-            user_password= request.args.get("user_name", None)
-            user_role= request.args.get("total_sensors", None)
-            total_actuators= request.args.get("total_actuators", None)
+    @app.route("/edit_given_kit")
+    @login_required
+    def edit_given_kit():
+        kit_id = request.args.get("kit_id", None)
+        kit_name = request.args.get("kit_name", None)
+        user_password = request.args.get("user_name", None)
+        user_role = request.args.get("total_sensors", None)
+        total_actuators = request.args.get("total_actuators", None)
+        return redirect("/kits")
 
-            # User.update_given_user(user_id, user_name, user_password, user_role)
-
-            return redirect("/kits")
-
-        @ mqtt_client.on_connect()
-            def handle_connect(client, userdata, flags, rc):
-            if rc == 0:
-        print('Broker Connected successfully')
+    @mqtt_client.on_connect()
+    def handle_connect(client, userdata, flags, rc):
+        if rc == 0:
+            print("Broker Connected successfully")
             mqtt_client.subscribe(topic_recive)
             mqtt_client.subscribe(topic_send)
-        print("Broker Connected successfully")
+            print("Broker Connected successfully")
             mqtt_client.subscribe(topic_subscribe)
-            else:
+        else:
             print("Bad connection. Code:", rc)
 
-            @ mqtt_client.on_disconnect()
-            def handle_disconnect(client, userdata, rc):
-            print("Disconnected from broker")
+    @mqtt_client.on_disconnect()
+    def handle_disconnect(client, userdata, rc):
+        print("Disconnected from broker")
 
-        @ app.errorhandler(404)
-            def page_not_found(error):
-            logged= False
-            if session.get("user"):
+    @app.errorhandler(404)
+    def page_not_found(error):
+        logged = False
+        if session.get("user"):
             logged = True
             return (
-        render_template(
-             "errors/error.html",
-              error_message="Parece que a página não existe! Tente novamente!",
-              logged=logged,
-             ),
-         404,
+                render_template(
+                    "errors/error.html",
+                    error_message="Parece que a página não existe! Tente novamente!",
+                    logged=logged,
+                ),
+                404,
+            )
+
+    @app.errorhandler(405)
+    def page_not_found(error):
+        return (
+            render_template("errors/error.html", error_message="Você não fez login!"),
+            405,
         )
 
-            @ app.errorhandler(405)
-            def page_not_found(error):
-            return (
-        render_template("errors/error.html", error_message="Você não fez login!"),
-         405,
-        )
+    @login_manager.request_loader
+    def load_user_from_request(request):
 
-        @ login_manager.request_loader
-            def load_user_from_request(request):
-
-            # first, try to login using the api_key url arg
-            api_key= request.args.get("api_key")
-            if api_key:
+        # first, try to login using the api_key url arg
+        api_key = request.args.get("api_key")
+        if api_key:
             user = User.query.filter_by(api_key=api_key).first()
             if user:
-            return user
+                return user
 
-            # next, try to login using Basic Auth
+        # next, try to login using Basic Auth
         api_key = request.headers.get("Authorization")
-            if api_key:
+        if api_key:
             api_key = api_key.replace("Basic ", "", 1)
             try:
-            api_key = base64.b64decode(api_key)
-        except TypeError:
-            pass
+                api_key = base64.b64decode(api_key)
+            except TypeError:
+                pass
             user = User.query.filter_by(api_key=api_key).first()
             if user:
-            return user
+                return user
 
-            # finally, return None if both methods did not login the user
-            return None
-
-            @ login_manager.user_loader
-            def load_user(user_id):
-            return User.query.get(int(user_id))
-
-        return app
+        # finally, return None if both methods did not login the user
+        return None
