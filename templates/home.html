@@ -2,6 +2,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="../static/css/home.css" />
+<script src="../static/js/home.js" defer></script>
 <title>Gasperin Web Services</title>
 {% endblock %} {% extends "layouts/layout.html" %} {% block content %}
 <div class="home--box">
@@ -22,10 +23,13 @@
         <div class="card--content">
           <div class="capacity-content">
             <p class="capacity-title">
-              <span class="capacity-count">85</span> / 100 pessoas
+              <span class="capacity-count">{{ people }}</span> / {{ max_capacity
+              }} pessoas
             </p>
             <div class="capacity-level-container">
-              <div class="capacity-level"></div>
+              <div
+                class="capacity-level {% if (((people * 100) / max_capacity) | int) <= 50 %} green {% elif (((people * 100) / max_capacity) | int) < 90 %} yellow {% else %} red {% endif %}"
+              ></div>
             </div>
           </div>
         </div>
@@ -45,14 +49,16 @@
         <div class="card--content">
           <div class="temperature-content">
             <div class="temperature-info">
-              <span class="temperature-count">20°C</span>
+              <span class="temperature-count">{{ temperature }}°C</span>
               <div class="temperature-air">
                 <span class="temperature-air-text">Ar condicionado</span>
                 <span class="temperature-air-turn">Ligado</span>
               </div>
             </div>
             <div class="temperature-level-container">
-              <div class="temperature-level"></div>
+              <div
+                class="temperature-level {% if temperature <= 50 %} green {% elif temperature < 90 %} yellow {% else %} red {% endif %}"
+              ></div>
             </div>
           </div>
         </div>
@@ -143,5 +149,8 @@
       {% endif %}
     </div>
   </div>
+</div>
+<div class="people-info" id="peopleInfo">
+  {{ ((people * 100) / max_capacity) | int }}
 </div>
 {% endblock %}

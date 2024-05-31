@@ -38,12 +38,17 @@ def login_func():
 @login.route("/home")
 @login_required
 def home():
+    from controllers import max_capacity, people, temperature
+
     admin_query = User.select_from_users(User.role == "admin")
     admin_users = 0 if len(admin_query) <= 0 else len(admin_query)
     operator_query = User.select_from_users(User.role == "operador")
     operator_users = 0 if len(operator_query) <= 0 else len(operator_query)
     statistic_query = User.select_from_users(User.role == "estatistico")
     statistic_users = 0 if len(statistic_query) <= 0 else len(statistic_query)
+    people = people if people <= max_capacity else max_capacity
+    people = people if people >= 0 else 0
+
     kits = Kit.select_all_from_kits()
     return render_template(
         "home.html",
@@ -51,6 +56,9 @@ def home():
         operator_users=operator_users,
         statistic_users=statistic_users,
         kits=kits,
+        people=people,
+        max_capacity=max_capacity,
+        temperature=temperature,
     )
 
 

@@ -6,7 +6,6 @@ const peoplePercentage = document.querySelector(
 );
 
 let currentPeople = parseInt(document.querySelector(".people").innerHTML);
-console.log(currentPeople);
 
 activePeopleGraph.style.height = (currentPeople * 250) / 100 + "px";
 peoplePercentage.style.marginBottom =

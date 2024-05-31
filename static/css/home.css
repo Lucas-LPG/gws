@@ -109,13 +109,24 @@
   border-radius: 8px;
   display: flex;
   align-items: end;
+  overflow: hidden;
 }
 
 .capacity-level {
   width: 100%;
-  height: 85%;
-  background-color: #ffd335;
   border-top: #d9d9d9 1px solid;
+}
+
+.yellow {
+  background-color: #ffd335;
+}
+
+.green {
+  background-color: #97f150;
+}
+
+.red {
+  background-color: red;
 }
 
 .capacity-title,
@@ -146,12 +157,12 @@
   border-radius: 8px;
   display: flex;
   align-items: end;
+  overflow: hidden;
+  position: relative;
 }
 
 .temperature-level {
   width: 100%;
-  height: 45%;
-  background-color: #97f150;
   border-top: #d9d9d9 1px solid;
 }
 

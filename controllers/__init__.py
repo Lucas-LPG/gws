@@ -15,10 +15,6 @@ topic_send = "cz/receba"
 temperature = 0
 max_capacity = 100
 people = 0
-print("people")
-print(people)
-print("people 0")
-print("people")
 
 
 def create_app():
@@ -86,6 +82,7 @@ def create_app():
         people = people if people <= max_capacity else max_capacity
         people = people if people >= 0 else 0
         values = {"Temperatura": temperature, "Pessoas": people}
+        print(temperature)
         return render_template(
             "real_time.html",
             values=values,
