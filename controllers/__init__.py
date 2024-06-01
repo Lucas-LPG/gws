@@ -158,12 +158,6 @@ def create_app():
                 historic_actuators=historic_actuators,
             )
 
-    @app.route("/data-history")
-    @login_required
-    def historic():
-        historics = Historic.select_all_from_historic()
-        return render_template("historic/data-history.html", historics=historics)
-
     @app.route("/edit_given_kit")
     @login_required
     def edit_given_kit():

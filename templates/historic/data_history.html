@@ -2,127 +2,178 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>UsuÃ¡rios</title>
-<link rel="stylesheet" href="../../static/css/users.css" />
-{% endblock %} {% extends "layouts/layout.html" %} {% block content%}
-
-<div class="historic_actuator_container">
-  <div class = "historic actuators_table">
-    <div class = "historic_actuator_head">
-      
-    </div>
-  </div>
-</div>
-
-{% if current_user.role == 'estatistico' or current_user.role == 'admin'%}
-<div class="devices--container">
-  <div class="actuators--table">
-    <div class="actuators--head">
-      <span>Historico de Sensor </span>
+<link rel="stylesheet" href="../../static/css/data-history.css" />
+{% endblock %} {% extends "layouts/layout.html" %} {% block content%} {% if
+current_user.role == 'estatistico' or current_user.role == 'admin'%}
+<div class="historic--container">
+  <div class="historic--table">
+    <div class="historic--head">
+      <span>Historico de Sensores </span>
     </div>
 
-    <div class="actuators--display">
-      <i class="fa-solid fa-chevron-down" id="actuatorsBtn"></i>
-    </div>
-
-    <div class="actuators--body" id="actuatorsBody">
-      <div class="actuators--description">
-        <span>Nome do Dispositivo</span>
-      </div>
-      <div>
-        <span>Nome do Kit</span>
-      </div>
-      <div>
-        <span>Valor</span>
-      </div>
-      <div>
-        <span>Data-hora</span>
-      </div>
-    </div>
     <form action="{{ url_for('data_history') }}" method="post">
-      <label for="datetime">Data e Hora de Inicio da pesquisa:</label>
-      <input type="datetime-local" id="datetime_begin" name="datetime_begin" />
-      <br /><br />
-      <label for="datetime">Data e Hora de Fim da pesquisa:</label>
-      <input type="datetime-local" id="datetime_end" name="datetime_end" />
-      <br /><br />
-      <input type="submit" value="Enviar" />
+      <div class="date-selector">
+        <label for="datetime">Data e Hora de Inicio da pesquisa:</label>
+        <input
+          type="datetime-local"
+          id="datetime_begin"
+          name="datetime_begin"
+        />
+        <label for="datetime">Data e Hora de Fim da pesquisa:</label>
+        <input type="datetime-local" id="datetime_end" name="datetime_end" />
+        <input type="submit" value="Buscar" class="buscar-btn" />
+      </div>
+    </form>
+
+    <div class="historic--body">
+      <div class="historic--description">
+        <div>
+          <span>Nome do Dispositivo</span>
+        </div>
+        <div>
+          <span>Nome do Kit</span>
+        </div>
+        <div>
+          <span>Valor</span>
+        </div>
+        <div>
+          <span>Data-hora</span>
+        </div>
+      </div>
       {% for historic_sensor in historics_sensors %}
-      <div class="device--card">
+      <div class="historic--card">
         <div class="name">
           <span>{{ historic_sensor.device_name }}</span>
         </div>
         <div class="value">
           <span>{{historic_sensor.kit_name}} </span>
         </div>
-  
+
         <div class="topic">
           <span>{{historic_sensor.device_value}} </span>
         </div>
-  
+
         <div class="kit_name">
           <span>{{historic_sensor.device_datetime}} </span>
         </div>
       </div>
       {% endfor %}
+    </div>
+  </div>
 
+  {% if current_user.role == 'admin' %}
 
+  <div class="historic--container">
+    <div class="historic--table">
+      <div class="historic--head">
+        <span>Historico de Atuadores</span>
+      </div>
+      <form action="{{ url_for('data_history') }}" method="post">
+        <div class="date-selector">
+          <label for="datetime">Data e Hora de Inicio da pesquisa:</label>
+          <input
+            type="datetime-local"
+            id="datetime_begin"
+            name="datetime_begin"
+          />
+          <label for="datetime">Data e Hora de Fim da pesquisa:</label>
+          <input type="datetime-local" id="datetime_end" name="datetime_end" />
+          <input type="submit" value="Buscar" class="buscar-btn" />
+        </div>
+      </form>
+      <div class="historic--body">
+        <div class="historic--description">
+          <div>
+            <span>Nome do Dispositivo</span>
+          </div>
+          <div>
+            <span>Nome do Kit</span>
+          </div>
+          <div>
+            <span>Valor</span>
+          </div>
+          <div>
+            <span>Data-hora</span>
+          </div>
+        </div>
 
+        {% for historic_actuator in historic_actuators %}
+        <div class="historic--card">
+          <div class="historic-name">
+            <span>{{ historic_actuator.device_name }}</span>
+          </div>
+          <div class="historic-role">
+            <span>{{historic_actuator.kit_name}} </span>
+          </div>
+          <div class="historic-role">
+            <span>{{historic_actuator.device_value}} </span>
+          </div>
 
+          <div class="historic-role">
+            <span>{{historic_actuator.device_datetime}} </span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </div>
 
-{% elif current_user.role == 'operador' or current_user.role == 'admin'%}
+{% elif current_user.role == 'operador' %}
 
 <div class="historic--container">
-  <div class="users--table">
-    <div class="user--table--head">
-      <span>Historico de Sensor </span>
-    </div>
-    <div class="user--table--description">
-      <div>
-        <span>Nome do Dispositivo</span>
-      </div>
-      <div>
-        <span>Nome do Kit</span>
-      </div>
-      <div>
-        <span>Valor</span>
-      </div>
-      <div>
-        <span>Data-hora</span>
-      </div>
+  <div class="historic--table">
+    <div class="historic--head">
+      <span>Historico de Atuadores</span>
     </div>
     <form action="{{ url_for('data_history') }}" method="post">
-      <label for="datetime">Data e Hora de Inicio da pesquisa:</label>
-      <input type="datetime-local" id="datetime_begin" name="datetime_begin" />
-      <br /><br />
-      <label for="datetime">Data e Hora de Fim da pesquisa:</label>
-      <input type="datetime-local" id="datetime_end" name="datetime_end" />
-      <br /><br />
-      <input type="submit" value="Enviar" />
-
-
+      <div class="date-selector">
+        <label for="datetime">Data e Hora de Inicio da pesquisa:</label>
+        <input
+          type="datetime-local"
+          id="datetime_begin"
+          name="datetime_begin"
+        />
+        <label for="datetime">Data e Hora de Fim da pesquisa:</label>
+        <input type="datetime-local" id="datetime_end" name="datetime_end" />
+        <input type="submit" value="Buscar" class="buscar-btn" />
+      </div>
+    </form>
+    <div class="historic--body">
+      <div class="historic--description">
+        <div>
+          <span>Nome do Dispositivo</span>
+        </div>
+        <div>
+          <span>Nome do Kit</span>
+        </div>
+        <div>
+          <span>Valor</span>
+        </div>
+        <div>
+          <span>Data-hora</span>
+        </div>
+      </div>
 
       {% for historic_actuator in historic_actuators %}
-      <div class="user--card">
-        <div class="user-name">
+      <div class="historic--card">
+        <div class="historic-name">
           <span>{{ historic_actuator.device_name }}</span>
         </div>
-        <div class="user-role">
+        <div class="historic-role">
           <span>{{historic_actuator.kit_name}} </span>
         </div>
-      
-        <div class="user-role">
+        <div class="historic-role">
           <span>{{historic_actuator.device_value}} </span>
         </div>
-      
-        <div class="user-role">
+
+        <div class="historic-role">
           <span>{{historic_actuator.device_datetime}} </span>
         </div>
       </div>
       {% endfor %}
-
+    </div>
+  </div>
 </div>
-{% endif %}
-
-</div>
-{% endblock %}
+{% endif %} {% endblock %}
