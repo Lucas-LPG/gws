@@ -38,4 +38,9 @@ function enviarInformacao(valor) {
     .catch((error) => {
       console.error("Erro ao enviar informação:", error);
     });
+  window.location.reload();
 }
+
+setTimeout(() => {
+  window.location.reload();
+}, 10000);

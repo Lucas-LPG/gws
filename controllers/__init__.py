@@ -18,6 +18,7 @@ max_temperature_capacity = 50
 people = 0
 last_update_dht = 0
 last_update_people = 0
+ar_condicionado = 0
 
 
 def create_app():
@@ -81,29 +82,6 @@ def create_app():
                     )
             except:
                 print("erro")
-
-    @app.route("/publish_message", methods=["POST"])
-    def publish_message():
-        request_data = request.get_json()
-        mqtt_client.publish("cz/degar", json.dumps(request_data))
-        return jsonify({"success": True})
-
-    @app.route("/real_time", methods=["GET", "POST"])
-    def real_time():
-        global temperature, people, last_update_dht, last_update_people
-        people = people if people <= max_people_capacity else max_people_capacity
-        people = people if people >= 0 else 0
-        values = {"Temperatura": temperature, "Pessoas": people}
-        return render_template(
-            "real_time.html",
-            values=values,
-            user=session.get("user"),
-            max_capacity=max_people_capacity,
-            people=people,
-            temperature=temperature,
-            last_update_people=last_update_people,
-            last_update_dht=last_update_dht,
-        )
 
     @app.route("/kits")
     @login_required
@@ -382,7 +360,35 @@ def create_app():
                     Sensor.insert_sensor(
                         kit_name, kit_id, device_name, device_value, device_topic
                     )
+
                 return redirect("/devices")
+
+    @app.route("/publish_message", methods=["POST"])
+    def publish_message():
+        global ar_condicionado
+        request_data = request.get_json()
+        ar_condicionado = int(request_data["valor"])
+        mqtt_client.publish("cz/degar", json.dumps(request_data))
+        return jsonify({"success": True})
+
+    @app.route("/real_time", methods=["GET", "POST"])
+    def real_time():
+        global temperature, people, last_update_dht, last_update_people, ar_condicionado
+        people = people if people <= max_people_capacity else max_people_capacity
+        people = people if people >= 0 else 0
+        values = {"Temperatura": temperature, "Pessoas": people}
+
+        return render_template(
+            "real_time.html",
+            values=values,
+            user=session.get("user"),
+            max_capacity=max_people_capacity,
+            people=people,
+            temperature=temperature,
+            last_update_people=last_update_people,
+            last_update_dht=last_update_dht,
+            ar_condicionado=ar_condicionado,
+        )
 
     @mqtt_client.on_connect()
     def handle_connect(client, userdata, flags, rc):
