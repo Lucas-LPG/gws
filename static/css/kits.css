@@ -7,6 +7,7 @@
   position: relative;
   background-color: var(--custom-light);
   color: var(--custom-dark);
+  padding: 5vh 0px;
 }
 
 .kits--table {
