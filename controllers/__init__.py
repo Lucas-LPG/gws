@@ -136,14 +136,27 @@ def create_app():
             datetime_begin = request.form["datetime_begin"]
             datetime_end = request.form["datetime_end"]
 
-            historics = Historic.select_by_datetime_from_historic(
+            historics_sensors = Historic.select_by_datetime_from_Sensor_historic(
                 datetime_begin, datetime_end
             )
-            return render_template("historic/data_history.html", historics=historics)
+
+            historic_actuators = Historic.select_by_datetime_from_Actuator_historic(
+                datetime_begin, datetime_end
+            )
+            return render_template(
+                "historic/data_history.html",
+                historics_sensors=historics_sensors,
+                historic_actuators=historic_actuators,
+            )
 
         else:
-            historics = Historic.select_all_from_historic()
-            return render_template("historic/data_history.html", historics=historics)
+            historics_sensors = Historic.select_all_from_sensor_historic()
+            historic_actuators = Historic.select_all_from_actuator_historic()
+            return render_template(
+                "historic/data_history.html",
+                historics_sensors=historics_sensors,
+                historic_actuators=historic_actuators,
+            )
 
     @app.route("/data-history")
     @login_required

@@ -1,7 +1,5 @@
-from db.connection import db
-from sqlalchemy.dialects.mysql import INTEGER, FLOAT, DATETIME
-from models.devices import Device
-from sqlalchemy.sql import func, desc
+from sqlalchemy.dialects.mysql import DATETIME, FLOAT, INTEGER
+from sqlalchemy.sql import desc, func
 
 from db.connection import db
 from models.devices import Device
@@ -15,11 +13,9 @@ class Historic(db.Model):
     device_id = db.Column(INTEGER(unsigned=True), db.ForeignKey(Device.id))
 
     def select_all_from_historic():
-        from models.users import User
-        from models.kits import Kit
         from models.devices import Device
         from models.kits import Kit
-        from models.users import User
+        from models.sensors import Sensor
 
         # user_name, kit_name, device_name, value, datatime
 
@@ -34,6 +30,94 @@ class Historic(db.Model):
             )
         )
 
+        return historic
+
+    def select_all_from_sensor_historic():
+        from models.devices import Device
+        from models.kits import Kit
+        from models.sensors import Sensor
+
+        # user_name, kit_name, device_name, value, datatime
+
+        historic = (
+            Historic.query.join(Device, Device.id == Historic.device_id)
+            .join(Kit, Kit.id == Device.kit_id)
+            .join(Sensor, Sensor.device_id == Historic.device_id)
+            .add_columns(
+                Kit.name.label("kit_name"),
+                Device.name.label("device_name"),
+                Historic.value.label("device_value"),
+                Historic.datetime.label("device_datetime"),
+            )
+            .order_by(desc(Historic.datetime))
+        )
+
+        return historic
+
+    def select_by_datetime_from_Sensor_historic(datetime_begin, datetime_end):
+        from models import Kit
+        from models.sensors import Sensor
+
+        historic = (
+            Historic.query.join(Device, Device.id == Historic.device_id)
+            .join(Kit, Kit.id == Device.kit_id)
+            .join(Sensor, Sensor.device_id == Historic.device_id)
+            .filter(
+                Historic.datetime > datetime_begin, Historic.datetime < datetime_end
+            )
+            .add_columns(
+                Historic.value.label("device_value"),
+                Historic.datetime.label("device_datetime"),
+                Device.name.label("device_name"),
+                Kit.name.label("kit_name"),
+            )
+            .order_by(desc(Historic.datetime))
+            .all()
+        )
+        return historic
+
+    def select_all_from_actuator_historic():
+        from models.actuators import Actuator
+        from models.devices import Device
+        from models.kits import Kit
+
+        # user_name, kit_name, device_name, value, datatime
+
+        historic = (
+            Historic.query.join(Device, Device.id == Historic.device_id)
+            .join(Kit, Kit.id == Device.kit_id)
+            .join(Actuator, Actuator.device_id == Historic.device_id)
+            .add_columns(
+                Kit.name.label("kit_name"),
+                Device.name.label("device_name"),
+                Historic.value.label("device_value"),
+                Historic.datetime.label("device_datetime"),
+            )
+            .order_by(desc(Historic.datetime))
+        )
+
+        return historic
+
+    def select_by_datetime_from_Actuator_historic(datetime_begin, datetime_end):
+        from models import Kit
+        from models.actuators import Actuator
+
+        historic = (
+            Historic.query.join(Device, Device.id == Historic.device_id)
+            .join(Kit, Kit.id == Device.kit_id)
+            .join(Actuator, Actuator.device_id == Historic.device_id)
+            .filter(
+                Historic.datetime > datetime_begin, Historic.datetime < datetime_end
+            )
+            .add_columns(
+                Historic.value.label("device_value"),
+                Historic.datetime.label("device_datetime"),
+                Device.name.label("device_name"),
+                Kit.name.label("kit_name"),
+            )
+            .order_by(desc(Historic.datetime))
+            .all()
+        )
         return historic
 
     def select_by_datetime_from_historic(datetime_begin, datetime_end):
