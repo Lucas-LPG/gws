@@ -8,7 +8,7 @@ from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
 
 from db.connection import db, instance
-from models import Actuator, Device, Kit, Sensor, User, Historic
+from models import Actuator, Device, Historic, Kit, Sensor, User
 
 topic_recive = "cz/enviar"
 topic_send = "cz/receba"
@@ -82,13 +82,11 @@ def create_app():
             except:
                 print("erro")
 
-    @app.route("/publish_message", methods=["GET", "POST"])
+    @app.route("/publish_message", methods=["POST"])
     def publish_message():
         request_data = request.get_json()
-        publish_result = mqtt_client.publish(
-            request_data["topic"], request_data["message"]
-        )
-        return jsonify(publish_result)
+        mqtt_client.publish("cz/degar", json.dumps(request_data))
+        return jsonify({"success": True})
 
     @app.route("/real_time", methods=["GET", "POST"])
     def real_time():
