@@ -1,0 +1,55 @@
+{% block title %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Usuários</title>
+<link rel="stylesheet" href="../../static/css/users.css" />
+{% endblock %} {% extends "layouts/layout.html" %} {% block content%}
+<div class="users--container">
+  <div class="users--table">
+    <div class="user--table--head">
+      <span>Historico</span>
+    </div>
+    <div class="user--table--description">
+      <div>
+        <span>Nome do Dispositivo</span>
+      </div>
+      <div>
+        <span>Nome do Kit</span>
+      </div>
+      <div>
+        <span>Valor</span>
+      </div>
+      <div>
+        <span>Data-hora</span>
+      </div>
+    </div>
+    <form action="{{ url_for('data_history') }}" method="post">
+      <label for="datetime">Data e Hora de Inicio da pesquisa:</label>
+      <input type="datetime-local" id="datetime_begin" name="datetime_begin" />
+      <br /><br />
+      <label for="datetime">Data e Hora de Fim da pesquisa:</label>
+      <input type="datetime-local" id="datetime_end" name="datetime_end" />
+      <br /><br />
+      <input type="submit" value="Enviar" />
+
+    {% for historic in historics %}
+    <div class="user--card">
+      <div class="user-name">
+        <span>{{ historic.device_name }}</span>
+      </div>
+      <div class="user-role">
+        <span>{{historic.kit_name}} </span>
+      </div>
+
+      <div class="user-role">
+        <span>{{historic.device_value}} </span>
+      </div>
+
+      <div class="user-role">
+        <span>{{historic.device_datetime}} </span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock%}
