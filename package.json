@@ -1,8 +1,8 @@
 {
-  "name": "<project-name>",
+  "name": "Gasperin Web Services",
   "version": "1.0.0",
-  "description": "project-description",
-  "repository": "git@github.com:Lucas-PG/<project-name>",
+  "description": "Gasperin Web Services",
+  "repository": "git@github.com:Lucas-PG/flask_app_healthcare",
   "author": "Lucas Puhl Gasperin",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
@@ -21,4 +21,3 @@
     "prepare": "husky install"
   }
 }
-
