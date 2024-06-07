@@ -12,7 +12,7 @@ from flask_login import login_required
 from models.users import User
 
 
-actuator = Blueprint("actuator", __name__, template_folder="templates")
+actuator = Blueprint("actuator", __name__, template_folder="views")
 
 
 @actuator.route("/register_actuator")

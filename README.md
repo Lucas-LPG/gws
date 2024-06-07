@@ -36,7 +36,7 @@ Estrutura do Projeto
 │   ├── css
 │   ├── img
 │   └── js
-└── templates
+└── views
     ├── actuators
     ├── errors
     ├── layouts
@@ -49,7 +49,7 @@ Estrutura do Projeto
 - Db: Funções e arquivos relacionados ao banco de dados.
 - Models: Classes/Tabelas do banco de dados.
 - Static: Arquivos estáticos --> Imagens, Css, JavaScript
-- Templates: Arquivos _html_
+- views: Arquivos _html_
 
 ## Execução
 

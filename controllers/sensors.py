@@ -3,7 +3,7 @@ from models import User
 from flask_login import login_required
 from models.sensors import Sensor
 
-sensor = Blueprint("sensor", __name__, template_folder="templates")
+sensor = Blueprint("sensor", __name__, template_folder="views")
 
 
 @sensor.route("/register_sensors")

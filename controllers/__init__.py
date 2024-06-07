@@ -24,7 +24,7 @@ ar_condicionado = 0
 def create_app():
     app = Flask(
         __name__,
-        template_folder="./templates/",
+        template_folder="./views/",
         static_folder="./static/",
         root_path="./",
     )

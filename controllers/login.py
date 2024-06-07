@@ -13,7 +13,7 @@ from flask_socketio import SocketIO
 from db.connection import db
 from models import Kit, User
 
-login = Blueprint("login", __name__, template_folder="templates")
+login = Blueprint("login", __name__, template_folder="views")
 
 
 @login.route("/login", methods=["GET", "POST"])
