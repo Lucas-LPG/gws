@@ -17,8 +17,6 @@ class Historic(db.Model):
         from models.kits import Kit
         from models.sensors import Sensor
 
-        # user_name, kit_name, device_name, value, datatime
-
         historic = (
             Historic.query.join(Device, Device.id == Historic.device_id)
             .join(Kit, Kit.id == Device.kit_id)
@@ -36,8 +34,6 @@ class Historic(db.Model):
         from models.devices import Device
         from models.kits import Kit
         from models.sensors import Sensor
-
-        # user_name, kit_name, device_name, value, datatime
 
         historic = (
             Historic.query.join(Device, Device.id == Historic.device_id)
@@ -80,8 +76,6 @@ class Historic(db.Model):
         from models.actuators import Actuator
         from models.devices import Device
         from models.kits import Kit
-
-        # user_name, kit_name, device_name, value, datatime
 
         historic = (
             Historic.query.join(Device, Device.id == Historic.device_id)

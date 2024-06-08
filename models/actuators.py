@@ -75,18 +75,6 @@ class Actuator(db.Model):
                 actuator.topic = topic
                 db.session.commit()
 
-    # def select_topic_by_user_id(user_id):
-    #     topic = (
-    #         Actuator.query.join(Device, Device.id == Actuator.device_id)
-    #         .join(Kit, Kit.id == Device.kit_id)
-    #         .join(User, User.id == Kit.user_id)
-    #         .join(User, User.id == user_id)
-    #         .add_column(
-    #             Actuator.topic.label("topic")
-    #         )
-    #         .all()
-    #     )
-    #     return topic
     def select_actuators_by_id(device_id):
         actuators = (
             db.session.query(

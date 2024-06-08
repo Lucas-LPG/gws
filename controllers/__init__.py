@@ -46,7 +46,7 @@ def create_app():
 
     @app.route("/")
     def index():
-        return render_template("landing.html", user=session.get("user"))
+        return render_template("landing.html")
 
     @mqtt_client.on_message()
     def handle_mqtt_message(client, userdata, message):
@@ -381,7 +381,6 @@ def create_app():
         return render_template(
             "real_time.html",
             values=values,
-            user=session.get("user"),
             max_capacity=max_people_capacity,
             people=people,
             temperature=temperature,

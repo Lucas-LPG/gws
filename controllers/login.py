@@ -25,7 +25,6 @@ def login_func():
 
         if user:
             login_user(user)
-            session["user"] = user.id
             return redirect(url_for("login.home"))
         else:
             return render_template(
