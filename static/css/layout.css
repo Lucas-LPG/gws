@@ -81,9 +81,7 @@ i {
   height: 2px;
   background-color: var(--custom-dark);
   position: absolute;
-  transition:
-    ease-in-out transform 0.4s,
-    width ease-in-out 0.4s;
+  transition: ease-in-out transform 0.4s, width ease-in-out 0.4s;
 }
 
 .first-bar,
@@ -359,4 +357,9 @@ a:active {
   background-color: #ffffff;
   border-radius: 50%;
   transition: all 0.2s ease-in-out;
+}
+
+.about-link-a {
+  color: var(--custom-blue);
+  text-decoration: none;
 }

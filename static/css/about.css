@@ -1,0 +1,28 @@
+.about--body {
+  background-color: var(--custom-light);
+
+  width: 100vw;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 300px;
+  color: var(--custom-dark);
+}
+
+.sections {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.authors {
+  display: flex;
+  gap: 20px;
+}
+
+.about-link-a {
+  color: var(--custom-blue);
+  text-decoration: none;
+}
