@@ -2,14 +2,42 @@
 
 ## Começando
 
-Esse repositório se refere ao trabalho semestral da matéria **experiência criativa**.
+## Sobre o Projeto
 
-- Grupo:
-  - Lucas Puhl Gasperin
-  - Tiago Follador
-  - Renan Pamplona
-  - Renan Czervinski
-- Tema: Controle remoto de portas e dispositivos de ventilação e regulação de temperatura no SUS.
+Este repositório refere-se ao trabalho semestral da matéria **Experiência Criativa**. O projeto visa desenvolver uma solução inovadora para o controle remoto de portas, dispositivos de ventilação e sistemas de regulação de temperatura, com foco inicial no Sistema Único de Saúde (SUS).
+
+## Grupo
+
+- Lucas Puhl Gasperin
+- Tiago Follador
+- Renan Pamplona
+- Renan Czervinski
+
+## Tema
+
+Controle remoto de portas e dispositivos de ventilação e regulação de temperatura no SUS.
+
+## Gasperin Web Services
+
+Para concretizar este projeto, criamos a **Gasperin Web Services**, uma empresa dedicada a fornecer soluções inovadoras para a gestão remota de atuadores e sensores via web. Nosso objetivo é oferecer uma plataforma robusta e intuitiva que permita a automatização e o controle eficiente de diversos dispositivos, beneficiando não só o SUS, mas também outros setores que necessitam de soluções similares.
+
+### Objetivos da Gasperin Web Services
+
+- **Inovação:** Desenvolver tecnologias avançadas que facilitem o controle remoto de diversos dispositivos.
+- **Eficiência:** Melhorar a gestão e o uso de recursos em instituições de saúde e outros clientes.
+- **Segurança:** Garantir que todos os sistemas operem de forma segura e confiável, protegendo os dados e a privacidade dos usuários.
+- **Sustentabilidade:** Promover soluções que contribuam para a redução do consumo energético e o impacto ambiental.
+
+### Público-Alvo
+
+Embora o foco inicial seja o SUS, as soluções da Gasperin Web Services são versáteis e podem ser aplicadas em diferentes setores, como:
+
+- Hospitais e clínicas
+- Instituições educacionais
+- Edifícios comerciais e residenciais
+- Indústrias
+
+Esperamos que este projeto contribua significativamente para a modernização e melhoria dos serviços oferecidos pelo SUS, bem como inspire outras instituições a adotar tecnologias inovadoras para a gestão eficiente de seus recursos.
 
 ### Requisitos
 
