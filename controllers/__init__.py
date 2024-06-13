@@ -11,7 +11,7 @@ from db.connection import db, instance
 from models import Actuator, Device, Historic, Kit, Sensor, User
 
 topic_recive = "cz/enviar"
-topic_send = "cz/receba"
+topic_send = "cz/degar"
 temperature = 0
 max_people_capacity = 100
 max_temperature_capacity = 50
@@ -60,18 +60,21 @@ def create_app():
                     Sensor.update_sensor_value(dht.id, js["temperature"])
                     temperature = dht.value
 
-                    last_update_dht = Historic.select_datetime_by_device_id(dht.id)
+                    last_update_dht = Historic.select_datetime_by_device_id(
+                        dht.id)
                 if js["exitPeople"] == 0:
                     with app.app_context():
                         actuator = Actuator.select_actuators_by_id(2)
-                        Actuator.update_actuator_button_value(actuator.device_id, 1)
+                        Actuator.update_actuator_button_value(
+                            actuator.device_id, 1)
                         last_update_people = Historic.select_datetime_by_device_id(
                             actuator.device_id
                         )
                 elif js["enterPeople"] == 0:
                     with app.app_context():
                         actuator = Actuator.select_actuators_by_id(1)
-                        Actuator.update_actuator_button_value(actuator.device_id, 1)
+                        Actuator.update_actuator_button_value(
+                            actuator.device_id, 1)
                         last_update_people = Historic.select_datetime_by_device_id(
                             actuator.device_id
                         )
@@ -195,7 +198,8 @@ def create_app():
                 )
             elif not existing_user:
                 return redirect(
-                    url_for(".register_kit", error_message="Esse usuário não existe!")
+                    url_for(".register_kit",
+                            error_message="Esse usuário não existe!")
                 )
             else:
                 new_kit = Kit(kit_name, existing_user.id)
@@ -341,7 +345,8 @@ def create_app():
 
             if not kit:
                 return redirect(
-                    url_for(".register_device", error_message="Esse kit não existe!")
+                    url_for(".register_device",
+                            error_message="Esse kit não existe!")
                 )
             elif existing_device:
                 return redirect(
