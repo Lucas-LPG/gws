@@ -11,7 +11,7 @@ Esse repositório se refere ao trabalho semestral da matéria **experiência cri
   - Renan Czervinski
 - Tema: Controle remoto de portas e dispositivos de ventilação e regulação de temperatura no SUS.
 
-### Requirements
+### Requisitos
 
 Para instalar as depêndencias desse projeto basta executar:
 
@@ -27,7 +27,7 @@ pip install -r requirements.txt
 
 Estrutura do Projeto
 
-```
+```text
 .
 ├── controllers
 ├── db
@@ -45,11 +45,11 @@ Estrutura do Projeto
 
 ```
 
-- Controllers: rotas
+- Controllers: rotas da aplicação
 - Db: Funções e arquivos relacionados ao banco de dados.
 - Models: Classes/Tabelas do banco de dados.
-- Static: Arquivos estáticos --> Imagens, Css, JavaScript
-- views: Arquivos _html_
+- Static: Arquivos estáticos: Imagens, Css, JavaScript
+- views: Templates _html_ integrados com jinja2.
 
 ## Execução
 
@@ -86,6 +86,27 @@ O que deverá ser entregue:
   - Nas telas de aplicações, o usuário poderá selecionar um período de tempo, e o sistema deverá retornar informações dos sensores/atuadores selecionados para este período. O sistema deverá demonstrar os valores em forma de tabela ou gráfico.
   - Haverá conexão com algum MQTT broker para recebimento e envio de informações
   - Ao cadastrar sensores/atuadores/kits, o sistema deverá salvar automaticamente os valores na tabela de dados brutos.
+
+## Contriubuindo
+
+### Configurando seu ambiente de trabalho
+
+1. Clone este repositório para sua máquina
+2. Opcionalmente, ative o [commitlint](https://github.com/conventional-changelog/commitlint) e
+   o [commitzen](https://github.com/commitizen/cz-cli) no repositório:
+
+   1. Instale [`npm e node`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm);
+   2. Na pasta do repositório, rode:
+
+      ```shell
+      npm install
+      ```
+
+   3. Esta configuração não é obrigatória, mas **fortemente** recomendada;
+   4. O commitzen não integra com o VS Code, para uso no editor considere
+      [instalar uma extensão](https://github.com/commitizen/cz-cli#adapters).
+
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 ## Nomenclatura
 
