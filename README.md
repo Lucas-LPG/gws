@@ -2,22 +2,22 @@
 
 ## Começando
 
-## Sobre o Projeto
+### Sobre o Projeto
 
 Este repositório refere-se ao trabalho semestral da matéria **Experiência Criativa**. O projeto visa desenvolver uma solução inovadora para o controle remoto de portas, dispositivos de ventilação e sistemas de regulação de temperatura, com foco inicial no Sistema Único de Saúde (SUS).
 
-## Grupo
+### Grupo
 
 - Lucas Puhl Gasperin
 - Tiago Follador
 - Renan Pamplona
 - Renan Czervinski
 
-## Tema
+### Tema
 
 Controle remoto de portas e dispositivos de ventilação e regulação de temperatura no SUS.
 
-## Gasperin Web Services
+### Nossa Empresa
 
 Para concretizar este projeto, criamos a **Gasperin Web Services**, uma empresa dedicada a fornecer soluções inovadoras para a gestão remota de atuadores e sensores via web. Nosso objetivo é oferecer uma plataforma robusta e intuitiva que permita a automatização e o controle eficiente de diversos dispositivos, beneficiando não só o SUS, mas também outros setores que necessitam de soluções similares.
 
@@ -39,7 +39,7 @@ Embora o foco inicial seja o SUS, as soluções da Gasperin Web Services são ve
 
 Esperamos que este projeto contribua significativamente para a modernização e melhoria dos serviços oferecidos pelo SUS, bem como inspire outras instituições a adotar tecnologias inovadoras para a gestão eficiente de seus recursos.
 
-### Requisitos
+## Requisitos
 
 Para instalar as depêndencias desse projeto basta executar:
 
@@ -51,7 +51,7 @@ pip install -r requirements.txt
 
 **NOTA**: Erros do tipo `modulo x não encontrado` normalmente significam que o _pyhton interpreter_ sendo utilizado não possui acesso ao modulo em questão. Para resolver, tente alterar o _interpreter_ para uma versão mais antiga.
 
-### Estrutura do Projeto
+## Estrutura do Projeto
 
 Estrutura do Projeto
 
