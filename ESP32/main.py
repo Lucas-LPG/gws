@@ -30,7 +30,7 @@ MQTT_BROKER = "mqtt-dashboard.com"
 MQTT_USER = ""
 MQTT_PASSWORD = ""
 MQTT_TOPIC = "cz/enviar"
-MQTT_TOPIC_RECIVE = "cz/receba"
+MQTT_TOPIC_RECIVE = "cz/degar"
 
 sensor = dht.DHT22(Pin(15))
 
