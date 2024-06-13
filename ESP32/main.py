@@ -17,11 +17,12 @@ Copyright (C) 2022, Uri Shaked
 https://wokwi.com/arduino/projects/322577683855704658
 """
 
-import network
 import time
-from machine import Pin, PWM
+
 import dht
+import network
 import ujson
+from machine import PWM, Pin
 from umqtt.simple import MQTTClient
 
 # MQTT Server Parameters
@@ -47,15 +48,14 @@ janela.freq(60)
 print("Connecting to WiFi", end="")
 sta_if = network.WLAN(network.STA_IF)
 sta_if.active(True)
-sta_if.connect('Wokwi-GUEST', '')
+sta_if.connect("Wokwi-GUEST", "")
 while not sta_if.isconnected():
     print(".", end="")
     time.sleep(0.1)
 print(" Connected!")
 
 print("Connecting to MQTT server... ", end="")
-client = MQTTClient(MQTT_CLIENT_ID, MQTT_BROKER,
-                    user=MQTT_USER, password=MQTT_PASSWORD)
+client = MQTTClient(MQTT_CLIENT_ID, MQTT_BROKER, user=MQTT_USER, password=MQTT_PASSWORD)
 client.connect()
 
 print("Connected!")
@@ -84,8 +84,8 @@ prev_weather = ""
 
 def handle_message(topic, msg):
     string = msg.decode()
-    string_limpa = string.replace('{', '').replace('}', '')
-    partes = string_limpa.split(':')
+    string_limpa = string.replace("{", "").replace("}", "")
+    partes = string_limpa.split(":")
     numero = partes[1].strip()
     print(numero)
     if numero == '"1"':
@@ -107,7 +107,9 @@ def check_connection(client):
         client.ping()
     except OSError as e:
         if e.args[0] == 104:  # ECONNRESET
-            print("A conexão com o broker MQTT foi interrompida. Tentando reconectar...")
+            print(
+                "A conexão com o broker MQTT foi interrompida. Tentando reconectar..."
+            )
             client.connect()
 
 
@@ -118,11 +120,13 @@ while True:
 
     sensor.measure()
 
-    message = ujson.dumps({
-        "temperature": sensor.temperature(),
-        "enterPeople": enter_button.value(),
-        "exitPeople": exit_button.value()
-    })
+    message = ujson.dumps(
+        {
+            "temperature": sensor.temperature(),
+            "enterPeople": enter_button.value(),
+            "exitPeople": exit_button.value(),
+        }
+    )
 
     if message != prev_weather:
         print("Updated!")
