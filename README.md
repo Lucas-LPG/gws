@@ -53,7 +53,7 @@ pip install -r requirements.txt
 
 ## Estrutura do Projeto
 
-Estrutura do Projeto
+O projeto segue a arquitetura _MVC_: _Models_, _Views_, _Controllers_. A estrutura de diretórios é a seguinte:
 
 ```text
 .
