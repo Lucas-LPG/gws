@@ -6,8 +6,7 @@ Esse repositório se refere ao trabalho semestral da matéria **experiência cri
 
 - Grupo:
   - Lucas Puhl Gasperin
-  - Tiago de Brito Follador
-  - Lorenzo Marca Marques Garcia
+  - Tiago Follador
   - Renan Pamplona
   - Renan Czervinski
 - Tema: Controle remoto de portas e dispositivos de ventilação e regulação de temperatura no SUS.
