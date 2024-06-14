@@ -1,0 +1,80 @@
+{% block title %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../static/css/about.css" />
+<title>Sobre nós</title>
+{% endblock %} {% extends "layouts/layout.html" %} {% block content %}
+<div class="about--body">
+  <div class="sections">
+    <div class="section">
+      <h2>Integrantes</h2>
+      <div class="authors">
+        <span>Lucas Puhl Gasperin</span>
+        <span>Renan Pamplona</span>
+        <span>Renan Czervinski</span>
+        <span>Tiago de Brito Follador</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Tecnologias utilizadas</h2>
+      <div class="authors">
+        <span>Framework Flask</span>
+        <span>MYSQL</span>
+        <span>HTML, CSS, Javascript</span>
+        <span>ESP32</span>
+        <span>Wokwi</span>
+        <span>Protocolo MQTT</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Hardware</h2>
+      <img src="/static/img/wokwi.png" />
+    </div>
+
+    <div class="section">
+      <h2>Fluxo de Dados</h2>
+
+      <ul style="margin-left: 20px">
+        <li>Os dados são capturados pelos sensores</li>
+        <li>
+          Após isso, eles são enviados via protocolo MQTT para a aplicação flask
+        </li>
+        <li>Lá, esses dados são tratados e mostrados para o usuário</li>
+        <li>
+          Frente a certas situações, como uma capacidade de pessoas além do
+          limite, mensagens são enviadas novamente via protocolo MQTT
+        </li>
+        <li>A ESP recebe esses dados e aciona os atuadores de acordo.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Repositório</h2>
+      <a
+        href="https://github.com/Lucas-LPG/flask_app_healthcare"
+        class="about-link-a"
+        onmouseover="activateCursor()"
+        onmouseleave="deactivateCursor()"
+        >https://github.com/Lucas-LPG/flask_app_healthcare</a
+      >
+    </div>
+
+    <div class="section">
+      <h2>Nosso nome</h2>
+      <span
+        >O nome Gasperin deriva de Gaspar ou Caspar, um dos Três Reis Magos,
+        cujo nome tem raízes na palavra persa "Gizbar" (גִּזְבָר), significando
+        "portador de tesouros" ou "guardião". Associado à sabedoria e
+        generosidade, o nome reflete os valores centrais de nossa empresa, que
+        busca inovar continuamente para o benefício de todos. O símbolo do
+        infinito (∞) complementa nossa missão e visão, simbolizando sabedoria e
+        espiritualidade. Assim, Gasperin representa nosso compromisso com a
+        inovação, sabedoria e generosidade, valores fundamentais em nossas
+        ações.</span
+      >
+    </div>
+  </div>
+</div>
+{% endblock %}

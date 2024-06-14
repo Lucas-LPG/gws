@@ -47,6 +47,10 @@ def create_app():
     def index():
         return render_template("landing.html")
 
+    @app.route("/sobre")
+    def about():
+        return render_template("about.html")
+
     @mqtt_client.on_message()
     def handle_mqtt_message(client, userdata, message):
         global topic_recive
