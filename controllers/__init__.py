@@ -375,6 +375,7 @@ def create_app():
         return jsonify({"success": True})
 
     @app.route("/real_time", methods=["GET", "POST"])
+    @login_required
     def real_time():
         global temperature, people, last_update_dht, last_update_people, ar_condicionado
         people = people if people <= max_people_capacity else max_people_capacity
