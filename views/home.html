@@ -57,7 +57,7 @@
             </div>
             <div class="temperature-level-container">
               <div
-                class="temperature-level {% if ((temperature * 100) / max_temperature_capacity) <= 24 %} green {% elif ((temperature * 100) / max_temperature_capacity) < 32 %} yellow {% else %} red {% endif %}"
+                class="temperature-level {% if temperature <= 24 %} green {% temperature < 32 %} yellow {% else %} red {% endif %}"
               ></div>
             </div>
           </div>
