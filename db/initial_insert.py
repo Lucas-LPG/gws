@@ -77,8 +77,8 @@ def _populate_actuators(app: Flask):
 def _populate_sensors(app: Flask):
     with app.app_context():
         sensors = [
-            Sensor('cz/receba', 3),
-            Sensor('cz/receba', 4),
+            Sensor('cz/degar', 3),
+            Sensor('cz/degar', 4),
             Sensor('lucas/enviar', 5),
             Sensor('lucas/enviar', 6),
         ]

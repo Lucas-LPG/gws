@@ -1,4 +1,3 @@
-# app_controller.py
 import json
 
 import paho.mqtt.client as mqtt
@@ -11,7 +10,7 @@ from db.connection import db, instance
 from models import Actuator, Device, Historic, Kit, Sensor, User
 
 topic_recive = "cz/enviar"
-topic_send = "cz/receba"
+topic_send = "cz/degar"
 temperature = 0
 max_people_capacity = 100
 max_temperature_capacity = 50
