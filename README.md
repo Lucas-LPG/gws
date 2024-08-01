@@ -115,7 +115,7 @@ O que deverá ser entregue:
   - Haverá conexão com algum MQTT broker para recebimento e envio de informações
   - Ao cadastrar sensores/atuadores/kits, o sistema deverá salvar automaticamente os valores na tabela de dados brutos.
 
-## Contriubuindo
+## Contribuindo
 
 ### Configurando seu ambiente de trabalho
 
